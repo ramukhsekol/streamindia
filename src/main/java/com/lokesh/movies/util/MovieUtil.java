@@ -14,7 +14,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MovieUtil {
 	public static Map<Long, String> movieGenrics = new LinkedHashMap<>();
-	public static Map<String, String> movieLanguages = new LinkedHashMap<>();
+	public static Map<Integer, String> movieLanguages = new LinkedHashMap<>();
 	public static final String userKey = "5HbImlTRhrrI7aEO";
 	public static final String secretKey = "s51qflw236t2ddlcbom9d0hfe800tp";
 	public static final String apiKey = "663337055530cc77a3aa1d26fec365d5";
@@ -40,13 +40,17 @@ public class MovieUtil {
 		movieGenrics.put(10752L, "War");
 		movieGenrics.put(37L, "Western");
 		
-		movieLanguages.put("1", "TELLUGU");
-		movieLanguages.put("2", "HINDI");
-		movieLanguages.put("3", "TAMIL");
-		movieLanguages.put("4", "MALAYALAM");
-		movieLanguages.put("5", "BENGALI");
-		movieLanguages.put("6", "PUNJABI");
-		movieLanguages.put("7", "ADULT");	
+		movieLanguages.put(1, "TELUGU");
+		movieLanguages.put(2, "HINDI");
+		movieLanguages.put(3, "TAMIL");
+		movieLanguages.put(4, "MALAYALAM");
+		movieLanguages.put(5, "BENGALI");
+		movieLanguages.put(6, "PUNJABI");
+		movieLanguages.put(7, "ADULT");	
+		movieLanguages.put(8, "TELUGU");
+		movieLanguages.put(9, "TAMIL");
+		movieLanguages.put(10, "HINDI");
+		
 	}
 
 	public static String getMovieGenries(List<Long> genericIds) {
@@ -57,11 +61,11 @@ public class MovieUtil {
 		return genrics.stream().map(Object::toString).collect(Collectors.joining(", "));
 	}
 	
-	public static String getMovieLanguage(String languageId) {
+	public static String getMovieLanguage(Integer languageId) {
 		return movieLanguages.get(languageId);
 	}
 	
-	public static Map<String, String> getmovieLanguages() {
+	public static Map<Integer, String> getmovieLanguages() {
 		return movieLanguages;
 	}
 

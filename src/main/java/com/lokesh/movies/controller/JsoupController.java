@@ -23,25 +23,25 @@ public class JsoupController {
 	
 	@GetMapping(value = "/others")
 	public String others(Model model) throws UnirestException {
-		Map<String, String> movieCountries = MovieUtil.getmovieLanguages();
+		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();
 		model.addAttribute("movieCountries", movieCountries);
 		model.addAttribute("title", "others");
 		return "movies/others";
 	}
 	
 	@GetMapping(value = "/other/movies")
-	public String movies(@RequestParam String movieType, Model model) throws UnirestException {
+	public String movies(@RequestParam Integer movieType, Model model) throws UnirestException {
 		String language = MovieUtil.getMovieLanguage(movieType);
 		model.addAttribute("language", language);
 		model.addAttribute("movieType", movieType);
-		model.addAttribute("title", language);
+		model.addAttribute("title", "others");
 		return "movies/othermovies";
 	}
 	
 	@GetMapping(value = "/{movieType}/movies/all")
-	public String teluguMoviesByIndex(@PathVariable String movieType, @RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
+	public String teluguMoviesByIndex(@PathVariable Integer movieType, @RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
 		String language = MovieUtil.getMovieLanguage(movieType);
-		String apendurl = Integer.parseInt(movieType) <= 6 ? "movie" : "18";
+		String apendurl = movieType <= 6 ? "movie" :  (movieType == 7? "18" : (movieType <= 9 ? "dubbed-movie-2" : "dubbed-movie"));
 		String MovieUrl = language.toLowerCase()+"-"+ apendurl;
 		List<Movie> movies = jsoupService.getJsoupMoviesByIndex(MovieUrl, pageIndex);
 		model.addAttribute("movies", movies);
