@@ -84,40 +84,49 @@
 	<nav th:replace="fragments/menuheader :: menuheader"></nav>
 
 	<header>
-		<section id="parallex" class="parallax-window" th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.movie.backdrop_path} + ') center center;width: 100%;'">
+		<section id="parallex" class="parallax-window" th:style="'background:url(https://wallpaperaccess.com/full/1512223.jpg) center center;width: 100%;'">
            <div class="container-fluid h-100">
               <div class="row align-items-center justify-content-center h-100 parallaxt-details">
                  <div class="col-lg-7 r-mb-23">
                     <div class="text-left">
                        <a href="javascript:void(0);">
-                       <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft" data-delay-in="0.6" th:text="${movie.movie.title}" style="font-size: 35px;"></h1>
+                       <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft" data-delay-in="0.6" th:text="${movie.title}" style="font-size: 35px;"></h1>
                        </a>
                        <div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
                           <div class="rate">
                   <svg class="circle-chart" viewBox="0 0 30 30" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
                     <circle class="circle-chart__background" stroke="#2f3439" stroke-width="2" fill="none" cx="15" cy="15" r="14"></circle>
-                    <circle class="circle-chart__circle" stroke="#4eb04b" stroke-width="2" th:attr="stroke-dasharray=${(movie.movie.vote_average * 10) + ',100'}" cx="15" cy="15" r="14"></circle>
+                    <circle class="circle-chart__circle" stroke="#4eb04b" stroke-width="2" th:attr="stroke-dasharray=${(movie.vote_average * 10) + ',100'}" cx="15" cy="15" r="14"></circle>
                   </svg>
-                  <b th:text="${movie.movie.vote_average}">5.4</b> <span style="margin-left: 10px;vertical-align: text-top;">IMDB SCORE</span> </div>
+                  <b th:text="${movie.vote_average}">5.4</b> <span style="margin-left: 10px;vertical-align: text-top;">IMDB SCORE</span> </div>
                        </div>
-                       <div class="tags" th:text="${movie.movie.genrics}"></div>
-                       <div class="movie-time d-flex align-items-center mb-3" style="margin-top: 10px;">
-                       	  Release Date : &nbsp;&nbsp;<h6 class="text-white" th:text="${movie.movie.release_date}">2h 30m</h6> &nbsp;&nbsp; /&nbsp;&nbsp;
-                          Run Time : &nbsp;&nbsp;<h6 class="text-white" th:text="${movie.movie.convertRunTime}">2h 30m</h6>
-                          
+                       <div class="tags" th:text="${movie.genrics}"></div>
+                       <div class="movie-time d-flex align-items-center mb-3" style="margin-top: 5px;">
+                       	  Directed by : &nbsp;&nbsp;<h6 class="text-white" th:text="${movie.director}">2h 30m</h6> 
                        </div>
-                       <p th:text="${movie.movie.overview}"></p>
+                       <div class="movie-time d-flex align-items-center mb-3" style="margin-top: 5px;">
+                       	  Starring by : &nbsp;&nbsp;<h6 class="text-white" th:text="${movie.staring}">2h 30m</h6> 
+                       </div>
+                       <div class="movie-time d-flex align-items-center mb-3" style="margin-top: 5px;">
+                       	  Release Date : &nbsp;&nbsp;<h6 class="text-white" th:text="${movie.release_date}">2h 30m</h6> 
+                       </div>
+                       <div class="movie-time d-flex align-items-center mb-3" style="margin-top: 5px;">
+                       	  Country : &nbsp;&nbsp;<h6 class="text-white" th:text="${movie.country}">2h 30m</h6> 
+                       </div>
+                       <div class="movie-time d-flex align-items-center mb-3" style="margin-top: 5px;">
+                       	  Language : &nbsp;&nbsp;<h6 class="text-white" th:text="${movie.language}">2h 30m</h6> 
+                       </div>
+                       
+                       <p th:text="${movie.overview}"></p>
                        <div class="parallax-buttons">
-                       	  <a href="#movietrailers" class="btn btn-success">Trailers</a>
                           <a href="#playmovie" class="btn btn-hover">Play Now</a>
-                          <a href="#moviecastcrew" class="btn btn-primary">Cast & Crew</a>
                        </div>
                     </div>
                  </div>
                  <div class="col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6">
                     <div class="parallax-img">
                        <a href="javascript:void(0)">
-                       	<img th:src="${'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 530px;">
+                       	<img th:src="${movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 530px;">
                        </a>
                     </div>
                  </div>
@@ -127,7 +136,7 @@
 	</header>
 	<main>
 	
-	<section class="parallax-window" style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);" id="movietrailers" th:if="${movie.trailers.size() > 0}">
+<!-- 	<section class="parallax-window" style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);" id="movietrailers" th:if="${movie.trailers.size() > 0}">
     <div class="container-fluid h-100">
       <div class="row">
         <div class="col-12">
@@ -144,9 +153,9 @@
           </div>
       </div>
     </div>
-  </section>
+  </section> -->
   
- <section id="playmovie" class="parallax-window" th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.movie.backdrop_path} + ') center center;width: 100%;'">
+ <section id="playmovie" class="parallax-window" th:style="'background:url(https://www.teahub.io/photos/full/197-1977979_movies-digital-art-collage-movie-posters-fan-art.jpg) center center;width: 100%;'">
    <div class="container-fluid h-100">
    	  <div class="row align-items-center justify-content-center h-100 parallaxt-details">
    	  <div class="col-12" style="margin-top: -67px;margin-bottom: -38px;">
@@ -155,53 +164,13 @@
           </div>
         </div>
          <div class="col-lg-12">
-            <div class="text-center video-play" style="display:none;">
-             <iframe th:src="${movie.movie.movieLink}" style="height: 520px; width: 100%" sandboxscrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
-            </div>
-            <div class="text-center video-thumbnail">
-             <img th:src="${'http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + movie.movie.backdrop_path}">
+            <div class="text-center video-play">
+             <iframe th:src="${movie.movieLink}" style="height: 520px; width: 100%" sandboxscrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
             </div>
          </div>
       </div>
     </div>
 </section>
-<section class="parallax-window" style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);" id="moviecastcrew">
-<div class="container-fluid h-100">
-  <div class="row">
-  <div class="col-12" style="z-index: 10000;">
-      <div class="section-title text-center light" style="margin-bottom: 9px;">
-        <h2>Cast</h2>
-      </div>
-    </div>
-    <div class="col-12 col-sm-8 col-md-3 col-lg-3" th:each="cast : ${movie.casts}" style="margin-bottom: 10px;z-index: 10000;">
-      <a th:href="${'/person/movies?personId=' + cast.id}"><div class="card">
-        <img class="card-img-top" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/oslo.jpg" alt="Bologna">
-        <div class="card-body text-center">
-          <img class="avatar rounded-circle" th:src="${cast.profile_path == null ? 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png':'https://image.tmdb.org/t/p/w138_and_h175_face' + cast.profile_path}" alt="Bologna" style="width: 98px;height: 91px;">
-          <h5 class="card-title" th:text="${cast.name}">Robert Downey Jr.</h5>
-          <h6 class="card-subtitle mb-2 text-muted" th:text="${cast.character}">Famous Actor</h6>
-        </div>
-      </div></a>
-    </div>
-    <hr/>
-      <div class="col-12" style="z-index: 10000;margin-top: 20px;">
-      <div class="section-title text-center light" style="margin-bottom: 15px;">
-        <h2>Crew</h2>
-      </div>
-    </div>
-    <div class="col-12 col-sm-8 col-md-3 col-lg-3" th:each="crew : ${movie.crews}" style="margin-bottom: 10px;z-index: 10000;">
-      <a th:href="${'/person/movies?personId=' + crew.id}"><div class="card">
-        <img class="card-img-top" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/oslo.jpg" alt="Bologna">
-        <div class="card-body text-center">
-          <img class="avatar rounded-circle" th:src="${crew.profile_path == null ? 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png':'https://image.tmdb.org/t/p/w138_and_h175_face' + crew.profile_path}" alt="Bologna" style="width: 98px;height: 91px;">
-          <h5 class="card-title" th:text="${crew.name}">Robert Downey Jr.</h5>
-          <h6 class="card-subtitle mb-2 text-muted" th:text="${crew.job}">Famous Actor</h6>
-        </div>
-      </div></a>
-    </div> 
-  </div>
-</div>
-</section>  
 </main>
 
 
@@ -237,14 +206,6 @@ jQuery(function() {
 
 	});		
 });
-
-$(function(){
-	$(".video-thumbnail").on('click', function(){
-		$(".video-play").show();
-		$(".video-thumbnail").hide();
-	})
-})
-
 </script>
 </body>
 </html>

@@ -32,6 +32,24 @@ public class Movie implements Serializable {
 	private String convertRunTime;
 	private String movieLink;
 
+	private String staring;
+	private String country;
+	private String language;
+	private String director;
+	private String writer;
+
+	public Movie() {
+		super();
+	}
+
+	public Movie(String poster_path, String title, Double vote_average, String movieLink) {
+		super();
+		this.poster_path = poster_path;
+		this.title = title;
+		this.vote_average = vote_average;
+		this.movieLink = movieLink;
+	}
+
 	public boolean isAdult() {
 		return adult;
 	}
@@ -191,4 +209,45 @@ public class Movie implements Serializable {
 	public void setMovieLink(String movieLink) {
 		this.movieLink = movieLink;
 	}
+
+	public String getStaring() {
+		return staring;
+	}
+
+	public void setStaring(String staring) {
+		this.staring = staring;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getDirector() {
+		return director;
+	}
+
+	public void setDirector(String director) {
+		this.director = director;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
 }
