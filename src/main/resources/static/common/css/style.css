@@ -3237,7 +3237,7 @@ main {
   }
 
   .video-thumb .video-image .hd {
-    display: none;
+  /* display: none; */
   }
 
   .testimonial h2 {

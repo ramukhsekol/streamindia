@@ -22,7 +22,7 @@ public class JsoupServiceImpl implements JsoupService {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
 			Document doc = Jsoup
-					.connect("https://4movierulz.sh/category/" + movieType + "/page/" + pageIndex + "/")
+					.connect("https://4movierulz.mn/category/" + movieType + "/page/" + pageIndex + "/")
 					.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("boxed");
@@ -31,7 +31,7 @@ public class JsoupServiceImpl implements JsoupService {
 				if (movieindex > 2) {
 					Element link = element.select("a").first();
 					String linkHref = link.attr("href");
-					String movieLink = linkHref.split("https://4movierulz.sh/")[1].trim();
+					String movieLink = linkHref.split("https://4movierulz.mn/")[1].trim();
 					String finalMovieLink = movieLink.substring(0, movieLink.length() - 1);
 					Element movieimage = element.select("img").first();
 					String image = movieimage.absUrl("src");
@@ -55,7 +55,7 @@ public class JsoupServiceImpl implements JsoupService {
 		try {
 			Movie movie = new Movie();
 			movie.setVote_average(6.7);
-			Document document = Jsoup.connect("https://4movierulz.sh/" + movieId + "/").userAgent("Mozilla/5.0")
+			Document document = Jsoup.connect("https://4movierulz.mn/" + movieId + "/").userAgent("Mozilla/5.0")
 					.timeout(10000).validateTLSCertificates(false).get();
 			Element documentbody = document.body();
 			Elements elements2 = documentbody.getElementsByClass("entry-content");
