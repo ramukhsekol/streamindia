@@ -1,9 +1,13 @@
 package com.lokesh.movies.service.impl;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -38,13 +42,67 @@ public class JsoupServiceImpl implements JsoupService {
 					String movieName = element.select("b").first().text();
 					if (StringUtils.hasText(movieName)) {
 						String name = movieName.split("\\(")[0].trim();
-						movies.add(new Movie(image, name, 6.7, finalMovieLink));
+						URLConnection urlConnection = new URL(image).openConnection();
+				        urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+				        urlConnection.setReadTimeout(5000);
+				        urlConnection.setConnectTimeout(5000);
+				        
+				        byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+						String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+						movies.add(new Movie(encodedString, name, 6.7, finalMovieLink));
 					}
 				}
 				movieindex++;
 			}
 			return movies;
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Movie> getAllJsoupMoviesByIndex(String movieType, String pageIndex) {
+		List<Movie> movies = new ArrayList<Movie>();
+		try {
+			Document doc = Jsoup
+					.connect("https://cinevez.com/" + movieType + "/page/" + pageIndex + "/")
+					.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementsByClass("post-item");
+			for (Element element : elements) {
+					Element link = element.select("a").first();
+					String linkHref = link.attr("href");
+					
+					String movieLink = linkHref.split("https://cinevez.com/")[1].trim();
+					String finalMovieLink = movieLink.substring(0, movieLink.length() - 1);
+					
+					Element movieimage = element.select("img").first();
+					String image = movieimage.absUrl("src");
+					String movieName = element.select("h2").first().text();
+					if (StringUtils.hasText(movieName)) {
+						String name = "";
+						if(movieName.contains("(")) {
+							name = movieName.split("\\(")[0].trim();
+						} else if(movieName.contains("[")) {
+							name = movieName.split("\\[")[0].trim();
+						} else {
+							name = movieName;
+						}
+						URLConnection urlConnection = new URL(image).openConnection();
+				        urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+				        urlConnection.setReadTimeout(5000);
+				        urlConnection.setConnectTimeout(5000);
+				        
+				        byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+						String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+						movies.add(new Movie(encodedString, name, 6.7, finalMovieLink));
+					}
+			}
+			
+			return movies;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -61,7 +119,14 @@ public class JsoupServiceImpl implements JsoupService {
 			Elements elements2 = documentbody.getElementsByClass("entry-content");
 			Element movieimage = elements2.select("img").first();
 			String image = movieimage.absUrl("src");
-			movie.setPoster_path(image);
+			URLConnection urlConnection = new URL(image).openConnection();
+	        urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+	        urlConnection.setReadTimeout(5000);
+	        urlConnection.setConnectTimeout(5000);
+	        
+	        byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+			String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+			movie.setPoster_path(encodedString);
 			Elements paragraphs = elements2.select("p");
 			int i = 1;
 			for (Element para : paragraphs) {
@@ -134,5 +199,95 @@ public class JsoupServiceImpl implements JsoupService {
 
 		return null;
 	}
+
+	@Override
+	public Movie getParticularMovieDetailsByMovieId(String movieId) {
+		try {
+			Movie movie = new Movie();
+			movie.setVote_average(6.7);
+			Document document = Jsoup.connect("https://cinevez.com/" + movieId + "/").userAgent("Mozilla/5.0")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element documentbody = document.body();
+			Elements elements2 = documentbody.getElementsByClass("page-content");
+			Element movieimage = elements2.select("img").first();
+			String image = movieimage.absUrl("src");
+			URLConnection urlConnection = new URL(image).openConnection();
+	        urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+	        urlConnection.setReadTimeout(5000);
+	        urlConnection.setConnectTimeout(5000);
+	        
+	        byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+			String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+			movie.setPoster_path(encodedString);
+			
+			Elements movieNameTag = documentbody.getElementsByClass("box-title");
+			String movieName = movieNameTag.select("h1").first().text();
+			if (StringUtils.hasText(movieName)) {
+				String name = "";
+				if(movieName.contains("(")) {
+					name = movieName.split("\\(")[0].trim();
+				} else if(movieName.contains("[")) {
+					name = movieName.split("\\[")[0].trim();
+				} else {
+					name = movieName;
+				}
+				movie.setTitle(name);
+			}
+			
+			Elements movieInfoTag = documentbody.getElementsByClass("text-dark");
+			for (Element para : movieInfoTag) {
+				String data = para.getElementsByClass("text-sm").text();
+				if(StringUtils.hasText(data) && data.contains("IMDB Rating:")) {
+					String voteAverage = data.split("IMDB Rating:")[1];
+					movie.setVoteAverage(voteAverage);
+				}
+				if(StringUtils.hasText(data) && data.contains("Release:")) {
+					String release_date = data.split("Release:")[1];
+					movie.setRelease_date(release_date);
+				}
+				if(StringUtils.hasText(data) && data.contains("Genres:")) {
+					String genrics = data.split("Genres:")[1];
+					movie.setGenrics(genrics);
+				}
+				if(StringUtils.hasText(data) && data.contains("Directed by:")) {
+					String director = data.split("Directed by:")[1];
+					movie.setDirector(director);
+				}
+				if(StringUtils.hasText(data) && data.contains("Starring by:")) {
+					String staring = data.split("Starring by:")[1];
+					movie.setStaring(staring);
+				}
+				if(StringUtils.hasText(data) && data.contains("Country:")) {
+					String country = data.split("Country:")[1];
+					movie.setCountry(country);
+				}
+				if(StringUtils.hasText(data) && data.contains("Language:")) {
+					String language = data.split("Language:")[1];
+					movie.setLanguage(language);
+				}
+				if(StringUtils.hasText(data) && data.contains("Story Plot:")) {
+					String overview = data.split("Story Plot:")[1];
+					movie.setOverview(overview);
+				}
+				
+			}
+			Elements movieLinkTag = documentbody.getElementsByClass("item-link");
+			for (Element link : movieLinkTag) {
+				String movieLinkType = link.select("span").first().text();
+				if(StringUtils.hasText(movieLinkType) && movieLinkType.equalsIgnoreCase("StreamTape")) {
+					Element movieStreaming = link.select("a").first();
+					String linkHref = movieStreaming.attr("href");
+					linkHref = linkHref.replace("/v/", "/e/");
+					movie.setMovieLink(linkHref);
+				}
+			}
+			return movie;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
 
 }

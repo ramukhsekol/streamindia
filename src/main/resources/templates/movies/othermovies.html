@@ -1,86 +1,129 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"></head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 <style>
 .slider .main-slider .swiper-slide .container .name {
-    font-size: 50px!important;
+	font-size: 50px !important;
 }
 
 .navbar {
-    background-color: #111!important;
+	background-color: #111 !important;
 }
 
 .video-thumb.light .video-content .name a {
-    color: #fff;
-    text-decoration: none;
-}
- .play-btn a {
-    width: 46px;
-    line-height: 46px;
-    display: table-caption;
-    background: #fff;
-    border-radius: 50%;
-    text-align: center;
-    position: relative;
-    text-indent: -9999px;
-    top: -129px;
-    left: -251%;
+	color: #fff;
+	text-decoration: none;
 }
 
- .play-btn a:hover {
- background-color: red;
+.play-btn a {
+	width: 46px;
+	line-height: 46px;
+	display: table-caption;
+	background: #fff;
+	border-radius: 50%;
+	text-align: center;
+	position: relative;
+	text-indent: -9999px;
+}
+
+.play-btn a:hover {
+	background-color: red;
 }
 
 .play-btn a:after {
-    content: "";
-    -webkit-transition: all .35s ease-in-out;
-    -moz-transition: all .35s ease-in-out;
-    -ms-transition: all .35s ease-in-out;
-    -o-transition: all .35s ease-in-out;
-    transition: all .35s ease-in-out;
-    position: absolute;
-    left: calc(50% - 4px);
-    top: calc(50% - 8px);
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 8px 0 8px 12px;
-    border-color: transparent transparent transparent #111111;
+	content: "";
+	-webkit-transition: all .35s ease-in-out;
+	-moz-transition: all .35s ease-in-out;
+	-ms-transition: all .35s ease-in-out;
+	-o-transition: all .35s ease-in-out;
+	transition: all .35s ease-in-out;
+	position: absolute;
+	left: calc(50% - 4px);
+	top: calc(50% - 8px);
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 8px 0 8px 12px;
+	border-color: transparent transparent transparent #111111;
 }
+
 .section-title {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 5px;
-    margin-top: 25px;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 5px;
+	margin-top: 25px;
 }
+
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 22px;
+  background-color: #0A5F44;
+}
+
+#progressBar div {
+  height: 100%;
+  text-align: right;
+  padding: 0 10px;
+  line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+  width: 0;
+  background-color: #CBEA00;
+  box-sizing: border-box;
+}
+
 </style>
 <body>
-<nav th:replace="fragments/menuheader :: menuheader"> </nav>
+	<nav th:replace="fragments/menuheader :: menuheader"></nav>
 
-<header>
-  <section class="content-section" data-background="#111111">
-    <div class="container">
-    <div class="col-12">
-        <div class="section-title text-center light">
-          <h5 th:inline="text"> [[${language}]]</h5>
-        </div>
-      </div>
-    <span id="appenddata"></span>
-  </div>
-  </section>
-</header>
+	<header>
+		<section class="content-section" data-background="#111111">
+			<div class="container">
+				<div class="col-12">
+					<div class="section-title text-center light">
+						<h5 th:inline="text">[[${language}]]</h5>
+					</div>
+				</div>
+				<span id="appenddata"></span>
+			</div>
+		</section>
+	</header>
 
-<div th:replace="fragments/scriptfile :: scriptfile"></div>
-<script type="text/javascript" th:inline="javascript"> 
+	<div class="modal" id="myModal">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="progressBar">
+						<div class="bar"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragments/scriptfile :: scriptfile"></div>
+	<script type="text/javascript" th:inline="javascript"> 
+	function progress(timeleft, timetotal, $element) {
+	    var progressBarWidth = timeleft * $element.width() / timetotal;
+	    $element.find('div').animate({ width: progressBarWidth }, 500);
+	    if(timeleft > 0) {
+	        setTimeout(function() {
+	            progress(timeleft - 1, timetotal, $element);
+	        }, 1000);
+	    }
+	};
 	$(function() {
 		var pageIndex = 1;
 		var movieType = [[${movieType}]]; // type of functionality like search, genric, person
 		
-		
+		$("#myModal").modal("show");
+		progress(30, 30, $('#progressBar'));
 		$.get("/" +movieType+ "/movies/all?pageIndex=" + pageIndex, function(response) {
 			$("#appenddata").append(response);
+			$("#myModal").modal("hide");
 		});
 
 		$(document.body).on('touchmove', onScroll);
@@ -89,8 +132,11 @@
 		function onScroll() {
 			if ($(window).scrollTop() + window.innerHeight >= document.body.scrollHeight) {
 				pageIndex = pageIndex + 1;
+				$("#myModal").modal("show");
+				progress(30, 30, $('#progressBar'));
 				$.get("/" +movieType+ "/movies/all?pageIndex=" + pageIndex, function(response) {
 					$("#appenddata").append(response);
+					$("#myModal").modal("hide");
 				});
 			}
 		}

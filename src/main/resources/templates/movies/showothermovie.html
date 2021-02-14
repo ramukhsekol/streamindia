@@ -126,7 +126,7 @@
                  <div class="col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6">
                     <div class="parallax-img">
                        <a href="javascript:void(0)">
-                       	<!-- <img th:src="${movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 530px;"> -->
+                       	<img th:src="${'data:image/jpeg;base64,' + movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 530px;">
                        </a>
                     </div>
                  </div>
@@ -165,7 +165,9 @@
         </div>
          <div class="col-lg-12">
             <div class="text-center video-play">
-             <iframe th:src="${movie.movieLink}" style="height: 520px; width: 100%" sandboxscrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+             <iframe th:src="${movie.movieLink}" style="height: 520px; width: 100%" 
+             sandboxscrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"
+              ></iframe>
             </div>
          </div>
       </div>

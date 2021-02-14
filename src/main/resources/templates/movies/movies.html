@@ -55,6 +55,24 @@
     margin-bottom: 5px;
     margin-top: 25px;
 }
+
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 22px;
+  background-color: #0A5F44;
+}
+
+#progressBar div {
+  height: 100%;
+  text-align: right;
+  padding: 0 10px;
+  line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+  width: 0;
+  background-color: #CBEA00;
+  box-sizing: border-box;
+}
+
 </style>
 <body>
 <nav th:replace="fragments/menuheader :: menuheader"> </nav>
@@ -74,18 +92,41 @@
   </section>
 </header>
 
+<div class="modal" id="myModal">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div id="progressBar">
+					<div class="bar"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div th:replace="fragments/scriptfile :: scriptfile"></div>
 <script type="text/javascript" th:inline="javascript"> 
+function progress(timeleft, timetotal, $element) {
+    var progressBarWidth = timeleft * $element.width() / timetotal;
+    $element.find('div').animate({ width: progressBarWidth }, 500);
+    if(timeleft > 0) {
+        setTimeout(function() {
+            progress(timeleft - 1, timetotal, $element);
+        }, 1000);
+    }
+};
 	$(function() {
 		var pageIndex = 1;
 		var type = [[${type}]]; // type of functionality like search, genric, person
 		var query = [[${query}]]; // this is only for search functionality
 		var queryId = [[${queryId}]]; // this is for either genericId, personId, languageId
 		var searchType = [[${searchType}]] // search either movie or person
-		
+		$("#myModal").modal("show");
+		progress(30, 30, $('#progressBar'));
 		
 		$.get("/movies/all?pageIndex=" + pageIndex + "&type=" + type + "&query=" + query + "&queryId=" + queryId + "&searchType=" + searchType, function(response) {
 			$("#appenddata").append(response);
+			$("#myModal").modal("hide");
 		});
 
 		$(document.body).on('touchmove', onScroll);
@@ -94,8 +135,11 @@
 		function onScroll() {
 			if ($(window).scrollTop() + window.innerHeight >= document.body.scrollHeight) {
 				pageIndex = pageIndex + 1;
+				$("#myModal").modal("show");
+				progress(30, 30, $('#progressBar'));
 				$.get("/movies/all?pageIndex=" + pageIndex + "&type=" + type + "&query=" + query + "&queryId=" + queryId + "&searchType=" + searchType, function(response) {
 					$("#appenddata").append(response);
+					$("#myModal").modal("hide");
 				});
 			}
 		}

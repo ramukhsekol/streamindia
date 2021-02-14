@@ -43,13 +43,14 @@ public class MovieUtil {
 		movieLanguages.put(1, "TELUGU");
 		movieLanguages.put(2, "HINDI");
 		movieLanguages.put(3, "TAMIL");
-		movieLanguages.put(4, "MALAYALAM");
-		movieLanguages.put(5, "BENGALI");
-		movieLanguages.put(6, "PUNJABI");
-		movieLanguages.put(7, "ADULT");	
-		movieLanguages.put(8, "TELUGU");
-		movieLanguages.put(9, "TAMIL");
-		movieLanguages.put(10, "HINDI");
+		movieLanguages.put(4, "KANNADA");
+		movieLanguages.put(5, "MALAYALAM");
+		movieLanguages.put(6, "BENGALI");
+		movieLanguages.put(7, "PUNJABI");
+		movieLanguages.put(8, "ADULT");	
+		movieLanguages.put(9, "TELUGU");
+		movieLanguages.put(10, "TAMIL");
+		movieLanguages.put(11, "HINDI");
 		
 	}
 

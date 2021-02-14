@@ -8,5 +8,7 @@ public interface JsoupService {
 
 	List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex);
 	Movie getMovieDetailsByMovieId(String movieId);
+	List<Movie> getAllJsoupMoviesByIndex(String movieUrl, String pageIndex);
+	Movie getParticularMovieDetailsByMovieId(String movieId);
 
 }

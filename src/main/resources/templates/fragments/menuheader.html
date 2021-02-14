@@ -6,14 +6,11 @@
 	<nav class="mobile-menu">
 		<div class="inner">
 			<div class="mobile-search">
-				<h6>Type movie or tv show name to find it</h6>
-				<form>
-					<input type="search" placeholder="Search here" /> <input type="submit" value="FIND" />
+				<form th:action="@{'/movies/search'}" method="get">
+					<input type="hidden" class="custom-control-input" id="defaultInline1" name="searchType" value="movie">
+					<input type="search" placeholder="Search here" name="query"/> <input type="submit" value="FIND" />
 				</form>
 			</div>
-			<!-- end mobile-search -->
-			<a href="account.html" class="button-account"><i class="lni lni-user"></i> ACCOUNT </a>
-			<!-- end button-account -->
 			<div class="site-menu">
 				<ul>
 					<li><a th:href="@{'/home'}">HOME</a></li>

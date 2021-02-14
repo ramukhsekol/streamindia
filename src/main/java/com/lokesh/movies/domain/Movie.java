@@ -37,6 +37,7 @@ public class Movie implements Serializable {
 	private String language;
 	private String director;
 	private String writer;
+	private String voteAverage;
 
 	public Movie() {
 		super();
@@ -248,6 +249,14 @@ public class Movie implements Serializable {
 
 	public void setWriter(String writer) {
 		this.writer = writer;
+	}
+
+	public String getVoteAverage() {
+		return voteAverage;
+	}
+
+	public void setVoteAverage(String voteAverage) {
+		this.voteAverage = voteAverage;
 	}
 
 }

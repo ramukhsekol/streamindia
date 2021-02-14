@@ -41,17 +41,51 @@ public class JsoupController {
 	@GetMapping(value = "/{movieType}/movies/all")
 	public String teluguMoviesByIndex(@PathVariable Integer movieType, @RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
 		String language = MovieUtil.getMovieLanguage(movieType);
-		String apendurl = movieType <= 6 ? "movie" :  (movieType == 7? "18" : (movieType <= 9 ? "dubbed-movie-2" : "dubbed-movie"));
-		String MovieUrl = language.toLowerCase()+"-"+ apendurl;
-		List<Movie> movies = jsoupService.getJsoupMoviesByIndex(MovieUrl, pageIndex);
-		model.addAttribute("movies", movies);
+		if(movieType <= 5) {
+			String movieUrl =  "language/" + language.toLowerCase() ;
+			List<Movie> movies = jsoupService.getAllJsoupMoviesByIndex(movieUrl, pageIndex);
+			model.addAttribute("movies", movies);
+			model.addAttribute("isFive", true);
+		} else if(movieType >= 6 && movieType <= 7) {
+			String movieUrl = language.toLowerCase()+"-"+ "movie";
+			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
+			model.addAttribute("movies", movies);
+			model.addAttribute("isFive", false);
+		} else if(movieType >= 9 && movieType <= 11) {
+			String apendurl = movieType != 11 ? "dubbed-movie-2" : "dubbed-movie";
+			String movieUrl = language.toLowerCase()+"-"+ apendurl;
+			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
+			model.addAttribute("movies", movies);
+			model.addAttribute("isFive", false);
+		} else {
+			String movieUrl = language.toLowerCase()+"-"+ "18";
+			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
+			model.addAttribute("movies", movies);
+			model.addAttribute("isFive", false);
+		}
+		
+		
+		
+		
+		
+		// String apendurl = movieType <= 6 ? "movie" :  (movieType == 7? "18" : (movieType <= 9 ? "dubbed-movie-2" : "dubbed-movie"));
+		// String apendurl = movieType <= 6 ? "language" :  (movieType == 7? "18" : (movieType <= 9 ? "dubbed-movie-2" : "dubbed-movie"));
+		// String MovieUrl = apendurl + "/" + language.toLowerCase() ;
+		// String MovieUrl = language.toLowerCase()+"-"+ apendurl;
+		
 		return "movies/otherappendmovies";
 	}
 	
 	@GetMapping(value = "/other/movie")
-	public String showMovie(@RequestParam String movieId, Model model) throws UnirestException, UnsupportedEncodingException {
-		Movie movie = jsoupService.getMovieDetailsByMovieId(movieId);
-		model.addAttribute("movie", movie);
+	public String showMovie(@RequestParam String movieId, @RequestParam boolean status, Model model) throws UnirestException, UnsupportedEncodingException {
+		if(status) {
+			Movie movie = jsoupService.getParticularMovieDetailsByMovieId(movieId);
+			model.addAttribute("movie", movie);
+		} else {
+			Movie movie = jsoupService.getMovieDetailsByMovieId(movieId);
+			model.addAttribute("movie", movie);
+		}
+		
 		return "movies/showothermovie";
 	}
 	

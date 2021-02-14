@@ -420,7 +420,7 @@ button[type="submit"] i {
 
 /* MOBILE MENU */
 .mobile-menu {
-  width: 80vw;
+ /*  width: 80vw; */
   max-width: 500px;
   height: 100vh;
   display: flex;
@@ -430,7 +430,7 @@ button[type="submit"] i {
   left: -100%;
   top: 0;
   background: #111111;
-  z-index: 7;
+  z-index: 70000;
   padding: 30px;
   -webkit-transition: all .35s ease-in-out;
   -moz-transition: all .35s ease-in-out;
@@ -625,7 +625,7 @@ button[type="submit"] i {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 4;
+  z-index: 4000000;
   color: #fff;
 }
 .navbar .logo {
@@ -3274,7 +3274,7 @@ main {
   }
 
   .mobile-menu .site-menu ul li a {
-    font-size: 9vw;
+    font-size: 32px;
   }
 
   .get-started-box form {
