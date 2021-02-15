@@ -165,9 +165,15 @@
         </div>
          <div class="col-lg-12">
             <div class="text-center video-play">
-             <iframe th:src="${movie.movieLink}" style="height: 520px; width: 100%" 
+             <iframe th:src="${movie.movieLink}" style="height: 520px; width: 100%"  id="iframelink"
              sandboxscrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"
               ></iframe>
+            </div>
+         </div>
+         <div class="col-lg-12">
+            <div class="text-center">
+             <button type="button" class="btn btn-outline-info serverclick" th:attr="data-movielink=${movie.movieLink}" >Server1</button>
+			 <button type="button" class="btn btn-outline-success serverclick" th:attr="data-movielink=${movie.movieLink2}">Server2</button>
             </div>
          </div>
       </div>
@@ -208,6 +214,58 @@ jQuery(function() {
 
 	});		
 });
+$(".serverclick").on('click', function() {
+	var movieLink = $(this).data('movielink');
+	$('#iframelink').attr('src', movieLink);
+})
+
+
+
+
 </script>
+
+
+<script type="text/javascript" th:inline="javascript">
+//<![CDATA[
+ window.onload = function () {
+	    document.addEventListener("contextmenu", function (e) {
+	        e.preventDefault();
+	    }, false);
+	    document.addEventListener("keydown", function (e) {
+	        if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+	            disabledEvent(e);
+	        }
+	        if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+	            disabledEvent(e);
+	        }
+	        if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+	            disabledEvent(e);
+	        }
+	        if (e.ctrlKey && e.keyCode == 85) {
+	            disabledEvent(e);
+	        }
+	        if (event.keyCode == 123) {
+	            disabledEvent(e);
+	        }
+	    }, false);
+	    function disabledEvent(e) {
+	        if (e.stopPropagation) {
+	            e.stopPropagation();
+	        } else if (window.event) {
+	            window.event.cancelBubble = true;
+	        }
+	        e.preventDefault();
+	        return false;
+	    }
+	}
+    function scrolltop() {
+    window.scrollTo(0, 0);
+    }
+        
+ // ]]>
+	</script>
+
+
+
 </body>
 </html>

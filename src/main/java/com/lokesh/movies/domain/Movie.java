@@ -31,6 +31,7 @@ public class Movie implements Serializable {
 	private String imdb_id;
 	private String convertRunTime;
 	private String movieLink;
+	private String movieLink2;
 
 	private String staring;
 	private String country;
@@ -257,6 +258,14 @@ public class Movie implements Serializable {
 
 	public void setVoteAverage(String voteAverage) {
 		this.voteAverage = voteAverage;
+	}
+
+	public String getMovieLink2() {
+		return movieLink2;
+	}
+
+	public void setMovieLink2(String movieLink2) {
+		this.movieLink2 = movieLink2;
 	}
 
 }

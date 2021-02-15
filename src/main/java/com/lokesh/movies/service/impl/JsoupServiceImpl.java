@@ -239,6 +239,11 @@ public class JsoupServiceImpl implements JsoupService {
 				String data = para.getElementsByClass("text-sm").text();
 				if(StringUtils.hasText(data) && data.contains("IMDB Rating:")) {
 					String voteAverage = data.split("IMDB Rating:")[1];
+					String average = voteAverage.split("/")[0];
+					if(StringUtils.hasText(average)) {
+						average = average.trim();
+						movie.setVote_average(Double.parseDouble(average));
+					}
 					movie.setVoteAverage(voteAverage);
 				}
 				if(StringUtils.hasText(data) && data.contains("Release:")) {
@@ -279,6 +284,12 @@ public class JsoupServiceImpl implements JsoupService {
 					String linkHref = movieStreaming.attr("href");
 					linkHref = linkHref.replace("/v/", "/e/");
 					movie.setMovieLink(linkHref);
+				}
+				if(StringUtils.hasText(movieLinkType) && movieLinkType.equalsIgnoreCase("MixDrop")) {
+					Element movieStreaming = link.select("a").first();
+					String linkHref = movieStreaming.attr("href");
+					linkHref = linkHref.replace("/f/", "/e/");
+					movie.setMovieLink2(linkHref);
 				}
 			}
 			return movie;

@@ -63,16 +63,6 @@ public class JsoupController {
 			model.addAttribute("movies", movies);
 			model.addAttribute("isFive", false);
 		}
-		
-		
-		
-		
-		
-		// String apendurl = movieType <= 6 ? "movie" :  (movieType == 7? "18" : (movieType <= 9 ? "dubbed-movie-2" : "dubbed-movie"));
-		// String apendurl = movieType <= 6 ? "language" :  (movieType == 7? "18" : (movieType <= 9 ? "dubbed-movie-2" : "dubbed-movie"));
-		// String MovieUrl = apendurl + "/" + language.toLowerCase() ;
-		// String MovieUrl = language.toLowerCase()+"-"+ apendurl;
-		
 		return "movies/otherappendmovies";
 	}
 	
@@ -81,11 +71,12 @@ public class JsoupController {
 		if(status) {
 			Movie movie = jsoupService.getParticularMovieDetailsByMovieId(movieId);
 			model.addAttribute("movie", movie);
+			model.addAttribute("title", movie.getTitle());
 		} else {
 			Movie movie = jsoupService.getMovieDetailsByMovieId(movieId);
 			model.addAttribute("movie", movie);
+			model.addAttribute("title", movie.getTitle());
 		}
-		
 		return "movies/showothermovie";
 	}
 	
