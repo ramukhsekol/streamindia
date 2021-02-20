@@ -242,7 +242,9 @@ public class JsoupServiceImpl implements JsoupService {
 					String average = voteAverage.split("/")[0];
 					if(StringUtils.hasText(average)) {
 						average = average.trim();
-						movie.setVote_average(Double.parseDouble(average));
+						if(average.matches("-?\\d+(\\.\\d+)?")) {
+							movie.setVote_average(Double.parseDouble(average));
+						}
 					}
 					movie.setVoteAverage(voteAverage);
 				}
