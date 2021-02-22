@@ -21,6 +21,14 @@ public class JsoupController {
 	
 	@Autowired private JsoupService jsoupService;
 	
+	@GetMapping(value = "generatejson")
+	public void genereateJson() {
+		List<Movie> movies = jsoupService.getAllJsoupPornFullMoviesByIndex();
+		if(movies!=null && !movies.isEmpty()) {
+			jsoupService.generateJsonFile(movies);
+		}
+	}
+	
 	@GetMapping(value = "/others")
 	public String others(Model model) throws UnirestException {
 		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();

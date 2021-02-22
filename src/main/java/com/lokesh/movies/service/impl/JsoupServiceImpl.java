@@ -1,25 +1,34 @@
 package com.lokesh.movies.service.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.service.JsoupService;
 
 @Service
 public class JsoupServiceImpl implements JsoupService {
+
+	@Autowired
+	ServletContext context;
 
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {
@@ -350,28 +359,36 @@ public class JsoupServiceImpl implements JsoupService {
 	}
 
 	@Override
-	public List<Movie> getAllJsoupPornFullMoviesByIndex(String pageIndex) {
+	public List<Movie> getAllJsoupPornFullMoviesByIndex() {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect("https://vplay.uno/category/adult/page/" + pageIndex + "/").userAgent("Mozilla/5.0")
-					.timeout(10000).validateTLSCertificates(false).get();
-			Element body = doc.body();
-			Elements elements = body.getElementsByClass("item");
-			for (Element element : elements) {
-				Element elements2 = element.select("a").first();
-				String finalMovieLink = elements2.attr("href");
-				
-				Element movieimage = element.select("img").first();
-				String image = movieimage.absUrl("src");
-				URLConnection urlConnection = new URL(image).openConnection();
-				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-				urlConnection.setReadTimeout(5000);
-				urlConnection.setConnectTimeout(5000);
-				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
-				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-				movies.add(new Movie(encodedString, "", 6.7, finalMovieLink));
-				System.out.println(encodedString);
+			for(int i = 2; i<=4; i++) {
+				Document doc = Jsoup.connect("https://vplay.uno/category/adult/page/" + i + "/")
+						.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
+				Element body = doc.body();
+				Elements elements = body.getElementsByClass("postsh");
+				for (Element element : elements) {
+					Element elements2 = element.select("a").first();
+					String finalMovieLink = elements2.attr("href");
+
+					Element movieimage = element.select("img").first();
+					String image = movieimage.absUrl("src");
+					URLConnection urlConnection = new URL(image).openConnection();
+					urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+					urlConnection.setReadTimeout(5000);
+					urlConnection.setConnectTimeout(5000);
+					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+					Document document = Jsoup.connect(finalMovieLink).userAgent("Mozilla/5.0").timeout(10000)
+							.validateTLSCertificates(false).get();
+					Element bodydoc = document.body();
+					Element iframeElement = bodydoc.select("iframe").first();
+					String moviePlayLink = iframeElement.absUrl("src");
+					movies.add(new Movie(encodedString, "", 6.7, moviePlayLink));
+					System.out.println(encodedString);
+				}
 			}
+			
 			return movies;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -380,21 +397,38 @@ public class JsoupServiceImpl implements JsoupService {
 	}
 
 	@Override
-	public Movie getParticularPornMovieInfoByMovieLink(String movieLink) {
+	public boolean generateJsonFile(List<Movie> movies) {
+		File file = getFilePath("porn.json", "porn");
+		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			Movie movie = new Movie();
-			movie.setVote_average(6.7);
-			Document document = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
-					.validateTLSCertificates(false).get();
-			Element bodydoc = document.body();
-			Element iframeElement = bodydoc.select("iframe").first();
-			String moviePlayLink = iframeElement.absUrl("src");
-			movie.setMovieLink(moviePlayLink);
-			return movie;
-		} catch (IOException e) {
-			e.printStackTrace();
+			objectMapper.writeValue(file, movies);
+			return true;
+
+		} catch (Exception e) {
+			return false;
 		}
-		return null;
+	}
+
+	private File getFilePath(String modifiedFileName, String path) {
+		boolean exists = new File(context.getRealPath("/" + path + "/")).exists();
+		if (!exists) {
+			new File(context.getRealPath("/" + path + "/")).mkdir();
+		}
+		String modifiedFilePath = context.getRealPath("/" + path + "/" + File.separator + modifiedFileName);
+		File file = new File(modifiedFilePath);
+		return file;
+	}
+
+	@Override
+	public List<Movie> getAllJsoupPornJsonMoviesByIndex() {
+		File file = getFilePath("porn.json", "porn");
+	    ObjectMapper objectMapper = new ObjectMapper();
+	    try {
+	      List<Movie> movies = Arrays.asList(objectMapper.readValue(file, Movie[].class));
+	      return movies;
+	    } catch (IOException e) {
+	    }
+	    return null;
 	}
 
 }

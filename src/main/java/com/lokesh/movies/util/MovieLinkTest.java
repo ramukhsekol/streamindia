@@ -14,16 +14,11 @@ public class MovieLinkTest {
 
 	public static void main(String[] args) {
 		try {
-			Document doc = Jsoup.connect("https://vplay.uno/busty-milfs-get-shared-2020-watch-online-free/").userAgent("Mozilla/5.0")
+			Document doc = Jsoup.connect("https://vplay.uno/category/adult/page/" + 1 + "/").userAgent("Mozilla/5.0")
 					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
-			Element elementss = body.select("iframe").first();
-			String movieLink = elementss.absUrl("src");
-			System.out.println(movieLink);
-			
-			
-			
-			Elements elements = body.getElementsByClass("item");
+			System.out.println(body);
+			Elements elements = body.getElementsByClass("postsh");
 			for (Element element : elements) {
 				Element elements2 = element.select("a").first();
 				String aHref = elements2.attr("href");
