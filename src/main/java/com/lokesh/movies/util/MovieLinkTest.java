@@ -14,52 +14,33 @@ public class MovieLinkTest {
 
 	public static void main(String[] args) {
 		try {
-		      Document doc = Jsoup.connect("https://pornmate.com/video/page/1")
-		    		  .userAgent("Mozilla/5.0")
-		    		  .timeout(10000).validateTLSCertificates(false).get();
-		      Element body = doc.body();
-		      Elements elements = body.getElementsByClass("genis");
-				for (Element element : elements) {
-					Element movieimage = element.select("img").first();
-					String image = movieimage.absUrl("data-src");
-					URLConnection urlConnection = new URL(image).openConnection();
-			        urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-			        urlConnection.setReadTimeout(5000);
-			        urlConnection.setConnectTimeout(5000);
-			        
-			        byte[] imageBytes = IOUtils.toByteArray(urlConnection);
-					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-					
-					 Element elements2 = element.getElementsByClass("title").select("a").first();
-					 String aHref = elements2.attr("href");
-					 
-					 Document docs = Jsoup.connect(aHref)
-				    		  .userAgent("Mozilla/5.0")
-				    		  .timeout(10000).validateTLSCertificates(false).get();
-					 
-					 Element bodydoc = docs.body();
-					 Element iframeElement = bodydoc.getElementsByClass("video-container").select("iframe").first();
-					 String movieLink = iframeElement.absUrl("src");
-					 Integer movieLength = movieLink.length();
-					 String spiltData = movieLink.substring(34, movieLength);
-					 System.out.println(aHref);
-					
-					URLConnection videoUrlConnection = new URL(spiltData).openConnection();
-					videoUrlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-					videoUrlConnection.setReadTimeout(5000);
-					videoUrlConnection.setConnectTimeout(5000);
-			        
-			        byte[] videoBytes = IOUtils.toByteArray(videoUrlConnection);
-					String videoEncodedString = Base64.getEncoder().encodeToString(videoBytes);
-					System.out.println(videoEncodedString);
-					
-					
-					
-					// System.out.println(encodedString);	
-				}
-		    } catch (Exception e) {
-		      e.printStackTrace();
-		    }
+			Document doc = Jsoup.connect("https://vplay.uno/busty-milfs-get-shared-2020-watch-online-free/").userAgent("Mozilla/5.0")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Element elementss = body.select("iframe").first();
+			String movieLink = elementss.absUrl("src");
+			System.out.println(movieLink);
+			
+			
+			
+			Elements elements = body.getElementsByClass("item");
+			for (Element element : elements) {
+				Element elements2 = element.select("a").first();
+				String aHref = elements2.attr("href");
+				System.out.println(aHref);
+				Element movieimage = element.select("img").first();
+				String image = movieimage.absUrl("src");
+				URLConnection urlConnection = new URL(image).openConnection();
+				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+				urlConnection.setReadTimeout(5000);
+				urlConnection.setConnectTimeout(5000);
+				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+				System.out.println(encodedString);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

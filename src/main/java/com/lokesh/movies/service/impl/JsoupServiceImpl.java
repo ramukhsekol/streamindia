@@ -349,4 +349,52 @@ public class JsoupServiceImpl implements JsoupService {
 		return null;
 	}
 
+	@Override
+	public List<Movie> getAllJsoupPornFullMoviesByIndex(String pageIndex) {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect("https://vplay.uno/category/adult/page/" + pageIndex + "/").userAgent("Mozilla/5.0")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementsByClass("item");
+			for (Element element : elements) {
+				Element elements2 = element.select("a").first();
+				String finalMovieLink = elements2.attr("href");
+				
+				Element movieimage = element.select("img").first();
+				String image = movieimage.absUrl("src");
+				URLConnection urlConnection = new URL(image).openConnection();
+				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+				urlConnection.setReadTimeout(5000);
+				urlConnection.setConnectTimeout(5000);
+				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+				movies.add(new Movie(encodedString, "", 6.7, finalMovieLink));
+				System.out.println(encodedString);
+			}
+			return movies;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Movie getParticularPornMovieInfoByMovieLink(String movieLink) {
+		try {
+			Movie movie = new Movie();
+			movie.setVote_average(6.7);
+			Document document = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
+					.validateTLSCertificates(false).get();
+			Element bodydoc = document.body();
+			Element iframeElement = bodydoc.select("iframe").first();
+			String moviePlayLink = iframeElement.absUrl("src");
+			movie.setMovieLink(moviePlayLink);
+			return movie;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

@@ -427,7 +427,7 @@ button[type="submit"] i {
   flex-wrap: wrap;
   align-items: center;
   position: fixed;
-  left: -100%;
+  left: -140%;
   top: 0;
   background: #111111;
   z-index: 70000;
