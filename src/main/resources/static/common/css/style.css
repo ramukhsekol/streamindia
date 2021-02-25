@@ -112,6 +112,7 @@ strong {
 /* LINKS */
 a {
   color: #111111;
+  cursor:pointer;
   -webkit-transition: all .35s ease-in-out;
   -moz-transition: all .35s ease-in-out;
   -ms-transition: all .35s ease-in-out;
@@ -625,7 +626,7 @@ button[type="submit"] i {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 4000000;
+  z-index: 1000;
   color: #fff;
 }
 .navbar .logo {
