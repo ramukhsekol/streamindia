@@ -84,11 +84,26 @@
     color: #fff;
 }
 
+.parallax-window {
+	height: 657px;
+}
+
+@media only screen and (max-width: 600px) {
+.parallax-window {
+	height: 974px;
+}
+}
+
+
+
+
+
+
 </style>
 <body>
 	<nav th:replace="fragments/menuheader :: menuheader"></nav>
 	<header>
-		<section id="parallex" class="parallax-window" style="background: url(../moviedetails/images/texure.jpg); height: 657px;">
+		<section id="parallex" class="parallax-window" style="background: url(../moviedetails/images/texure.jpg);">
            <div class="container-fluid h-100" style="margin-top: 50px;">
               <div class="row h-100 parallaxt-details">
               <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
