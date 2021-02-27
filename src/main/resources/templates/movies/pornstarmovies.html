@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<link rel="stylesheet" th:href="@{/lity/lity.css}" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<style>
+.five-class {
+	-ms-flex: 0 0 20%;
+	flex: 0 0 20%;
+	max-width: 20%;
+}
+
+.four-class {
+	-ms-flex: 0 0 25%;
+	flex: 0 0 25%;
+	max-width: 25%;
+}
+
+.five-class-a {
+	top: -129px;
+	left: -179%;
+}
+
+.four-class-a {
+	top: -64px;
+	left: -251%;
+}
+
+@media only screen and (max-width: 600px) {
+	.five-class {
+		-ms-flex: 0 0 100%;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	.four-class {
+		-ms-flex: 0 0 100%;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	.four-class-a {
+		top: -160px;
+		left: -288%;
+	}
+	.five-class-a {
+		top: -145px;
+		left: -288%;
+	}
+	img {
+		height: 333px !important;
+	}
+}
+</style>
+<style>
+.slider .main-slider .swiper-slide .container .name {
+    font-size: 50px!important;
+}
+
+.navbar {
+    background-color: #111!important;
+}
+
+.video-thumb.light .video-content .name a {
+    color: #fff;
+    text-decoration: none;
+}
+ .play-btn a {
+    width: 46px;
+    line-height: 46px;
+    display: table-caption;
+    background: #fff;
+    border-radius: 50%;
+    text-align: center;
+    position: relative;
+    text-indent: -9999px;
+}
+
+ .play-btn a:hover {
+ background-color: red;
+}
+
+.play-btn a:after {
+    content: "";
+    -webkit-transition: all .35s ease-in-out;
+    -moz-transition: all .35s ease-in-out;
+    -ms-transition: all .35s ease-in-out;
+    -o-transition: all .35s ease-in-out;
+    transition: all .35s ease-in-out;
+    position: absolute;
+    left: calc(50% - 4px);
+    top: calc(50% - 8px);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 0 8px 12px;
+    border-color: transparent transparent transparent #111111;
+}
+.section-title {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+    margin-top: 25px;
+}
+
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 22px;
+  background-color: #0A5F44;
+}
+
+#progressBar div {
+  height: 100%;
+  text-align: right;
+  padding: 0 10px;
+  line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+  width: 0;
+  background-color: #CBEA00;
+  box-sizing: border-box;
+}
+
+</style>
+<body>
+<nav th:replace="fragments/menuheader :: menuheader"> </nav>
+
+<header>
+  <section class="content-section" data-background="#111111">
+    <div class="container">
+    <div class="col-12" th:if="${type != '' && type != null}">
+        <div class="section-title text-center light">
+          <h5 th:inline="text"> Name</h5>
+        </div>
+      </div>
+    <div class="row" th:if="${movies.size() > 0}">
+	<div class="col-xl-2 col-lg-12 col-md-4 col-sm-12 col-12"
+		th:each="movie: ${movies}"
+		th:classappend="${isFive} ? five-class : four-class">
+		<div class="video-thumb light">
+			<figure class="video-image">
+				<div class="circle-rate">
+					<div class="play-btn">
+						<a data-toggle="tooltip" data-placement="top"
+							th:attr="title=${movie.title},data-id=${movie.movieLink}"
+							class="readlink"
+							th:classappend="${isFive} ? five-class-a : four-class-a">+</a>
+					</div>
+				</div>
+				<img
+					th:src="${movie.poster_path != null ? ('data:image/jpeg;base64,' + movie.poster_path) :  'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}"
+					alt="Image"
+					th:style="${movie.poster_path != null ? '' : 'height: 333px'}">
+				<div class="circle-rate">
+					<svg class="circle-chart" viewBox="0 0 30 30" width="100"
+						height="100" xmlns="http://www.w3.org/2000/svg">
+            <circle class="circle-chart__background" stroke="#2f3439"
+							stroke-width="2" fill="none" cx="15" cy="15" r="14"></circle>
+            <circle class="circle-chart__circle" stroke="#4eb04b"
+							stroke-width="2"
+							th:attr="stroke-dasharray=${(movie.vote_average * 10) + ',100'}"
+							cx="15" cy="15" r="14"></circle>
+          </svg>
+					<b th:text="${movie.vote_average}">5.7</b>
+				</div>
+				<div class="hd">
+					1080 <b>HD</b>
+				</div>
+			</figure>
+		</div>
+	</div>
+</div>
+  </div>
+  </section>
+</header>
+
+
+<div th:replace="fragments/scriptfile :: scriptfile"></div>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/lity/lity.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+//<![CDATA[
+	
+	var isFive = [[${isFive}]];
+	
+	$(".readlink").on('click', function() {
+		var link = $(this).data('id');
+		$.get("/porn/movie?movieLink=" + link, function(response) {
+			lity(response.movieLink);
+		});
+	})	
+	
+	
+	
+ window.onload = function () {
+	    document.addEventListener("contextmenu", function (e) {
+	        e.preventDefault();
+	    }, false);
+	    document.addEventListener("keydown", function (e) {
+	        if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+	            disabledEvent(e);
+	        }
+	        if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+	            disabledEvent(e);
+	        }
+	        if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+	            disabledEvent(e);
+	        }
+	        if (e.ctrlKey && e.keyCode == 85) {
+	            disabledEvent(e);
+	        }
+	        if (event.keyCode == 123) {
+	            disabledEvent(e);
+	        }
+	    }, false);
+	    function disabledEvent(e) {
+	        if (e.stopPropagation) {
+	            e.stopPropagation();
+	        } else if (window.event) {
+	            window.event.cancelBubble = true;
+	        }
+	        e.preventDefault();
+	        return false;
+	    }
+	}
+    function scrolltop() {
+    window.scrollTo(0, 0);
+    }
+        
+ // ]]>
+	</script>
+</body>
+</html>

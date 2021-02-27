@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"></head>
 <link rel="stylesheet" th:href="@{/moviedetails/css/typography.css}">
 <link rel="stylesheet" th:href="@{/moviedetails/css/responsive.css}" />
@@ -7,81 +8,106 @@
 .slider .main-slider .swiper-slide .container .name {
 	font-size: 50px !important;
 }
+
 .big-title {
-    background: url(../moviedetails/images/texure.jpg);
-    background-repeat: repeat-x;
-    background-position: 100% 100%;
-    color: transparent;
-    -webkit-font-smoothing: antialiased;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+	background: url(../moviedetails/images/texure.jpg);
+	background-repeat: repeat-x;
+	background-position: 100% 100%;
+	color: transparent;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .search-box {
-    z-index: 200000;
+	z-index: 200000;
 }
+
 .rate b {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    position: absolute;
-    left: 15px;
-    /* top: 75px; */
-    font-size: 14px;
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	position: absolute;
+	left: 15px;
+	/* top: 75px; */
+	font-size: 14px;
 }
+
 .rate {
-    color: #65ee5b;
+	color: #65ee5b;
 }
+
 .tags {
-    color: #e90101;
-    font-weight: 600;
+	color: #e90101;
+	font-weight: 600;
 }
+
 .navbar {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 30px 60px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 4000000;
-    color: #fff;
-    background-color: #2d2d2d;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 30px 60px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 4000000;
+	color: #fff;
+	background-color: #2d2d2d;
 }
-.parallax-window { height: 100%; padding: 100px 0; position: relative; background-size: cover; background-attachment: fixed; }
-.parallax-window::after { position: absolute; content: ""; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.8); }
-.parallaxt-details { z-index: 9; position: relative; }
+
+.parallax-window {
+	height: 100%;
+	padding: 100px 0;
+	position: relative;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+.parallax-window::after {
+	position: absolute;
+	content: "";
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.parallaxt-details {
+	z-index: 9;
+	position: relative;
+}
 
 .card {
-    position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .25rem;
-    margin-bottom: 15px;
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	min-width: 0;
+	word-wrap: break-word;
+	background-color: #fff;
+	background-clip: border-box;
+	border: 1px solid rgba(0, 0, 0, .125);
+	border-radius: .25rem;
+	margin-bottom: 15px;
 }
 
 .card-body {
-    background: #234238;
-    color: #fff;
-    text-align: center;
-    flex: 1 1 auto;
-    padding: 1.25rem;
+	background: #234238;
+	color: #fff;
+	text-align: center;
+	flex: 1 1 auto;
+	padding: 1.25rem;
 }
 
 .card-body:hover {
-    background: #29425d;
-    color: #fff;
+	background: #29425d;
+	color: #fff;
 }
 
 .parallax-window {
@@ -89,75 +115,97 @@
 }
 
 @media only screen and (max-width: 600px) {
-.parallax-window {
-	height: 974px;
+	.parallax-window {
+		height: 90%;
+	}
+	.col-6 {
+		-ms-flex: 0 0 100%;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
 }
-}
-
-
-
-
-
-
 </style>
 <body>
 	<nav th:replace="fragments/menuheader :: menuheader"></nav>
 	<header>
-		<section id="parallex" class="parallax-window" style="background: url(../moviedetails/images/texure.jpg);">
-           <div class="container-fluid h-100" style="margin-top: 50px;">
-              <div class="row h-100 parallaxt-details">
-              <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<section id="parallex" class="parallax-window"
+			style="background: url(../moviedetails/images/texure.jpg);">
+			<div class="container-fluid h-100" style="margin-top: 50px;">
+				<div class="row h-100 parallaxt-details">
+					<!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div class="form-group">
 			    <input type="text" class="form-control search-input" placeholder="Search" style="width: 100%;">
 			  </div>
               </div> -->
-              
-              <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main" th:each="movieCountry : ${movieCountries}" data-filter-item th:if="${movieCountry.key <8}">
-	              <div class="parallax-img card">
-	                    <a th:href="${'/other/movies?movieType=' + movieCountry.key}" th:inline="text" class="card-body"> [[${movieCountry.value}]]</a>
-	               </div>
-              </div>
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-              	<h3 class="name" style="text-align: center;font-size: 19px;font-weight: bolder;margin-bottom: 30px;margin-top: 30px;">DUBBED</h3>
-              </div>
-              
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 main" th:each="movieCountry : ${movieCountries}" data-filter-item th:if="${movieCountry.key > 8}">
-	              <div class="parallax-img card">
-	                    <a th:href="${'/other/movies?movieType=' + movieCountry.key}" th:inline="text" class="card-body"> [[${movieCountry.value}]]</a>
-	               </div>
-              </div>
-              
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-              	<h3 class="name" style="text-align: center;font-size: 19px;font-weight: bolder;margin-bottom: 30px;margin-top: 30px;">ADULT</h3>
-              </div>
-              
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 main" th:each="movieCountry : ${movieCountries}" data-filter-item th:if="${movieCountry.key == 8}">
-	              <div class="parallax-img card">
-	                    <a th:href="${'/other/movies?movieType=' + movieCountry.key}" th:inline="text" class="card-body"> Movie</a>
-	               </div>
-              </div>
-              
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 main">
-	              <div class="parallax-img card">
-	                    <a th:href="${'/others/movies/adult?type=' + 'short'}" th:inline="text" class="card-body">Short</a>
-	               </div>
-              </div>
-              
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 main">
-	              <div class="parallax-img card">
-	                    <a th:href="${'/others/movies/adult?type=' + 'full'}" th:inline="text" class="card-body">Full</a>
-	               </div>
-              </div>
-              
-              
-              
-              </div>
-           </div>
-        </section>
+
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main"
+						th:each="movieCountry : ${movieCountries}" data-filter-item
+						th:if="${movieCountry.key <8}">
+						<div class="parallax-img card">
+							<a th:href="${'/other/movies?movieType=' + movieCountry.key}"
+								th:inline="text" class="card-body">
+								[[${movieCountry.value}]]</a>
+						</div>
+					</div>
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<h3 class="name"
+							style="text-align: center; font-size: 19px; font-weight: bolder; margin-bottom: 30px; margin-top: 30px;">DUBBED</h3>
+					</div>
+
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 main"
+						th:each="movieCountry : ${movieCountries}" data-filter-item
+						th:if="${movieCountry.key > 8}">
+						<div class="parallax-img card">
+							<a th:href="${'/other/movies?movieType=' + movieCountry.key}"
+								th:inline="text" class="card-body">
+								[[${movieCountry.value}]]</a>
+						</div>
+					</div>
+
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<h3 class="name"
+							style="text-align: center; font-size: 19px; font-weight: bolder; margin-bottom: 30px; margin-top: 30px;">ADULT</h3>
+					</div>
+
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main"
+						th:each="movieCountry : ${movieCountries}" data-filter-item
+						th:if="${movieCountry.key == 8}">
+						<div class="parallax-img card">
+							<a th:href="${'/other/movies?movieType=' + movieCountry.key}"
+								th:inline="text" class="card-body"> Movie</a>
+						</div>
+					</div>
+
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main">
+						<div class="parallax-img card">
+							<a th:href="${'/others/movies/adult?type=' + 'short'}"
+								th:inline="text" class="card-body">Short</a>
+						</div>
+					</div>
+
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main">
+						<div class="parallax-img card">
+							<a th:href="${'/others/movies/adult?type=' + 'full'}"
+								th:inline="text" class="card-body">Full</a>
+						</div>
+					</div>
+
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main">
+						<div class="parallax-img card">
+							<a th:href="${'/others/porn/stars'}" th:inline="text"
+								class="card-body">Porn Stars</a>
+						</div>
+					</div>
+
+
+
+				</div>
+			</div>
+		</section>
 	</header>
 
-<div th:replace="fragments/scriptfile :: scriptfile"></div>
-<script>
+	<div th:replace="fragments/scriptfile :: scriptfile"></div>
+	<script>
 var searchInput = document.querySelector('.search-input');
 searchInput.addEventListener('keyup', search);
 
@@ -172,7 +220,7 @@ function search(e) {
 	  });
 }
 </script>
-<script type="text/javascript" th:inline="javascript">
+	<script type="text/javascript" th:inline="javascript">
 //<![CDATA[
  window.onload = function () {
 	    document.addEventListener("contextmenu", function (e) {

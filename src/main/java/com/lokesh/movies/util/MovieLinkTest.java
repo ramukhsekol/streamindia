@@ -9,22 +9,34 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.util.StringUtils;
 
 public class MovieLinkTest {
 
 	public static void main(String[] args) {
 		try {
-			Document doc = Jsoup.connect("https://vplay.uno/category/adult/page/" + 1 + "/").userAgent("Mozilla/5.0")
+			Document doc = Jsoup.connect("https://pornmate.com/star/sunny-leone").userAgent("Mozilla/5.0")
 					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
-			System.out.println(body);
-			Elements elements = body.getElementsByClass("postsh");
+			// System.out.println(body);
+			
+			
+			Elements elements = body.getElementsByClass("starCatGeneral_in");
 			for (Element element : elements) {
 				Element elements2 = element.select("a").first();
 				String aHref = elements2.attr("href");
 				System.out.println(aHref);
 				Element movieimage = element.select("img").first();
-				String image = movieimage.absUrl("src");
+				String image = movieimage.absUrl("data-src");
+				if(!StringUtils.hasText(image)) {
+					image = movieimage.absUrl("src");
+				}
+				
+				
+				
+				
+				String name = element.getElementsByClass("title").text();
+				System.out.println(name);
 				URLConnection urlConnection = new URL(image).openConnection();
 				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
 				urlConnection.setReadTimeout(5000);

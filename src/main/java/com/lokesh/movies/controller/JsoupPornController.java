@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lokesh.movies.domain.Movie;
+import com.lokesh.movies.domain.Person;
 import com.lokesh.movies.service.JsoupService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -35,7 +36,8 @@ public class JsoupPornController {
 			movies = new ArrayList<>();
 		}else if(StringUtils.hasText(type) && type.equalsIgnoreCase("short")) {
 			model.addAttribute("isFive", false);
-			movies = jsoupService.getAllJsoupPornMoviesByIndex(pageIndex);
+			String movieLink = "https://pornmate.com/video/page/" + pageIndex;
+			movies = jsoupService.getAllJsoupPornMoviesByIndex(movieLink);
 		} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("full")) {
 			model.addAttribute("isFive", true);
 			movies = jsoupService.getAllJsoupPornJsonMoviesByIndex();
@@ -51,5 +53,34 @@ public class JsoupPornController {
 		Movie movie = jsoupService.getParticularPornMovieDetailsByMovieLink(movieLink);
 		return movie;
 	}
+	
+	
+	@GetMapping(value = "/others/porn/stars")
+	public String pornStars(Model model) throws UnirestException {
+		model.addAttribute("title", "others");
+		return "movies/pornstars";
+	}
+	
+	@GetMapping(value = "/porn/stars/all")
+	public String pornStarsByIndex(@RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
+		if(StringUtils.hasText(pageIndex) && Integer.parseInt(pageIndex) <= 3) {
+			List<Person> persons = jsoupService.getPornStarsByIndex(pageIndex);
+			model.addAttribute("persons", persons);
+		} else {
+			List<Person> persons = new ArrayList<>();
+			model.addAttribute("persons", persons);
+		}
+		model.addAttribute("title", "others");
+		return "movies/appendpornstars";
+	}
 
+	@GetMapping(value = "/person/porn")
+	public String pornStarMovies(@RequestParam String personLink, Model model) throws UnirestException, UnsupportedEncodingException {
+		model.addAttribute("isFive", false);
+		String movieLink = "https://pornmate.com/star/" + personLink;
+		List<Movie> movies  = jsoupService.getAllJsoupPornMoviesByIndex(movieLink);
+		model.addAttribute("movies", movies);
+		model.addAttribute("title", "others");
+		return "movies/pornstarmovies";
+	}
 }

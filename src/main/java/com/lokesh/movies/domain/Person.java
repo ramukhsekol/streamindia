@@ -16,6 +16,19 @@ public class Person {
 	private String homepage;
 	private String biography;
 	private Integer gender;
+	private String personMoviesLink;
+
+	public Person() {
+		super();
+	}
+
+	public Person(Double popularity, String profile_path, String name, String personMoviesLink) {
+		super();
+		this.popularity = popularity;
+		this.profile_path = profile_path;
+		this.name = name;
+		this.personMoviesLink = personMoviesLink;
+	}
 
 	public Long getId() {
 		return id;
@@ -103,6 +116,14 @@ public class Person {
 
 	public void setGender(Integer gender) {
 		this.gender = gender;
+	}
+
+	public String getPersonMoviesLink() {
+		return personMoviesLink;
+	}
+
+	public void setPersonMoviesLink(String personMoviesLink) {
+		this.personMoviesLink = personMoviesLink;
 	}
 
 }
