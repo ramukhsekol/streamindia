@@ -17,5 +17,6 @@ public interface JsoupService {
 	boolean generateJsonFile(List<Movie> movies);
 	List<Movie> getAllJsoupPornJsonMoviesByIndex();
 	List<Person> getPornStarsByIndex(String pageIndex);
+	List<Movie> getAllJsoupSearchMoviesByIndex(String search, String pageIndex);
 
 }

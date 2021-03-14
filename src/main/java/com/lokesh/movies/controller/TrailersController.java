@@ -19,6 +19,7 @@ public class TrailersController {
 	public String trailers(@RequestParam String movieId, Model model) throws UnirestException {	
 		MovieTrailers movieTrailers = movieService.getMovieDetailsByMovieId(movieId, "trailers");
 		model.addAttribute("movieTrailers", movieTrailers);
+		model.addAttribute("title", "home");
 		return "movies/trailers";
 	}
 

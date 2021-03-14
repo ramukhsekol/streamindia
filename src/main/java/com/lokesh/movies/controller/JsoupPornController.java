@@ -34,6 +34,7 @@ public class JsoupPornController {
 		List<Movie> movies = new ArrayList<>();
 		if(StringUtils.hasText(type) && type.equalsIgnoreCase("full") && Integer.parseInt(pageIndex) > 1) {
 			movies = new ArrayList<>();
+			model.addAttribute("isFive", true);
 		}else if(StringUtils.hasText(type) && type.equalsIgnoreCase("short")) {
 			model.addAttribute("isFive", false);
 			String movieLink = "https://pornmate.com/video/page/" + pageIndex;

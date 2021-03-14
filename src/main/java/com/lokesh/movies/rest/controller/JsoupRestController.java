@@ -30,7 +30,7 @@ public class JsoupRestController {
 	@GetMapping(value = "/others")
 	public ResponseEntity<Map<Integer, String>> others(Model model) throws UnirestException {
 		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();
-		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() <= 8).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() < 8).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		return new ResponseEntity<Map<Integer, String>>(movieCountries, HttpStatus.OK);
 	}
 	

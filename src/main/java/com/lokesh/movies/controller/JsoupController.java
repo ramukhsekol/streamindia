@@ -1,12 +1,14 @@
 package com.lokesh.movies.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,15 +45,31 @@ public class JsoupController {
 		model.addAttribute("language", language);
 		model.addAttribute("movieType", movieType);
 		model.addAttribute("title", "others");
+		model.addAttribute("search", "");
+		return "movies/othermovies";
+	}
+	
+	@GetMapping(value = "/other/{movieType}/movies")
+	public String searchMovies(@PathVariable Integer movieType, @RequestParam String search, Model model) throws UnirestException {
+		String language = MovieUtil.getMovieLanguage(movieType);
+		model.addAttribute("language", language);
+		model.addAttribute("movieType", movieType);
+		model.addAttribute("title", "others");
+		model.addAttribute("search", search);
 		return "movies/othermovies";
 	}
 	
 	@GetMapping(value = "/{movieType}/movies/all")
-	public String teluguMoviesByIndex(@PathVariable Integer movieType, @RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
+	public String teluguMoviesByIndex(@PathVariable Integer movieType, @RequestParam String pageIndex, @RequestParam String search, Model model) throws UnirestException, UnsupportedEncodingException {
 		String language = MovieUtil.getMovieLanguage(movieType);
 		if(movieType <= 5) {
-			String movieUrl =  "language/" + language.toLowerCase() ;
-			List<Movie> movies = jsoupService.getAllJsoupMoviesByIndex(movieUrl, pageIndex);
+			List<Movie> movies = new ArrayList<Movie>();
+			if(StringUtils.hasText(search)) {
+				movies = jsoupService.getAllJsoupSearchMoviesByIndex(search, pageIndex);
+			} else {
+				String movieUrl =  "language/" + language.toLowerCase() ;
+				movies = jsoupService.getAllJsoupMoviesByIndex(movieUrl, pageIndex);
+			}
 			model.addAttribute("movies", movies);
 			model.addAttribute("isFive", true);
 		} else if(movieType >= 6 && movieType <= 7) {

@@ -15,7 +15,7 @@ public class MovieLinkTest {
 
 	public static void main(String[] args) {
 		try {
-			Document doc = Jsoup.connect("https://pornmate.com/star/sunny-leone").userAgent("Mozilla/5.0")
+			Document doc = Jsoup.connect("https://www.cumlouder.com/series/1/").userAgent("Mozilla/5.0")
 					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			// System.out.println(body);

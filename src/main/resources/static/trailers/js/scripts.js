@@ -273,7 +273,7 @@
 	});
 
 	// Blog
-	var $blogContainer = $('#blog').imagesLoaded(function() {
+/*	var $blogContainer = $('#blog').imagesLoaded(function() {
 		$blogContainer.isotope({
 			itemSelector: '.item',
 			layoutMode: 'masonry',
@@ -299,7 +299,7 @@
 		event.preventDefault();
 		$(this).toggleClass('rotate');
 		$(this).parents('.content').toggleClass('close-content');
-	});
+	});*/
 
 	// Cast Expand
 	var original_height = $('.cast-slider .hover').outerHeight();
@@ -504,10 +504,10 @@
 	});
 
 	// Countdown
-	$("#countdown").countdown({
+/*	$("#countdown").countdown({
 		date: "1 Jan 2017 00:00:00", // Put your date here
 		format: "on"
-	});
+	});*/
 
 	$('input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]), textarea').blur(function() {
 		if ($(this).val()) {

@@ -31,11 +31,14 @@ public class JsoupServiceImpl implements JsoupService {
 	@Autowired
 	ServletContext context;
 
+	private final String CINEVEZLINK = "https://cinevez.co/";
+	private final String MOVIERULZLINK = "https://4movierulz.us/";
+
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect("https://4movierulz.lu/category/" + movieType + "/page/" + pageIndex + "/")
+			Document doc = Jsoup.connect(MOVIERULZLINK + "category/" + movieType + "/page/" + pageIndex + "/")
 					.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("boxed");
@@ -44,7 +47,7 @@ public class JsoupServiceImpl implements JsoupService {
 				if (movieindex > 2) {
 					Element link = element.select("a").first();
 					String linkHref = link.attr("href");
-					String movieLink = linkHref.split("https://4movierulz.lu/")[1].trim();
+					String movieLink = linkHref.split(MOVIERULZLINK)[1].trim();
 					String finalMovieLink = movieLink.substring(0, movieLink.length() - 1);
 					Element movieimage = element.select("img").first();
 					String image = movieimage.absUrl("src");
@@ -74,15 +77,63 @@ public class JsoupServiceImpl implements JsoupService {
 	public List<Movie> getAllJsoupMoviesByIndex(String movieType, String pageIndex) {
 		List<Movie> movies = new ArrayList<Movie>();
 		try {
-			Document doc = Jsoup.connect("https://cinevez.com/" + movieType + "/page/" + pageIndex + "/")
-					.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
+			Document doc = Jsoup.connect(CINEVEZLINK + movieType + "/page/" + pageIndex + "/").userAgent("Mozilla/5.0")
+					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("post-item");
 			for (Element element : elements) {
 				Element link = element.select("a").first();
 				String linkHref = link.attr("href");
 
-				String movieLink = linkHref.split("https://cinevez.com/")[1].trim();
+				System.out.println(linkHref);
+
+				String movieLink = linkHref.split(CINEVEZLINK)[1].trim();
+				String finalMovieLink = movieLink.substring(0, movieLink.length() - 1);
+
+				Element movieimage = element.select("img").first();
+				String image = movieimage.absUrl("src");
+				String movieName = element.select("h2").first().text();
+				if (StringUtils.hasText(movieName)) {
+					String name = "";
+					System.out.println(movieName);
+					if (movieName.contains("(")) {
+						name = movieName.split("\\(")[0].trim();
+					} else if (movieName.contains("[")) {
+						name = movieName.split("\\[")[0].trim();
+					} else {
+						name = movieName;
+					}
+					URLConnection urlConnection = new URL(image).openConnection();
+					urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+					urlConnection.setReadTimeout(5000);
+					urlConnection.setConnectTimeout(5000);
+
+					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+					movies.add(new Movie(encodedString, name, 6.7, finalMovieLink));
+				}
+			}
+
+			return movies;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Movie> getAllJsoupSearchMoviesByIndex(String search, String pageIndex) {
+		List<Movie> movies = new ArrayList<Movie>();
+		try {
+			Document doc = Jsoup.connect(CINEVEZLINK + "page/" + pageIndex + "/?s=" + search).userAgent("Mozilla/5.0")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementsByClass("post-item");
+			for (Element element : elements) {
+				Element link = element.select("a").first();
+				String linkHref = link.attr("href");
+
+				String movieLink = linkHref.split(CINEVEZLINK)[1].trim();
 				String finalMovieLink = movieLink.substring(0, movieLink.length() - 1);
 
 				Element movieimage = element.select("img").first();
@@ -121,7 +172,7 @@ public class JsoupServiceImpl implements JsoupService {
 		try {
 			Movie movie = new Movie();
 			movie.setVote_average(6.7);
-			Document document = Jsoup.connect("https://4movierulz.lu/" + movieId + "/").userAgent("Mozilla/5.0")
+			Document document = Jsoup.connect(MOVIERULZLINK + movieId + "/").userAgent("Mozilla/5.0")
 					.timeout(10000).validateTLSCertificates(false).get();
 			Element documentbody = document.body();
 			Elements elements2 = documentbody.getElementsByClass("entry-content");
@@ -213,8 +264,8 @@ public class JsoupServiceImpl implements JsoupService {
 		try {
 			Movie movie = new Movie();
 			movie.setVote_average(6.7);
-			Document document = Jsoup.connect("https://cinevez.com/" + movieId + "/").userAgent("Mozilla/5.0")
-					.timeout(10000).validateTLSCertificates(false).get();
+			Document document = Jsoup.connect(CINEVEZLINK + movieId + "/").userAgent("Mozilla/5.0").timeout(10000)
+					.validateTLSCertificates(false).get();
 			Element documentbody = document.body();
 			Elements elements2 = documentbody.getElementsByClass("page-content");
 			Element movieimage = elements2.select("img").first();
@@ -313,14 +364,14 @@ public class JsoupServiceImpl implements JsoupService {
 	public List<Movie> getAllJsoupPornMoviesByIndex(String movieLink) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0")
-					.timeout(10000).validateTLSCertificates(false).get();
+			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
+					.validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("genis");
 			for (Element element : elements) {
 				Element movieimage = element.select("img").first();
 				String image = movieimage.absUrl("data-src");
-				if(!StringUtils.hasText(image)) {
+				if (!StringUtils.hasText(image)) {
 					image = movieimage.absUrl("src");
 				}
 				URLConnection urlConnection = new URL(image).openConnection();
@@ -458,7 +509,7 @@ public class JsoupServiceImpl implements JsoupService {
 				urlConnection.setConnectTimeout(5000);
 				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
 				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-				if(StringUtils.hasText(finalMovieLink)) {
+				if (StringUtils.hasText(finalMovieLink)) {
 					finalMovieLink = finalMovieLink.replace("https://pornmate.com/star/", "");
 				}
 				persons.add(new Person(6.7, encodedString, name, finalMovieLink));

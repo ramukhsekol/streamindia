@@ -2,6 +2,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"></head>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 <style>
@@ -59,22 +61,54 @@
 }
 
 #progressBar {
-  width: 90%;
-  margin: 10px auto;
-  height: 22px;
-  background-color: #0A5F44;
+	width: 90%;
+	margin: 10px auto;
+	height: 22px;
+	background-color: #0A5F44;
 }
 
 #progressBar div {
-  height: 100%;
-  text-align: right;
-  padding: 0 10px;
-  line-height: 22px; /* same as #progressBar height if we want text middle aligned */
-  width: 0;
-  background-color: #CBEA00;
-  box-sizing: border-box;
+	height: 100%;
+	text-align: right;
+	padding: 0 10px;
+	line-height: 22px;
+	/* same as #progressBar height if we want text middle aligned */
+	width: 0;
+	background-color: #CBEA00;
+	box-sizing: border-box;
+}
+</style>
+<style>
+form.example input[type=text] {
+	padding: 10px;
+	font-size: 17px;
+	border: 1px solid grey;
+	float: left;
+	width: 85%;
+	background: #f1f1f1;
 }
 
+form.example button {
+	float: left;
+	width: 15%;
+	padding: 10px;
+	background: #2196F3;
+	color: white;
+	font-size: 17px;
+	border: 1px solid grey;
+	border-left: none;
+	cursor: pointer;
+}
+
+form.example button:hover {
+	background: #0b7dda;
+}
+
+form.example::after {
+	content: "";
+	clear: both;
+	display: table;
+}
 </style>
 <body>
 	<nav th:replace="fragments/menuheader :: menuheader"></nav>
@@ -82,17 +116,30 @@
 	<header>
 		<section class="content-section" data-background="#111111">
 			<div class="container">
-				<div class="col-12">
-					<div class="section-title text-center light">
-						<h5 th:inline="text">[[${language}]]</h5>
+				<div class="row">
+					<!-- <div class="col-12">
+						<div class="section-title text-center light">
+							<h5 th:inline="text">[[${language}]]</h5>
+						</div>
+					</div> -->
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<form class="example" th:action="${'/other/'+movieType+'/movies'}">
+							<input type="text" placeholder="Search.." name="search">
+							<button type="submit">
+								<i class="fa fa-search"></i>
+							</button>
+						</form>
 					</div>
 				</div>
+
+
 				<span id="appenddata"></span>
 			</div>
 		</section>
 	</header>
 
-	<div class="modal" id="myModal">
+	<div class="modal" id="myModal" data-backdrop="static" tabindex="-1"
+		role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -118,10 +165,11 @@
 	$(function() {
 		var pageIndex = 1;
 		var movieType = [[${movieType}]]; // type of functionality like search, genric, person
+		var search = [[${search}]];
 		
 		$("#myModal").modal("show");
 		progress(30, 30, $('#progressBar'));
-		$.get("/" +movieType+ "/movies/all?pageIndex=" + pageIndex, function(response) {
+		$.get("/" +movieType+ "/movies/all?pageIndex=" + pageIndex + "&search=" + search, function(response) {
 			$("#appenddata").append(response);
 			$("#myModal").modal("hide");
 		});
@@ -134,7 +182,7 @@
 				pageIndex = pageIndex + 1;
 				$("#myModal").modal("show");
 				progress(30, 30, $('#progressBar'));
-				$.get("/" +movieType+ "/movies/all?pageIndex=" + pageIndex, function(response) {
+				$.get("/" +movieType+ "/movies/all?pageIndex=" + pageIndex + "&search=" + search, function(response) {
 					$("#appenddata").append(response);
 					$("#myModal").modal("hide");
 				});
@@ -142,7 +190,7 @@
 		}
 	});
 </script>
-<script type="text/javascript" th:inline="javascript">
+	<script type="text/javascript" th:inline="javascript">
 //<![CDATA[
  window.onload = function () {
 	    document.addEventListener("contextmenu", function (e) {

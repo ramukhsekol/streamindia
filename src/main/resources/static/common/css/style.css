@@ -1,8 +1,7 @@
 @charset "UTF-8";
 /*
 
-@Author: Themezinho
-@URL: http://www.themezinho.net
+@Author: Lokesh G
  
 This file contains the styling for the actual theme, this
 is the file you need to edit to change the look of the
@@ -431,7 +430,7 @@ button[type="submit"] i {
   left: -140%;
   top: 0;
   background: #111111;
-  z-index: 70000;
+  z-index: 70000000;
   padding: 30px;
   -webkit-transition: all .35s ease-in-out;
   -moz-transition: all .35s ease-in-out;
