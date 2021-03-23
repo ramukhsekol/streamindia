@@ -15,13 +15,13 @@ public class MovieLinkTest {
 
 	public static void main(String[] args) {
 		try {
-			Document doc = Jsoup.connect("https://www.cumlouder.com/series/1/").userAgent("Mozilla/5.0")
+			Document doc = Jsoup.connect("https://porn300.net/categories/?page=1").userAgent("Mozilla/5.0")
 					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			// System.out.println(body);
 			
 			
-			Elements elements = body.getElementsByClass("starCatGeneral_in");
+			Elements elements = body.getElementsByClass("grid__item--category");
 			for (Element element : elements) {
 				Element elements2 = element.select("a").first();
 				String aHref = elements2.attr("href");
@@ -32,15 +32,24 @@ public class MovieLinkTest {
 					image = movieimage.absUrl("src");
 				}
 				
+				System.out.println(image);
 				
 				
 				
-				String name = element.getElementsByClass("title").text();
+				
+				String name = element.getElementsByClass("grid__item__title--category").text();
 				System.out.println(name);
+				
+				String count = element.getElementsByClass("grid__item__count").text();
+				System.out.println(count);
+				
+				
+				
+				
 				URLConnection urlConnection = new URL(image).openConnection();
 				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-				urlConnection.setReadTimeout(5000);
-				urlConnection.setConnectTimeout(5000);
+				urlConnection.setReadTimeout(50000);
+				urlConnection.setConnectTimeout(50000);
 				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
 				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
 				System.out.println(encodedString);
