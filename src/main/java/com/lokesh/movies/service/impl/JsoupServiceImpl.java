@@ -529,6 +529,7 @@ public class JsoupServiceImpl implements JsoupService {
 	public List<Person> getPornCategoriesByIndex(String pageIndex) {
 		try {
 			List<Person> persons = new ArrayList<Person>();
+			System.out.println("https://porn300.net/categories/?page=" + pageIndex);
 			Document doc = Jsoup.connect("https://porn300.net/categories/?page=" + pageIndex).userAgent("Mozilla/5.0")
 					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
@@ -552,6 +553,7 @@ public class JsoupServiceImpl implements JsoupService {
 				if (StringUtils.hasText(finalMovieLink)) {
 					finalMovieLink = finalMovieLink.replace("https://porn300.net/category/", "");
 				}
+				System.out.println(name + " " + videoCount);
 				persons.add(new Person(6.7, encodedString, name, finalMovieLink, videoCount));
 			}
 			return persons;

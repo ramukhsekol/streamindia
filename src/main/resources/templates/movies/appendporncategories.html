@@ -12,7 +12,7 @@
             <circle class="circle-chart__circle" stroke="#4eb04b" stroke-width="2" th:attr="stroke-dasharray=${( person.popularity) + ',100'}" cx="15" cy="15" r="14"></circle>
           </svg>
           <b th:inline="text">[[${#numbers.formatDecimal(person.popularity, 0, 'COMMA', 0, 'POINT')}]]</b> </div>
-        <div class="hd" th:text="${person.videosCount}"></div>
+        <div class="hd">1080 <b>HD</b></div>
       </figure>
     </div>
   </div>
