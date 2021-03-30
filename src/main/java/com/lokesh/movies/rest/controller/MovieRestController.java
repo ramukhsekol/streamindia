@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -25,21 +26,26 @@ import com.lokesh.movies.util.MovieUtil;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MovieRestController {
-	
-	@Autowired private MovieService movieService;
-	
+
+	@Autowired
+	private MovieService movieService;
+
 	@GetMapping(value = "/movies/all")
-	public ResponseEntity<Object> moviesByIndex(@RequestParam String pageIndex, @RequestParam String type, @RequestParam String query, @RequestParam String queryId, @RequestParam String searchType, Model model) throws UnirestException, UnsupportedEncodingException {
-		if(searchType.equalsIgnoreCase("movie") && type.equalsIgnoreCase("personMovies") && pageIndex.equalsIgnoreCase("1")) {
+	public ResponseEntity<Object> moviesByIndex(@RequestParam String pageIndex, @RequestParam String type,
+			@RequestParam String query, @RequestParam String queryId, @RequestParam String searchType)
+			throws UnirestException, UnsupportedEncodingException {
+		if (searchType.equalsIgnoreCase("movie") && type.equalsIgnoreCase("personMovies")
+				&& pageIndex.equalsIgnoreCase("1")) {
 			List<Movie> movies = movieService.getMoviesByPersonId(queryId);
 			return new ResponseEntity<Object>(movies, HttpStatus.OK);
-		} else if(!type.equalsIgnoreCase("personMovies")) {
-			JSONArray jsonArray = movieService.getMoviesByIndexOrSearchOrGeneric(pageIndex, type, query, queryId,  searchType);
+		} else if (!type.equalsIgnoreCase("personMovies")) {
+			JSONArray jsonArray = movieService.getMoviesByIndexOrSearchOrGeneric(pageIndex, type, query, queryId,
+					searchType);
 			Gson gson = new Gson();
-			if(jsonArray!=null) {
-				if(searchType.equalsIgnoreCase("movie") && !type.equalsIgnoreCase("personMovies")) {
+			if (jsonArray != null) {
+				if (searchType.equalsIgnoreCase("movie") && !type.equalsIgnoreCase("personMovies")) {
 					Type responseType = new TypeToken<List<Movie>>() {
 					}.getType();
 					List<Movie> movies = gson.fromJson(jsonArray.toString(), responseType);
@@ -54,22 +60,23 @@ public class MovieRestController {
 		}
 		return new ResponseEntity<Object>("Something went wrong, Please try again", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping(value = "/movie/details")
-	public ResponseEntity<Object> showMovie(@RequestParam String movieId, @RequestParam String ipAddress, Model model) throws UnirestException, UnsupportedEncodingException {
+	public ResponseEntity<Object> showMovie(@RequestParam String movieId, @RequestParam String ipAddress, Model model)
+			throws UnirestException, UnsupportedEncodingException {
 		MovieTrailers movie = movieService.getMovieDetailsByMovieId(movieId, "show");
-		if(movie !=null && movie.getMovie() != null && movie.getMovie().getRuntime() != null) {
+		if (movie != null && movie.getMovie() != null && movie.getMovie().getRuntime() != null) {
 			movie.getMovie().setConvertRunTime(MovieUtil.convertMovieTiming(movie.getMovie().getRuntime()));
 		}
 		String movieTicket = movieService.getMovieTicketByMovieIdAndTicketId(movie.getMovie().getImdb_id(), ipAddress);
-		if(StringUtils.hasText(movieTicket)) {
-			movie.getMovie().setMovieLink("https://videospider.stream/getvideo?key=" + MovieUtil.userKey + "&video_id=" + movie.getMovie().getImdb_id() + "&ticket=" + movieTicket);
+		if (StringUtils.hasText(movieTicket)) {
+			movie.getMovie().setMovieLink("https://videospider.stream/getvideo?key=" + MovieUtil.userKey + "&video_id="
+					+ movie.getMovie().getImdb_id() + "&ticket=" + movieTicket);
 		} else {
-			movie.getMovie().setMovieLink("https://streamvideo.link/getvideo?key=" + MovieUtil.userKey + "&video_id=" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink("https://streamvideo.link/getvideo?key=" + MovieUtil.userKey + "&video_id="
+					+ movie.getMovie().getImdb_id());
 		}
 		return new ResponseEntity<Object>(movie, HttpStatus.OK);
 	}
-	
-	
 
 }

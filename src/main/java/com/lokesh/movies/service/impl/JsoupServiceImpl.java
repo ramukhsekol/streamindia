@@ -31,8 +31,8 @@ public class JsoupServiceImpl implements JsoupService {
 	@Autowired
 	ServletContext context;
 
-	private final String CINEVEZLINK = "https://cinevez.co/";
-	private final String MOVIERULZLINK = "https://4movierulz.us/";
+	private final String CINEVEZLINK = "https://cinevez.net/";
+	private final String MOVIERULZLINK = "https://4movierulz.ph/";
 
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {
@@ -245,6 +245,9 @@ public class JsoupServiceImpl implements JsoupService {
 						Element body = doc.body();
 						Element elements = body.select("iframe").first();
 						String movieLink = elements.absUrl("src");
+						movie.setMovieLink(movieLink);
+					} else if (q != null && q.startsWith("http") && q.contains("streamtape")) {
+						String movieLink = q.replace("/v/", "/e/");
 						movie.setMovieLink(movieLink);
 					}
 				}

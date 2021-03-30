@@ -72,22 +72,30 @@ public class JsoupController {
 			}
 			model.addAttribute("movies", movies);
 			model.addAttribute("isFive", true);
-		} else if(movieType >= 6 && movieType <= 7) {
-			String movieUrl = language.toLowerCase()+"-"+ "movie";
-			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
-			model.addAttribute("movies", movies);
-			model.addAttribute("isFive", false);
-		} else if(movieType >= 9 && movieType <= 11) {
-			String apendurl = movieType != 11 ? "dubbed-movie-2" : "dubbed-movie";
-			String movieUrl = language.toLowerCase()+"-"+ apendurl;
-			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
-			model.addAttribute("movies", movies);
-			model.addAttribute("isFive", false);
 		} else {
-			String movieUrl = language.toLowerCase()+"-"+ "18";
-			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
-			model.addAttribute("movies", movies);
-			model.addAttribute("isFive", false);
+			if(StringUtils.hasText(search)) {
+				List<Movie> movies = jsoupService.getAllJsoupSearchMoviesByIndex(search, pageIndex);
+				model.addAttribute("movies", movies);
+				model.addAttribute("isFive", true);
+			} else {
+				if(movieType >= 6 && movieType <= 7) {
+					String movieUrl = language.toLowerCase()+"-"+ "movie";
+					List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
+					model.addAttribute("movies", movies);
+					model.addAttribute("isFive", false);
+				} else if(movieType >= 9 && movieType <= 11) {
+					String apendurl = movieType != 11 ? "dubbed-movie-2" : "dubbed-movie";
+					String movieUrl = language.toLowerCase()+"-"+ apendurl;
+					List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
+					model.addAttribute("movies", movies);
+					model.addAttribute("isFive", false);
+				} else {
+					String movieUrl = language.toLowerCase()+"-"+ "18";
+					List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
+					model.addAttribute("movies", movies);
+					model.addAttribute("isFive", false);
+				}
+			}
 		}
 		return "movies/otherappendmovies";
 	}
