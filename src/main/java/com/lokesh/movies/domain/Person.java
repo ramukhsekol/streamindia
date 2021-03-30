@@ -17,6 +17,7 @@ public class Person {
 	private String biography;
 	private Integer gender;
 	private String personMoviesLink;
+	private String videosCount;
 
 	public Person() {
 		super();
@@ -28,6 +29,15 @@ public class Person {
 		this.profile_path = profile_path;
 		this.name = name;
 		this.personMoviesLink = personMoviesLink;
+	}
+
+	public Person(Double popularity, String profile_path, String name, String personMoviesLink, String videosCount) {
+		super();
+		this.popularity = popularity;
+		this.profile_path = profile_path;
+		this.name = name;
+		this.personMoviesLink = personMoviesLink;
+		this.videosCount = videosCount;
 	}
 
 	public Long getId() {
@@ -124,6 +134,14 @@ public class Person {
 
 	public void setPersonMoviesLink(String personMoviesLink) {
 		this.personMoviesLink = personMoviesLink;
+	}
+
+	public String getVideosCount() {
+		return videosCount;
+	}
+
+	public void setVideosCount(String videosCount) {
+		this.videosCount = videosCount;
 	}
 
 }

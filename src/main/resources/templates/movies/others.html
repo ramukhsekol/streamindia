@@ -114,11 +114,22 @@
 	height: 657px;
 }
 
+.col-xl-2 {
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+
 @media only screen and (max-width: 600px) {
 	.parallax-window {
 		height: 90%;
 	}
 	.col-6 {
+		-ms-flex: 0 0 100%;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	.col-2 {
 		-ms-flex: 0 0 100%;
 		flex: 0 0 100%;
 		max-width: 100%;
@@ -167,7 +178,7 @@
 							style="text-align: center; font-size: 19px; font-weight: bolder; margin-bottom: 30px; margin-top: 30px;">ADULT</h3>
 					</div>
 
-					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main"
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main"
 						th:each="movieCountry : ${movieCountries}" data-filter-item
 						th:if="${movieCountry.key == 8}">
 						<div class="parallax-img card">
@@ -176,24 +187,31 @@
 						</div>
 					</div>
 
-					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main">
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main">
 						<div class="parallax-img card">
 							<a th:href="${'/others/movies/adult?type=' + 'short'}"
 								th:inline="text" class="card-body">Short</a>
 						</div>
 					</div>
 
-					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main">
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main">
 						<div class="parallax-img card">
 							<a th:href="${'/others/movies/adult?type=' + 'full'}"
 								th:inline="text" class="card-body">Full</a>
 						</div>
 					</div>
 
-					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main">
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main">
 						<div class="parallax-img card">
 							<a th:href="${'/others/porn/stars'}" th:inline="text"
 								class="card-body">Porn Stars</a>
+						</div>
+					</div>
+					
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main">
+						<div class="parallax-img card">
+							<a th:href="${'/others/porn/categories'}" th:inline="text"
+								class="card-body">Porn Categories</a>
 						</div>
 					</div>
 

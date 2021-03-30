@@ -18,5 +18,6 @@ public interface JsoupService {
 	List<Movie> getAllJsoupPornJsonMoviesByIndex();
 	List<Person> getPornStarsByIndex(String pageIndex);
 	List<Movie> getAllJsoupSearchMoviesByIndex(String search, String pageIndex);
+	List<Person> getPornCategoriesByIndex(String pageIndex);
 
 }

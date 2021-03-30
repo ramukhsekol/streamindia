@@ -75,6 +75,23 @@ public class JsoupPornController {
 		return "movies/appendpornstars";
 	}
 
+	
+	@GetMapping(value = "/others/porn/categories")
+	public String pornCategories(Model model) throws UnirestException {
+		model.addAttribute("title", "others");
+		return "movies/porncategories";
+	}
+	
+	@GetMapping(value = "/porn/categories/all")
+	public String pornCategoriesByIndex(@RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
+		List<Person> persons = jsoupService.getPornCategoriesByIndex(pageIndex);
+		model.addAttribute("persons", persons);
+		model.addAttribute("title", "others");
+		return "movies/appendporncategories";
+	}
+	
+	
+	
 	@GetMapping(value = "/person/porn")
 	public String pornStarMovies(@RequestParam String personLink, Model model) throws UnirestException, UnsupportedEncodingException {
 		model.addAttribute("isFive", false);

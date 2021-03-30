@@ -525,4 +525,41 @@ public class JsoupServiceImpl implements JsoupService {
 		return null;
 	}
 
+	@Override
+	public List<Person> getPornCategoriesByIndex(String pageIndex) {
+		try {
+			List<Person> persons = new ArrayList<Person>();
+			Document doc = Jsoup.connect("https://porn300.net/categories/?page=" + pageIndex).userAgent("Mozilla/5.0")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementsByClass("grid__item--category");
+			for (Element element : elements) {
+				Element elements2 = element.select("a").first();
+				String finalMovieLink = elements2.attr("href");
+				Element movieimage = element.select("img").first();
+				String image = movieimage.absUrl("data-src");
+				if(!StringUtils.hasText(image)) {
+					image = movieimage.absUrl("src");
+				}
+				String name = element.getElementsByClass("grid__item__title--category").text();
+				String videoCount = element.getElementsByClass("grid__item__count").text();
+				URLConnection urlConnection = new URL(image).openConnection();
+				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+				urlConnection.setReadTimeout(5000);
+				urlConnection.setConnectTimeout(5000);
+				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+				if (StringUtils.hasText(finalMovieLink)) {
+					finalMovieLink = finalMovieLink.replace("https://porn300.net/category/", "");
+				}
+				persons.add(new Person(6.7, encodedString, name, finalMovieLink, videoCount));
+			}
+			return persons;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 }
