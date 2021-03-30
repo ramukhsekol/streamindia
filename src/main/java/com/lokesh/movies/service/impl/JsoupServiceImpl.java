@@ -551,7 +551,6 @@ public class JsoupServiceImpl implements JsoupService {
 					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
 					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
 					persons.add(new Person((double) getRandomNumber(6,9), encodedString, name, aHref.replaceAll("/", ""), videoCount));
-
 				}
 				i++;
 			}
@@ -572,25 +571,28 @@ public class JsoupServiceImpl implements JsoupService {
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("video");
 			for (Element element : elements) {
-				Element elements2 = element.select("a").first();
-				String aHref = elements2.attr("href");
-				Element movieimage = element.select("img").first();
-				String image = movieimage.absUrl("data-src");
-				if (!StringUtils.hasText(image)) {
-					image = movieimage.absUrl("src");
-				}
 				String timming = element.getElementsByClass("time").text();
-				String name = element.getElementsByClass("cwrap").text();
+				if(StringUtils.hasText(timming)) {
+					Element elements2 = element.select("a").first();
+					String aHref = elements2.attr("href");
+					Element movieimage = element.select("img").first();
+					String image = movieimage.absUrl("data-src");
+					if (!StringUtils.hasText(image)) {
+						image = movieimage.absUrl("src");
+					}
+					
+					String name = element.getElementsByClass("cwrap").text();
 
-				URLConnection urlConnection = new URL(image).openConnection();
-				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-				urlConnection.setReadTimeout(50000);
-				urlConnection.setConnectTimeout(50000);
-				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
-				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-				String[] linkSplit = aHref.split("/");
-				String movieLink = "https://pornone.com/embed/" + linkSplit[linkSplit.length -1] + "/";
-				movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), movieLink, timming));
+					URLConnection urlConnection = new URL(image).openConnection();
+					urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+					urlConnection.setReadTimeout(50000);
+					urlConnection.setConnectTimeout(50000);
+					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+					String[] linkSplit = aHref.split("/");
+					String movieLink = "https://pornone.com/embed/" + linkSplit[linkSplit.length -1] + "/";
+					movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), movieLink, timming));
+				}
 			}
 
 			return movies;
