@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -74,7 +75,17 @@ public class JsoupPornController {
 		model.addAttribute("title", "others");
 		return "movies/appendpornstars";
 	}
-
+	
+	@GetMapping(value = "/person/porn")
+	public String pornStarMovies(@RequestParam String personLink, Model model) throws UnirestException, UnsupportedEncodingException {
+		model.addAttribute("isFive", false);
+		String movieLink = "https://pornmate.com/star/" + personLink;
+		List<Movie> movies  = jsoupService.getAllJsoupPornMoviesByIndex(movieLink);
+		model.addAttribute("movies", movies);
+		model.addAttribute("title", "others");
+		return "movies/pornstarmovies";
+	}
+	
 	
 	@GetMapping(value = "/others/porn/categories")
 	public String pornCategories(Model model) throws UnirestException {
@@ -91,14 +102,19 @@ public class JsoupPornController {
 	}
 	
 	
-	
-	@GetMapping(value = "/person/porn")
-	public String pornStarMovies(@RequestParam String personLink, Model model) throws UnirestException, UnsupportedEncodingException {
-		model.addAttribute("isFive", false);
-		String movieLink = "https://pornmate.com/star/" + personLink;
-		List<Movie> movies  = jsoupService.getAllJsoupPornMoviesByIndex(movieLink);
-		model.addAttribute("movies", movies);
+	@GetMapping(value = "/category/porn")
+	public String pornCategoryMovies(@RequestParam String categoryType, Model model) throws UnirestException, UnsupportedEncodingException {
 		model.addAttribute("title", "others");
-		return "movies/pornstarmovies";
+		model.addAttribute("categoryType", categoryType);
+		return "movies/pornscategorymovies";
 	}
+	
+	@GetMapping(value = "/porn/category/{categoryType}/all")
+	public String pornCategoryMoviesByIndex(@PathVariable String categoryType, @RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
+		List<Movie> movies = jsoupService.getPornCategoryMoviesByIndex(categoryType, pageIndex);
+		model.addAttribute("movies", movies);
+		return "movies/appendporncategorymovies";
+	}
+	
+	
 }

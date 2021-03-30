@@ -24,7 +24,7 @@
     text-align: center;
     position: relative;
     text-indent: -9999px;
-    top: -145px;
+    top: -90px;
     left: -179%;
 }
 
@@ -82,9 +82,7 @@
     <div class="container">
     <div class="col-12" th:if="${type != '' && type != null}">
         <div class="section-title text-center light">
-          <h5 th:inline="text"> [[${queryKey}]] 
-          <span th:if="${queryKey != '' && queryKey != null}">: </span> 
-          [[${type=='generic'?genericName:(type=='personMovies'?personName:(type=='languageMovies'?languageName:query))}]]</h5>
+          <h5 th:inline="text">Porn Category Movies</h5>
         </div>
       </div>
     <span id="appenddata"></span>
@@ -106,6 +104,7 @@
 
 <div th:replace="fragments/scriptfile :: scriptfile"></div>
 <script type="text/javascript" th:inline="javascript"> 
+var categoryType = [[${categoryType}]] // search either movie or person
 function progress(timeleft, timetotal, $element) {
     var progressBarWidth = timeleft * $element.width() / timetotal;
     $element.find('div').animate({ width: progressBarWidth }, 500);
@@ -117,14 +116,10 @@ function progress(timeleft, timetotal, $element) {
 };
 	$(function() {
 		var pageIndex = 1;
-		var type = [[${type}]]; // type of functionality like search, genric, person
-		var query = [[${query}]]; // this is only for search functionality
-		var queryId = [[${queryId}]]; // this is for either genericId, personId, languageId
-		var searchType = [[${searchType}]] // search either movie or person
 		$("#myModal").modal("show");
 		progress(30, 30, $('#progressBar'));
 		
-		$.get("/movies/all?pageIndex=" + pageIndex + "&type=" + type + "&query=" + query + "&queryId=" + queryId + "&searchType=" + searchType, function(response) {
+		$.get("/porn/category/"+ categoryType +"/all?pageIndex=" + pageIndex, function(response) {
 			$("#appenddata").append(response);
 			$("#myModal").modal("hide");
 		});
@@ -137,7 +132,7 @@ function progress(timeleft, timetotal, $element) {
 				pageIndex = pageIndex + 1;
 				$("#myModal").modal("show");
 				progress(30, 30, $('#progressBar'));
-				$.get("/movies/all?pageIndex=" + pageIndex + "&type=" + type + "&query=" + query + "&queryId=" + queryId + "&searchType=" + searchType, function(response) {
+				$.get("/porn/category/"+ categoryType +"/all?pageIndex=" + pageIndex, function(response) {
 					$("#appenddata").append(response);
 					$("#myModal").modal("hide");
 				});
@@ -183,6 +178,6 @@ function progress(timeleft, timetotal, $element) {
     }
         
  // ]]>
-	</script>
+</script>
 </body>
 </html>

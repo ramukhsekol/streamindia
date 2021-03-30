@@ -24,7 +24,7 @@
     text-align: center;
     position: relative;
     text-indent: -9999px;
-    top: -158px;
+    top: -131px;
     left: -179%;
 }
 
@@ -103,21 +103,23 @@
 </div>
 
 <div th:replace="fragments/scriptfile :: scriptfile"></div>
-<script type="text/javascript" th:inline="javascript"> 
-function progress(timeleft, timetotal, $element) {
-    var progressBarWidth = timeleft * $element.width() / timetotal;
-    $element.find('div').animate({ width: progressBarWidth }, 500);
-    if(timeleft > 0) {
-        setTimeout(function() {
-            progress(timeleft - 1, timetotal, $element);
-        }, 1000);
-    }
-};
+<script type="text/javascript" th:inline="javascript">
+	function progress(timeleft, timetotal, $element) {
+		var progressBarWidth = timeleft * $element.width() / timetotal;
+		$element.find('div').animate({
+			width : progressBarWidth
+		}, 500);
+		if (timeleft > 0) {
+			setTimeout(function() {
+				progress(timeleft - 1, timetotal, $element);
+			}, 1000);
+		}
+	};
 	$(function() {
 		var pageIndex = 1;
 		$("#myModal").modal("show");
 		progress(30, 30, $('#progressBar'));
-		
+
 		$.get("/porn/stars/all?pageIndex=" + pageIndex, function(response) {
 			$("#appenddata").append(response);
 			$("#myModal").modal("hide");
@@ -131,7 +133,8 @@ function progress(timeleft, timetotal, $element) {
 				pageIndex = pageIndex + 1;
 				$("#myModal").modal("show");
 				progress(30, 30, $('#progressBar'));
-				$.get("/porn/stars/all?pageIndex=" + pageIndex, function(response) {
+				$.get("/porn/stars/all?pageIndex=" + pageIndex, function(
+						response) {
 					$("#appenddata").append(response);
 					$("#myModal").modal("hide");
 				});
@@ -140,43 +143,45 @@ function progress(timeleft, timetotal, $element) {
 	});
 </script>
 <script type="text/javascript" th:inline="javascript">
-//<![CDATA[
- window.onload = function () {
-	    document.addEventListener("contextmenu", function (e) {
-	        e.preventDefault();
-	    }, false);
-	    document.addEventListener("keydown", function (e) {
-	        if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-	            disabledEvent(e);
-	        }
-	        if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-	            disabledEvent(e);
-	        }
-	        if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-	            disabledEvent(e);
-	        }
-	        if (e.ctrlKey && e.keyCode == 85) {
-	            disabledEvent(e);
-	        }
-	        if (event.keyCode == 123) {
-	            disabledEvent(e);
-	        }
-	    }, false);
-	    function disabledEvent(e) {
-	        if (e.stopPropagation) {
-	            e.stopPropagation();
-	        } else if (window.event) {
-	            window.event.cancelBubble = true;
-	        }
-	        e.preventDefault();
-	        return false;
-	    }
+	//<![CDATA[
+	window.onload = function() {
+		document.addEventListener("contextmenu", function(e) {
+			e.preventDefault();
+		}, false);
+		document.addEventListener("keydown", function(e) {
+			if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+				disabledEvent(e);
+			}
+			if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+				disabledEvent(e);
+			}
+			if (e.keyCode == 83
+					&& (navigator.platform.match("Mac") ? e.metaKey
+							: e.ctrlKey)) {
+				disabledEvent(e);
+			}
+			if (e.ctrlKey && e.keyCode == 85) {
+				disabledEvent(e);
+			}
+			if (event.keyCode == 123) {
+				disabledEvent(e);
+			}
+		}, false);
+		function disabledEvent(e) {
+			if (e.stopPropagation) {
+				e.stopPropagation();
+			} else if (window.event) {
+				window.event.cancelBubble = true;
+			}
+			e.preventDefault();
+			return false;
+		}
 	}
-    function scrolltop() {
-    window.scrollTo(0, 0);
-    }
-        
- // ]]>
-	</script>
+	function scrolltop() {
+		window.scrollTo(0, 0);
+	}
+
+	// ]]>
+</script>
 </body>
 </html>

@@ -39,6 +39,7 @@ public class Movie implements Serializable {
 	private String director;
 	private String writer;
 	private String voteAverage;
+	private String timming;
 
 	public Movie() {
 		super();
@@ -50,6 +51,15 @@ public class Movie implements Serializable {
 		this.title = title;
 		this.vote_average = vote_average;
 		this.movieLink = movieLink;
+	}
+
+	public Movie(String poster_path, String title, Double vote_average, String movieLink, String timming) {
+		super();
+		this.poster_path = poster_path;
+		this.title = title;
+		this.vote_average = vote_average;
+		this.movieLink = movieLink;
+		this.timming = timming;
 	}
 
 	public boolean isAdult() {
@@ -266,6 +276,14 @@ public class Movie implements Serializable {
 
 	public void setMovieLink2(String movieLink2) {
 		this.movieLink2 = movieLink2;
+	}
+
+	public String getTimming() {
+		return timming;
+	}
+
+	public void setTimming(String timming) {
+		this.timming = timming;
 	}
 
 }
