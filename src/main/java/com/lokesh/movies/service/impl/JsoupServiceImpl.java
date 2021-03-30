@@ -529,9 +529,8 @@ public class JsoupServiceImpl implements JsoupService {
 	public List<Person> getPornCategoriesByIndex(String pageIndex) {
 		try {
 			List<Person> persons = new ArrayList<Person>();
-			System.out.println("https://porn300.net/categories/?page=" + pageIndex);
-			Document doc = Jsoup.connect("https://porn300.net/categories/?page=" + pageIndex).userAgent("Mozilla/5.0")
-					.timeout(10000).validateTLSCertificates(false).get();
+				Document doc = Jsoup.connect("https://porn300.net/categories/?page="+pageIndex).userAgent("Mozilla/5.0")
+				.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("grid__item--category");
 			for (Element element : elements) {
