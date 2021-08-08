@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.domain.Trailer;
+import com.lokesh.movies.domain.TvShows;
 
 import lombok.experimental.UtilityClass;
 
@@ -71,6 +72,16 @@ public class MovieUtil {
 	}
 
 	public static List<Trailer> getMovieTrailers(List<Trailer> movieTrailers, Movie movie) {
+		if(movieTrailers != null && movieTrailers.size() > 0) {
+			for(int i = 0; i<movieTrailers.size() ; i++) {
+				String imagePath = i % 2 == 0 ? movie.getBackdrop_path() : movie.getPoster_path();
+				movieTrailers.get(i).setImage_path(imagePath);
+			}
+		}
+		return movieTrailers;
+	}
+	
+	public static List<Trailer> getTvTrailers(List<Trailer> movieTrailers, TvShows movie) {
 		if(movieTrailers != null && movieTrailers.size() > 0) {
 			for(int i = 0; i<movieTrailers.size() ; i++) {
 				String imagePath = i % 2 == 0 ? movie.getBackdrop_path() : movie.getPoster_path();

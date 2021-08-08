@@ -30,7 +30,7 @@
 					<li><a th:href="@{'/genres'}">GENRES</a></li>
 					<li><a th:href="@{'/persons'}">PERSONS</a></li>
 					<li><a th:href="@{'/languages'}">LANGUAGES</a></li>
-					<li><a th:href="@{'/others'}">OTHERS</a></li>
+					<li><a th:href="@{'/others'}">OTHER</a></li>
 					<li><a th:href="@{'https://streamindia.herokuapp.com/apk/movietime.apk'}">APK</a></li>
 				</ul>
 			</div>
@@ -48,7 +48,8 @@
 				<li><a th:href="@{'/genres'}" th:style="'color:' + ${title=='genres'?'red':'white'} + ';'">GENRES</a></li>
 				<li><a th:href="@{'/persons'}" th:style="'color:' + ${title=='persons'?'red':'white'} + ';'">PERSONS</a></li>
 				<li><a th:href="@{'/languages'}" th:style="'color:' + ${title=='languages'?'red':'white'} + ';'">LANGUAGES</a></li>
-				<li><a th:href="@{'/others'}" th:style="'color:' + ${title=='others'?'red':'white'} + ';'">OTHERS</a></li>
+				<li><a th:href="@{'/shows'}" th:style="'color:' + ${title=='shows'?'red':'white'} + ';'">TV SHOWS</a></li>
+				<li><a th:href="@{'/others'}" th:style="'color:' + ${title=='others'?'red':'white'} + ';'">OTHER</a></li>
 				<li><a th:href="@{'https://streamindia.herokuapp.com/apk/movietime.apk'}">APK</a></li>
 			</ul>
 		</div>
@@ -85,6 +86,10 @@
 			<div class="custom-control custom-radio custom-control-inline">
 			  <input type="radio" class="custom-control-input" id="defaultInline2" name="searchType" value="person">
 			  <label class="custom-control-label" for="defaultInline2">Person</label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+			  <input type="radio" class="custom-control-input" id="defaultInline3" name="searchType" value="tv">
+			  <label class="custom-control-label" for="defaultInline3">TV</label>
 			</div>
 	      <input type="search" placeholder="Search here" name="query"/>
 	      <input type="submit" value="FIND"/>

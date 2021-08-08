@@ -144,7 +144,7 @@ and
 
 	<header>
 		<section id="parallex" class="parallax-window"
-			th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.movie.backdrop_path} + ') center center;width: 100%;'">
+			th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.tvShows.backdrop_path} + ') center center;width: 100%;'">
 			<div class="container-fluid h-100">
 				<div
 					class="row align-items-center justify-content-center h-100 parallaxt-details">
@@ -153,40 +153,39 @@ and
 							<a href="javascript:void(0);">
 								<h1 class="slider-text big-title title text-uppercase"
 									data-animation-in="fadeInLeft" data-delay-in="0.6"
-									th:text="${movie.movie.title}" style="font-size: 35px;"></h1>
+									th:text="${movie.tvShows.original_title}" style="font-size: 35px;"></h1>
 							</a>
 							<div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
 								<div class="rate">
-									<svg class="circle-chart" viewBox="0 0 30 30" width="40"
-										height="40" xmlns="http://www.w3.org/2000/svg">
-                    <circle class="circle-chart__background"
-											stroke="#2f3439" stroke-width="2" fill="none" cx="15" cy="15"
-											r="14"></circle>
-                    <circle class="circle-chart__circle"
-											stroke="#4eb04b" stroke-width="2"
-											th:attr="stroke-dasharray=${(movie.movie.vote_average * 10) + ',100'}"
-											cx="15" cy="15" r="14"></circle>
-                  </svg>
-									<b th:text="${movie.movie.vote_average}">5.4</b> <span
+									<svg class="circle-chart" viewBox="0 0 30 30" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+					                    <circle class="circle-chart__background"
+																stroke="#2f3439" stroke-width="2" fill="none" cx="15" cy="15"
+																r="14"></circle>
+					                    <circle class="circle-chart__circle"
+																stroke="#4eb04b" stroke-width="2"
+																th:attr="stroke-dasharray=${(movie.tvShows.vote_average * 10) + ',100'}"
+																cx="15" cy="15" r="14"></circle>
+					                  </svg>
+									<b th:text="${movie.tvShows.vote_average}">5.4</b> <span
 										style="margin-left: 10px; vertical-align: text-top;">IMDB
 										SCORE</span>
 								</div>
 							</div>
-							<div class="tags" th:text="${movie.movie.genrics}"></div>
+							<div class="tags" th:text="${movie.tvShows.genrics}"></div>
 							<div class="movie-time d-flex align-items-center mb-3"
 								style="margin-top: 10px;">
 								Release Date : &nbsp;&nbsp;
-								<h6 class="text-white" th:text="${movie.movie.release_date}">2h
+								<h6 class="text-white" th:text="${movie.tvShows.first_air_date}">2h
 									30m</h6>
 							</div>
 							<div class="movie-time d-flex align-items-center mb-3"
 								style="margin-top: 10px;">
 								Run Time : &nbsp;&nbsp;
-								<h6 class="text-white" th:text="${movie.movie.convertRunTime}">2h
+								<h6 class="text-white" th:text="${movie.tvShows.convertRunTime}">2h
 									30m</h6>
 
 							</div>
-							<p th:text="${movie.movie.overview}"></p>
+							<p th:text="${movie.tvShows.overview}"></p>
 							<div class="parallax-buttons">
 								<a href="#movietrailers" class="btn btn-success">Trailers</a> <a
 									href="#playmovie" class="btn btn-hover">Play Now</a> <a
@@ -197,7 +196,7 @@ and
 					<div class="col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6">
 						<div class="parallax-img">
 							<a href="javascript:void(0)"> <img
-								th:src="${'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.movie.poster_path}"
+								th:src="${'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.tvShows.poster_path}"
 								class="img-fluid w-100" alt="bailey" style="height: 510px;">
 							</a>
 						</div>
@@ -233,8 +232,9 @@ and
 		</section>
 
 		<section id="playmovie" class="parallax-window"
-			th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.movie.backdrop_path} + ') center center;width: 100%;'">
+			th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.tvShows.backdrop_path} + ') center center;width: 100%;'">
 			<div class="container-fluid h-100">
+				
 				<div
 					class="row align-items-center justify-content-center h-100 parallaxt-details">
 					<div class="col-12"
@@ -243,24 +243,27 @@ and
 							<h2>Play Movie</h2>
 						</div>
 					</div>
+					
+					<div class="col-lg-6">
+						<select id="seasonNumber" class="form-control" style="width: 100%;line-height: 10px;" name="seasonNumber" onchange="iframeVideo('season')">
+				        	<option th:each="season : ${seasons}" th:value="${season.season_number}" th:text="${season.name}"></option>
+				      	</select>
+				    </div>
+						    
+					<div class="col-lg-6">
+						<select id="episodeNumber" class="form-control replaceepisodes" style="width: 100%;line-height: 10px;" name="episodeNumber" onchange="iframeVideo('episode')">
+				        	<option th:each="episode : ${episodes}" th:value="${episode.episode_number}" th:text="${episode.name}"></option>
+				      	</select>
+				    </div>
+					
+					
 					<div class="col-lg-12">
-						<div class="text-center video-play">
-							<iframe th:src="${movie.movie.movieLink}"
+						<div class="text-center video-play" style="margin-top: 20px;">
+							<iframe th:src="${movie.tvShows.movieLink}" id="newvideo"
 								style="height: 520px; width: 100%" sandboxscrolling="no"
-								frameborder="0" allowfullscreen="true" id="newvideo"
+								frameborder="0" allowfullscreen="true"
 								webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
 						</div>
-						
-						<div class="parallax-buttons" style="text-align: center;">
-								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('1')">Server 1</a> <a
-									href="javascript:void(0);" class="btn btn-success" onClick="newVideo('2')">Server 2</a>
-							</div>
-						
-						
-						<!-- <div class="text-center video-thumbnail">
-							<img
-								th:src="${'http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + movie.movie.backdrop_path}">
-						</div> -->
 					</div>
 				</div>
 			</div>
@@ -344,10 +347,20 @@ and
 		src="https://www.videoplayerhtml5.com/youtubeandvimeo/js/youtubeVimeoWithPlaylist.js"
 		type="text/javascript"></script>
 	<script type="text/javascript" th:inline="javascript">
-	var movie = [[${movie.movie}]];
-	function newVideo(type) {
-		var movieLink = type == '1' ? movie.movieLink : movie.movieLink2;
-		$("#newvideo").attr('src', movieLink);
+	var showId = [[${movieId}]];
+	
+	
+	function iframeVideo(type) {
+		var seasonNumber = $("#seasonNumber").val();
+		var episodeNumber = $("#episodeNumber").val();
+		if(type == 'season') {
+			$.get("/getepisodes/all?showId=" + showId + "&seasonNumber=" + seasonNumber + "&episodeNumber=" + episodeNumber, function(response) {
+				$(".replaceepisodes").html(response);
+				$("#newvideo").attr('src',"https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + 1);
+			});
+		} else {
+			$("#newvideo").attr('src',"https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + episodeNumber);
+		}	
 	}
 	
 	

@@ -2,6 +2,7 @@
   <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6" th:each="person: ${persons}">
     <div class="video-thumb light">
       <figure class="video-image">
+      <div class="circle-rate" style="top: 10px;left: 10px;width: 100%;font-size: 11px;" th:text="${person.name}">Lokesh</div>
       <div class="circle-rate">
       	<div class="play-btn"><a th:href="${'/category/porn?categoryType=' + person.personMoviesLink}" data-toggle="tooltip" data-placement="top" th:attr="title=${person.name}">+</a></div> 
       </div>

@@ -31,24 +31,22 @@ public class JsoupServiceImpl implements JsoupService {
 	@Autowired
 	ServletContext context;
 
-	private final String CINEVEZLINK = "https://cinevez.net/";
-	private final String MOVIERULZLINK = "https://4movierulz.ph/";
+	private final String CINEVEZLINK = "https://cinevez.biz/";
+	private final String MOVIERULZLINK = "https://ww3.moviesrulz.net/";
 
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect(MOVIERULZLINK + "category/" + movieType + "/page/" + pageIndex + "/")
+			Document doc = Jsoup.connect(MOVIERULZLINK + movieType + "/page/" + pageIndex + "/")
 					.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("boxed");
-			int movieindex = 1;
 			for (Element element : elements) {
-				if (movieindex > 2) {
 					Element link = element.select("a").first();
 					String linkHref = link.attr("href");
 					String movieLink = linkHref.split(MOVIERULZLINK)[1].trim();
-					String finalMovieLink = movieLink.substring(0, movieLink.length() - 1);
+					String finalMovieLink = movieLink.substring(0, movieLink.length());
 					Element movieimage = element.select("img").first();
 					String image = movieimage.absUrl("src");
 					String movieName = element.select("b").first().text();
@@ -64,8 +62,6 @@ public class JsoupServiceImpl implements JsoupService {
 						Integer popularity = getPersonRandomNumber(10000, 200000);
 						movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, popularity.toString()));
 					}
-				}
-				movieindex++;
 			}
 			return movies;
 		} catch (Exception e) {
@@ -173,7 +169,7 @@ public class JsoupServiceImpl implements JsoupService {
 					.validateTLSCertificates(false).get();
 			Element documentbody = document.body();
 			Elements elements2 = documentbody.getElementsByClass("entry-content");
-			Element movieimage = elements2.select("img").first();
+			Element movieimage = documentbody.getElementsByClass("wp-post-image").select("img").first();
 			String image = movieimage.absUrl("src");
 			URLConnection urlConnection = new URL(image).openConnection();
 			urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");

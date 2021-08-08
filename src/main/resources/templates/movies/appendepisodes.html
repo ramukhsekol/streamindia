@@ -1,0 +1,4 @@
+
+<select id="episodeNumber" class="form-control" style="width: 100%; line-height: 10px;" name="episodeNumber" onchange="iframeVideo('episode')">
+	<option th:each="episode : ${episodes}" th:value="${episode.episode_number}" th:text="${episode.name}"></option>
+</select>

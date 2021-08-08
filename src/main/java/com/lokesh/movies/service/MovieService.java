@@ -9,6 +9,7 @@ import com.lokesh.movies.domain.Languages;
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.domain.MovieGenres;
 import com.lokesh.movies.domain.Person;
+import com.lokesh.movies.domain.TvEpisodes;
 import com.lokesh.movies.dto.MovieTrailers;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -21,6 +22,14 @@ public interface MovieService {
 	public Person getPersonByPersonId(String personId) throws UnirestException;
 	public List<Movie> getMoviesByPersonId(String queryId) throws UnirestException;
 	public List<Languages> getMovieLanguages() throws UnirestException;
-	public String getMovieTicketByMovieIdAndTicketId(String imdb_id, String ipAddress) throws UnirestException;
+	public MovieTrailers getTvShowDetailsByShowId(String movieId, String type) throws UnirestException;
+	public List<TvEpisodes> getTvEpisodesByShowIdAndSeasonId(String movieId, Integer season_number) throws UnirestException;
+	
+	
+	/*
+	 * public String getMovieTicketByMovieIdAndTicketId(String imdb_id, String
+	 * ipAddress) throws UnirestException;
+	 */
+	
 
 }

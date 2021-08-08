@@ -40,7 +40,6 @@
             <p class="description" th:text="${movie.overview}"></p>
             <a th:href="${'/trailers?movieId='+movie.id}" class="play-btn" style="margin-right: 4px;">TRAILER</a> 
             <a href="javascript:void(0)" class="details-btn" th:onclick="'javascript:playmovie(' + ${movie.id} + ')'" style="margin-right: 4px;">MOVIE</a> 
-            <!-- <a href="account.html" class="add-btn">+</a> </div> -->
           <!-- end container --> 
         </div>
       </div>
@@ -53,16 +52,16 @@
 
 <div th:replace="fragments/scriptfile :: scriptfile"></div>
 <script type="text/javascript">
-	var ipAddress = "";
+/* 	var ipAddress = "";
 	$(function() {
 		$.get("https://ipapi.co/json/", function(response) {
 			console.log(response);
 			ipAddress = response.ip;
 		});
 	});	
-	
+	 */
 	function playmovie(movieId) {
-		window.location.href="/movie/details?movieId=" + movieId + "&ipAddress=" + ipAddress;
+		window.location.href="/movie/details?movieId=" + movieId;
 	}
 </script>
 <script type="text/javascript" th:inline="javascript">

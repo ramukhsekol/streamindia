@@ -5,6 +5,7 @@ import java.util.List;
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.domain.MovieCastCrew;
 import com.lokesh.movies.domain.Trailer;
+import com.lokesh.movies.domain.TvShows;
 
 public class MovieTrailers {
 
@@ -12,6 +13,7 @@ public class MovieTrailers {
 	private List<Trailer> trailers;
 	private List<MovieCastCrew> casts;
 	private List<MovieCastCrew> crews;
+	private TvShows tvShows;
 
 	public Movie getMovie() {
 		return movie;
@@ -43,6 +45,14 @@ public class MovieTrailers {
 
 	public void setCrews(List<MovieCastCrew> crews) {
 		this.crews = crews;
+	}
+
+	public TvShows getTvShows() {
+		return tvShows;
+	}
+
+	public void setTvShows(TvShows tvShows) {
+		this.tvShows = tvShows;
 	}
 
 }

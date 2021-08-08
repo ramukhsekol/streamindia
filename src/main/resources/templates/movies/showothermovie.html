@@ -9,6 +9,12 @@
 .slider .main-slider .swiper-slide .container .name {
 	font-size: 50px !important;
 }
+
+.navbar.scrolled {
+  background-color: #111!important;
+  transition: background-color 200ms linear;
+}
+
 .big-title {
     background: url(../moviedetails/images/texure.jpg);
     background-repeat: repeat-x;
@@ -136,7 +142,7 @@
                  <div class="col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6">
                     <div class="parallax-img">
                        <a href="javascript:void(0)">
-                       	<img th:src="${'data:image/jpeg;base64,' + movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 530px;">
+                       	<img th:src="${'data:image/jpeg;base64,' + movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 510px;">
                        </a>
                     </div>
                  </div>
@@ -200,6 +206,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.19/jquery.touchSwipe.min.js" type="text/javascript"></script>
 <script src="https://www.videoplayerhtml5.com/youtubeandvimeo/js/youtubeVimeoWithPlaylist.js" type="text/javascript"></script>
 <script>
+$(function () {
+	  $(document).scroll(function () {
+	    var $nav = $(".navbar");
+	    $nav.toggleClass('scrolled', $(this).scrollTop() >= $nav.height());
+	  });
+	});
+
+
 jQuery(function() {
 	jQuery('#youtubeVimeoWithPlaylist_default').youtubeVimeoWithPlaylist({
 		width: 964,

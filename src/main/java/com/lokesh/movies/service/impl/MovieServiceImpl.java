@@ -19,6 +19,8 @@ import com.lokesh.movies.domain.MovieCastCrew;
 import com.lokesh.movies.domain.MovieGenres;
 import com.lokesh.movies.domain.Person;
 import com.lokesh.movies.domain.Trailer;
+import com.lokesh.movies.domain.TvEpisodes;
+import com.lokesh.movies.domain.TvShows;
 import com.lokesh.movies.dto.MovieTrailers;
 import com.lokesh.movies.service.MovieService;
 import com.lokesh.movies.util.MovieUtil;
@@ -68,17 +70,6 @@ public class MovieServiceImpl implements MovieService {
 		return person;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	@Override
 	public MovieTrailers getMovieDetailsByMovieId(String movieId, String pageType) throws UnirestException {
 		HttpResponse<String> response = Unirest.get("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + MovieUtil.apiKey).asString();
@@ -182,13 +173,59 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public String getMovieTicketByMovieIdAndTicketId(String movieId, String ipAddress) throws UnirestException {
-		try {
-			HttpResponse<String> response = Unirest.get("https://videospider.in/getticket.php?key=" + MovieUtil.userKey + "&secret_key=" + MovieUtil.secretKey + "&video_id=" + movieId + "&ip=" + ipAddress).asString();
-			return response.getBody();
-		}catch (Exception e) {
-			return null;
-		}
+	public MovieTrailers getTvShowDetailsByShowId(String movieId, String pageType) throws UnirestException {
+		HttpResponse<String> response = Unirest.get("https://api.themoviedb.org/3/tv/" + movieId + "?api_key=" + MovieUtil.apiKey).asString();
+		HttpResponse<JsonNode> jsonResponse = Unirest.get("https://api.themoviedb.org/3/tv/" + movieId + "/videos?api_key=" + MovieUtil.apiKey).asJson();
+		HttpResponse<JsonNode> castCrewResponse = Unirest.get("https://api.themoviedb.org/3/tv/"+movieId+"/credits?api_key=" + MovieUtil.apiKey).asJson();
+		JSONArray casts = castCrewResponse.getBody().getObject().getJSONArray("cast");
+		JSONArray crews = castCrewResponse.getBody().getObject().getJSONArray("crew");
+		Gson gson = new Gson();
 		
+		JSONArray trailers = jsonResponse.getBody().getObject().getJSONArray("results");
+		Type type = new TypeToken<TvShows>() {}.getType();
+		Type trailer = new TypeToken<List<Trailer>>() {}.getType();
+		
+		Type cast = new TypeToken<List<MovieCastCrew>>() {}.getType();
+		List<MovieCastCrew> movieCasts = gson.fromJson(casts.toString(), cast);
+		
+		Type crew = new TypeToken<List<MovieCastCrew>>() {}.getType();
+		List<MovieCastCrew> movieCrews = gson.fromJson(crews.toString(), crew);
+		
+		TvShows movie = gson.fromJson(response.getBody(), type);
+		if(movie != null && movie.getGenres() != null && movie.getGenres().size() > 0) {
+			String genres =  movie.getGenres().stream().map(MovieGenres::getName).collect(Collectors.joining(", "));
+			movie.setGenrics(genres);
+		}
+
+		List<Trailer> movieTrailers = gson.fromJson(trailers.toString(), trailer);
+		if (movieTrailers != null && movieTrailers.size() > 0 && movieTrailers.size() == 1 && !pageType.equalsIgnoreCase("show")) {
+			movieTrailers.addAll(movieTrailers);
+		}
+		MovieTrailers movieTrailer = new MovieTrailers();
+		movieTrailer.setTvShows(movie);
+		movieTrailer.setTrailers(MovieUtil.getTvTrailers(movieTrailers, movie));
+		movieTrailer.setCasts(movieCasts);
+		movieTrailer.setCrews(movieCrews);
+		return movieTrailer;
 	}
+
+	@Override
+	public List<TvEpisodes> getTvEpisodesByShowIdAndSeasonId(String showId, Integer season_number) throws UnirestException {
+		String url = "https://api.themoviedb.org/3/tv/"+showId+"/season/"+season_number+"?api_key=" + MovieUtil.apiKey;
+		HttpResponse<JsonNode> jsonResponse = Unirest.get(url).asJson();
+		JSONArray jsonArray = jsonResponse.getBody().getObject().getJSONArray("episodes");
+		Gson gson = new Gson();
+		Type type = new TypeToken<List<TvEpisodes>>() {}.getType();
+		List<TvEpisodes> tvEpisodes = gson.fromJson(jsonArray.toString(), type);
+		return tvEpisodes;
+	}
+
+	/*
+	 * @Override public String getMovieTicketByMovieIdAndTicketId(String movieId,
+	 * String ipAddress) throws UnirestException { try { HttpResponse<String>
+	 * response = Unirest.get("https://videospider.in/getticket.php?key=" +
+	 * MovieUtil.userKey + "&secret_key=" + MovieUtil.secretKey + "&video_id=" +
+	 * movieId + "&ip=" + ipAddress).asString(); return response.getBody(); }catch
+	 * (Exception e) { return null; } }
+	 */
 }

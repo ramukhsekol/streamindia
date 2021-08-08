@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,14 +67,22 @@ public class MovieRestController {
 		if (movie != null && movie.getMovie() != null && movie.getMovie().getRuntime() != null) {
 			movie.getMovie().setConvertRunTime(MovieUtil.convertMovieTiming(movie.getMovie().getRuntime()));
 		}
-		String movieTicket = movieService.getMovieTicketByMovieIdAndTicketId(movie.getMovie().getImdb_id(), ipAddress);
-		if (StringUtils.hasText(movieTicket)) {
-			movie.getMovie().setMovieLink("https://videospider.stream/getvideo?key=" + MovieUtil.userKey + "&video_id="
-					+ movie.getMovie().getImdb_id() + "&ticket=" + movieTicket);
-		} else {
-			movie.getMovie().setMovieLink("https://streamvideo.link/getvideo?key=" + MovieUtil.userKey + "&video_id="
-					+ movie.getMovie().getImdb_id());
-		}
+		movie.getMovie().setMovieLink("https://www.2embed.ru/embed/imdb/movie?id=" + movie.getMovie().getImdb_id());
+		movie.getMovie().setMovieLink2("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
+		
+		
+		
+		
+		/*
+		 * String movieTicket =
+		 * movieService.getMovieTicketByMovieIdAndTicketId(movie.getMovie().getImdb_id()
+		 * , ipAddress); if (StringUtils.hasText(movieTicket)) {
+		 * movie.getMovie().setMovieLink("https://videospider.stream/getvideo?key=" +
+		 * MovieUtil.userKey + "&video_id=" + movie.getMovie().getImdb_id() + "&ticket="
+		 * + movieTicket); } else {
+		 * movie.getMovie().setMovieLink("https://streamvideo.link/getvideo?key=" +
+		 * MovieUtil.userKey + "&video_id=" + movie.getMovie().getImdb_id()); }
+		 */
 		return new ResponseEntity<Object>(movie, HttpStatus.OK);
 	}
 

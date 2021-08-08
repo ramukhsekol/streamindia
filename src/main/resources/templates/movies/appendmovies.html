@@ -1,4 +1,4 @@
-<div class="row" th:if="${searchType == 'movie'}">
+<div class="row" th:if="${searchType == 'movie' || searchType == 'tv'}">
   <div class="col-xl-2 col-lg-12 col-md-4 col-sm-12 col-12" th:each="movie: ${movies}">
     <div class="video-thumb light">
       <figure class="video-image">
@@ -99,17 +99,18 @@ $(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
 </script>
-<script type="text/javascript">
-	var ipAddress = "";
+<script type="text/javascript" th:inline="javascript">
+var searchType = [[${searchType}]];
+/* 	var ipAddress = "";
 	$(function() {
 		$.get("https://ipapi.co/json/", function(response) {
 			console.log(response);
 			ipAddress = response.ip;
 		});
-	});	
+	}); */	
 	
 	function playmovie(movieId) {
-		window.location.href="/movie/details?movieId=" + movieId + "&ipAddress=" + ipAddress;
+		window.location.href="/movie/details?movieId=" + movieId + "&searchType=" + searchType;
 	}
 </script>
 
