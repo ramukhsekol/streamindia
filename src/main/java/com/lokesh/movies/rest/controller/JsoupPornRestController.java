@@ -56,8 +56,8 @@ public class JsoupPornRestController {
 	}
 	
 	@GetMapping(value = "/porn/movie")
-	public ResponseEntity<Movie> pornMovie(@RequestParam String movieLink) throws UnirestException, UnsupportedEncodingException {
-		Movie movie = jsoupService.getParticularPornMovieDetailsByMovieLink(movieLink);
+	public ResponseEntity<Movie> pornMovie(@RequestParam String movieLink, @RequestParam String type) throws UnirestException, UnsupportedEncodingException {
+		Movie movie = jsoupService.getParticularPornMovieDetailsByMovieLink(movieLink, type);
 		return new ResponseEntity<Movie>(movie, HttpStatus.OK);
 	}
 }

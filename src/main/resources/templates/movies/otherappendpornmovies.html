@@ -100,13 +100,14 @@ $(function () {
 //<![CDATA[
 	
 	var isFive = [[${isFive}]];
+	var type = [[${type}]];
 	
 	$(".readlink").on('click', function() {
 		var link = $(this).data('id');
-		if(isFive) {
+		if(isFive && type != 'romance') {
 			lity(link);
 		} else {
-			$.get("/porn/movie?movieLink=" + link, function(response) {
+			$.get("/porn/movie?movieLink=" + link + "&type=" + type, function(response) {
 				lity(response.movieLink);
 			});
 		}	

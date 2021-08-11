@@ -116,14 +116,18 @@
 								placeholder="Search Genre" style="width: 100%;">
 						</div>
 					</div>
-
-					<div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-6 main"
-						th:each="genre : ${movieGenres}">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<a th:href="@{'/genres?movieType=movie'}" class="btn btn-primary">Movie</a>
+					<a th:href="@{'/genres?movieType=tv'}" class="btn btn-primary">Web Series</a>
+					</div>
+					
+					
+					<div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 col-6 main" th:each="genre : ${movieGenres}">
 						<div class="parallax-img">
 							<div style="display: none;" th:inline="text">[[${genre.name}]]</div>
-							<a th:href="${'/movies/genre?genericId=' + genre.id}"> <img
+							<a th:href="${'/movies/genre?genericId=' + genre.id + '&searchType=' + searchType}"> <img
 								th:src="${'/genres/' + genre.name + '.png'}"
-								class="img-fluid w-100" alt="bailey">
+								class="img-fluid w-100" th:attr="alt=${genre.name}">
 							</a>
 						</div>
 					</div>

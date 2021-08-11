@@ -45,10 +45,10 @@
 			<ul>
 				<li><a th:href="@{'/home'}" th:style="'color:' + ${title=='home'?'red':'white'} + ';'">HOME</a></li>
 				<li><a th:href="@{'/movies'}" th:style="'color:' + ${title=='movies'?'red':'white'} + ';'">MOVIES</a></li>
-				<li><a th:href="@{'/genres'}" th:style="'color:' + ${title=='genres'?'red':'white'} + ';'">GENRES</a></li>
+				<li><a th:href="@{'/shows'}" th:style="'color:' + ${title=='shows'?'red':'white'} + ';'">WEB SERIES</a></li>
+				<li><a th:href="@{'/genres?movieType=movie'}" th:style="'color:' + ${title=='genres'?'red':'white'} + ';'">GENRES</a></li>
 				<li><a th:href="@{'/persons'}" th:style="'color:' + ${title=='persons'?'red':'white'} + ';'">PERSONS</a></li>
 				<li><a th:href="@{'/languages'}" th:style="'color:' + ${title=='languages'?'red':'white'} + ';'">LANGUAGES</a></li>
-				<li><a th:href="@{'/shows'}" th:style="'color:' + ${title=='shows'?'red':'white'} + ';'">TV SHOWS</a></li>
 				<li><a th:href="@{'/others'}" th:style="'color:' + ${title=='others'?'red':'white'} + ';'">OTHER</a></li>
 				<li><a th:href="@{'https://streamindia.herokuapp.com/apk/movietime.apk'}">APK</a></li>
 			</ul>
@@ -80,16 +80,15 @@
 	    <form th:action="@{'/movies/search'}" method="get">
 	    	<div class="custom-control custom-radio custom-control-inline">
 			  <input type="radio" class="custom-control-input" id="defaultInline1" name="searchType" value="movie" checked="checked">
-			  <label class="custom-control-label" for="defaultInline1">Movie</label>
-			</div>
-			
-			<div class="custom-control custom-radio custom-control-inline">
-			  <input type="radio" class="custom-control-input" id="defaultInline2" name="searchType" value="person">
-			  <label class="custom-control-label" for="defaultInline2">Person</label>
+			  <label class="custom-control-label" for="defaultInline1">MOVIE</label>
 			</div>
 			<div class="custom-control custom-radio custom-control-inline">
 			  <input type="radio" class="custom-control-input" id="defaultInline3" name="searchType" value="tv">
-			  <label class="custom-control-label" for="defaultInline3">TV</label>
+			  <label class="custom-control-label" for="defaultInline3">WEB SERIES</label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+			  <input type="radio" class="custom-control-input" id="defaultInline2" name="searchType" value="person">
+			  <label class="custom-control-label" for="defaultInline2">PERSON</label>
 			</div>
 	      <input type="search" placeholder="Search here" name="query"/>
 	      <input type="submit" value="FIND"/>

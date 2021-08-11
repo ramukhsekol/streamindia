@@ -33,10 +33,8 @@
               <li>
                 <div class="hd">4K <b>ULTRA HD</b></div>
               </li>
-              <li>
-                <div class="tags" th:text="${movie.genrics}">Romance, Action</div>
-              </li>
             </ul>
+            <p class="tags" th:text="${movie.genrics}" style="color:#ff0018;font-weight: 600;">Romance, Action</p>
             <p class="description" th:text="${movie.overview}"></p>
             <a th:href="${'/trailers?movieId='+movie.id}" class="play-btn" style="margin-right: 4px;">TRAILER</a> 
             <a href="javascript:void(0)" class="details-btn" th:onclick="'javascript:playmovie(' + ${movie.id} + ')'" style="margin-right: 4px;">MOVIE</a> 

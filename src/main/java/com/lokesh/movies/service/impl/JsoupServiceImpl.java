@@ -389,20 +389,73 @@ public class JsoupServiceImpl implements JsoupService {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Movie> getAllRomanceJsoupPornMoviesByIndex(String movieLink) {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
+					.validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementsByClass("post-preview");
+			for (Element element : elements) {
+				Element elements2 = element.select("a").first();
+				Element movieimage = element.select("img").first();
+				String image = movieimage.absUrl("data-src");
+				if (!StringUtils.hasText(image)) {
+					image = movieimage.absUrl("src");
+				}
+				URLConnection urlConnection = new URL(image).openConnection();
+				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+				urlConnection.setReadTimeout(5000);
+				urlConnection.setConnectTimeout(5000);
+
+				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+				String timming = element.select("p").text();
+				String name = element.getElementsByClass("preview-title").text();
+				String finalMovieLink = elements2.attr("href").trim();
+				movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, timming));
+			}
+			return movies;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	@Override
-	public Movie getParticularPornMovieDetailsByMovieLink(String movieLink) {
+	public Movie getParticularPornMovieDetailsByMovieLink(String movieLink, String type) {
 		try {
 			Movie movie = new Movie();
 			movie.setVote_average(6.7);
 			Document document = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
 					.validateTLSCertificates(false).get();
 			Element bodydoc = document.body();
-			Element iframeElement = bodydoc.getElementsByClass("video-container").select("iframe").first();
+			Element iframeElement = null;
+			if(type.equalsIgnoreCase("romance")) {
+				iframeElement = bodydoc.getElementById("post").select("iframe").first();
+			} else {
+				iframeElement = bodydoc.getElementsByClass("video-container").select("iframe").first();
+			}
+			
 			String moviePlayLink = iframeElement.absUrl("src");
-			Integer movieLength = moviePlayLink.length();
-			String spiltData = moviePlayLink.substring(34, movieLength);
-			movie.setMovieLink(spiltData);
+			if(type.equalsIgnoreCase("romance")) {
+				movie.setMovieLink(moviePlayLink);
+			} else {
+				Integer movieLength = moviePlayLink.length();
+				String spiltData = moviePlayLink.substring(34, movieLength);
+				movie.setMovieLink(spiltData);
+			}
+			
+			
 			return movie;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -605,5 +658,7 @@ public class JsoupServiceImpl implements JsoupService {
 	private  int getPersonRandomNumber(int min, int max) {
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
+
+	
 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -17,7 +18,9 @@ import com.lokesh.movies.domain.Languages;
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.domain.MovieCastCrew;
 import com.lokesh.movies.domain.MovieGenres;
+import com.lokesh.movies.domain.MovieImages;
 import com.lokesh.movies.domain.Person;
+import com.lokesh.movies.domain.ShowImdb;
 import com.lokesh.movies.domain.Trailer;
 import com.lokesh.movies.domain.TvEpisodes;
 import com.lokesh.movies.domain.TvShows;
@@ -50,8 +53,8 @@ public class MovieServiceImpl implements MovieService {
 	}
 	
 	@Override
-	public List<MovieGenres> getMovieGenries() throws UnirestException {
-		String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=" + MovieUtil.apiKey;
+	public List<MovieGenres> getMovieGenries(String movieType) throws UnirestException {
+		String url = "https://api.themoviedb.org/3/genre/"+movieType+"/list?api_key=" + MovieUtil.apiKey;
 		HttpResponse<JsonNode> jsonResponse = Unirest.get(url).asJson();
 		JSONArray jsonArray = jsonResponse.getBody().getObject().getJSONArray("genres");
 		Gson gson = new Gson();
@@ -72,35 +75,38 @@ public class MovieServiceImpl implements MovieService {
 	
 	@Override
 	public MovieTrailers getMovieDetailsByMovieId(String movieId, String pageType) throws UnirestException {
-		HttpResponse<String> response = Unirest.get("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + MovieUtil.apiKey).asString();
-		HttpResponse<JsonNode> jsonResponse = Unirest.get("https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=" + MovieUtil.apiKey).asJson();
-		HttpResponse<JsonNode> castCrewResponse = Unirest.get("https://api.themoviedb.org/3/movie/"+movieId+"/credits?api_key=" + MovieUtil.apiKey).asJson();
-		JSONArray casts = castCrewResponse.getBody().getObject().getJSONArray("cast");
-		JSONArray crews = castCrewResponse.getBody().getObject().getJSONArray("crew");
+		HttpResponse<JsonNode> response = Unirest.get("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + MovieUtil.apiKey + "&append_to_response=videos,images,credits").asJson();
 		Gson gson = new Gson();
-		
-		JSONArray trailers = jsonResponse.getBody().getObject().getJSONArray("results");
 		Type type = new TypeToken<Movie>() {}.getType();
+		Movie movie = gson.fromJson(response.getBody().toString(), type);
+		if(movie != null && movie.getGenres() != null && movie.getGenres().size() > 0) {
+			String genres =  movie.getGenres().stream().map(MovieGenres::getName).collect(Collectors.joining(", "));
+			movie.setGenrics(genres);
+		}
+		JSONArray trailers = response.getBody().getObject().getJSONObject("videos").getJSONArray("results");
 		Type trailer = new TypeToken<List<Trailer>>() {}.getType();
+		List<Trailer> movieTrailers = gson.fromJson(trailers.toString(), trailer);
+		if (movieTrailers != null && movieTrailers.size() > 0 && movieTrailers.size() == 1 && !pageType.equalsIgnoreCase("show")) {
+			movieTrailers.addAll(movieTrailers);
+		}
+		
+		JSONArray casts = response.getBody().getObject().getJSONObject("credits").getJSONArray("cast");
+		JSONArray crews = response.getBody().getObject().getJSONObject("credits").getJSONArray("crew");
 		
 		Type cast = new TypeToken<List<MovieCastCrew>>() {}.getType();
 		List<MovieCastCrew> movieCasts = gson.fromJson(casts.toString(), cast);
 		
 		Type crew = new TypeToken<List<MovieCastCrew>>() {}.getType();
 		List<MovieCastCrew> movieCrews = gson.fromJson(crews.toString(), crew);
-		Movie movie = gson.fromJson(response.getBody(), type);
-		if(movie != null && movie.getGenres() != null && movie.getGenres().size() > 0) {
-			String genres =  movie.getGenres().stream().map(MovieGenres::getName).collect(Collectors.joining(", "));
-			movie.setGenrics(genres);
-		}
-
-		List<Trailer> movieTrailers = gson.fromJson(trailers.toString(), trailer);
-		if (movieTrailers != null && movieTrailers.size() > 0 && movieTrailers.size() == 1 && !pageType.equalsIgnoreCase("show")) {
-			movieTrailers.addAll(movieTrailers);
-		}
+		
+		JSONArray images = response.getBody().getObject().getJSONObject("images").getJSONArray("posters");
+		
+		Type image = new TypeToken<List<MovieImages>>() {}.getType();
+		List<MovieImages> movieImages = gson.fromJson(images.toString(), image);
+		
 		MovieTrailers movieTrailer = new MovieTrailers();
 		movieTrailer.setMovie(movie);
-		movieTrailer.setTrailers(MovieUtil.getMovieTrailers(movieTrailers, movie));
+		movieTrailer.setTrailers(MovieUtil.getMovieTrailers(movieTrailers, movieImages, movie));
 		movieTrailer.setCasts(movieCasts);
 		movieTrailer.setCrews(movieCrews);
 		return movieTrailer;
@@ -118,7 +124,7 @@ public class MovieServiceImpl implements MovieService {
 					url = "https://api.themoviedb.org/3/"+SearchType+"/popular?api_key=" + MovieUtil.apiKey + "&page=" + pageIndex;
 				}
 			} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("generic")) {
-				url = "https://api.themoviedb.org/3/discover/movie?api_key=" + MovieUtil.apiKey + "&page=" + pageIndex + "&with_genres=" + queryId +"&sort_by=popularity.desc";
+				url = "https://api.themoviedb.org/3/discover/"+SearchType+"?api_key=" + MovieUtil.apiKey + "&page=" + pageIndex + "&with_genres=" + queryId +"&sort_by=popularity.desc";
 			} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("person")) {
 				url = "https://api.themoviedb.org/3/" + SearchType + "/popular?api_key=" + MovieUtil.apiKey + "&page=" + pageIndex;
 			} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("personMovies")) {
@@ -136,7 +142,7 @@ public class MovieServiceImpl implements MovieService {
 	
 	@Override
 	public List<Movie> getMoviesByPersonId(String personId) throws UnirestException {
-		String url = "https://api.themoviedb.org/3/person/" + personId + "/movie_credits?api_key=" + MovieUtil.apiKey;
+		String url = "https://api.themoviedb.org/3/person/" + personId + "/combined_credits?api_key=" + MovieUtil.apiKey;
 		HttpResponse<JsonNode> jsonResponse = Unirest.get(url).asJson();
 		JSONArray cast = jsonResponse.getBody().getObject().getJSONArray("cast");
 		JSONArray crew = jsonResponse.getBody().getObject().getJSONArray("crew");
@@ -218,6 +224,17 @@ public class MovieServiceImpl implements MovieService {
 		Type type = new TypeToken<List<TvEpisodes>>() {}.getType();
 		List<TvEpisodes> tvEpisodes = gson.fromJson(jsonArray.toString(), type);
 		return tvEpisodes;
+	}
+
+	@Override
+	public ShowImdb getImdbByShowId(String showId) throws UnirestException {
+		String url = "https://api.themoviedb.org/3/tv/"+showId+"/external_ids?api_key=" + MovieUtil.apiKey;
+		HttpResponse<JsonNode> jsonResponse = Unirest.get(url).asJson();
+		JSONObject jsonObject = jsonResponse.getBody().getObject();
+		Gson gson = new Gson();
+		Type type = new TypeToken<ShowImdb>() {}.getType();
+		ShowImdb showImdb = gson.fromJson(jsonObject.toString(), type);
+		return showImdb;
 	}
 
 	/*

@@ -15,15 +15,28 @@ public class MovieLinkTest {
 
 	public static void main(String[] args) {
 		try {
-			Document doc = Jsoup.connect("https://pornone.com/indian/nuru-massage-episode/277309265/").userAgent("Mozilla/5.0").timeout(10000)
+			Document doc = Jsoup.connect("https://yespornpleasexxx.com/luna-star-and-kissa-sins-butts-in-sync/").userAgent("Mozilla/5.0").timeout(10000)
 					.validateTLSCertificates(false).get();
 			Element body = doc.body();
-			System.out.println(body);
+			// System.out.println(body);
+			
+			Element iframeElement1 = body.getElementById("post").select("iframe").first();
+			String moviePlayLink1 = iframeElement1.absUrl("src");
+			System.out.println(moviePlayLink1);
+			
+			Element iframeElement = body.getElementsByClass("iframe-container").select("iframe").first();
+			String moviePlayLink = iframeElement.absUrl("src");
+			System.out.println(moviePlayLink);
+			Integer movieLength = moviePlayLink.length();
+			String spiltData = moviePlayLink.substring(34, movieLength);
+			System.out.println(spiltData);
+			
+			
 			
 
-			Elements elements = body.getElementsByClass("video");
+			Elements elements = body.getElementsByClass("iframe-container");
 			for (Element element : elements) {
-				// System.out.println(element);
+				System.out.println(element);
 				Element elements2 = element.select("a").first();
 				String aHref = elements2.attr("href");
 				Element movieimage = element.select("img").first();
@@ -31,8 +44,8 @@ public class MovieLinkTest {
 				if (!StringUtils.hasText(image)) {
 					image = movieimage.absUrl("src");
 				}
-				String count = element.getElementsByClass("time").text();
-				String name = element.getElementsByClass("cwrap").text();
+				String count = element.select("p").text();
+				String name = element.getElementsByClass("preview-title").text();
 
 				System.out.println(name + " " + count + " " + image + " " + aHref);
 

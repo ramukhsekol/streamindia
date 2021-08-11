@@ -265,6 +265,12 @@ and
 								webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
 						</div>
 					</div>
+					
+					<div class="parallax-buttons" style="text-align: center;">
+						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('1')">Server 1</a> 
+						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('2')">Server 2</a>
+					</div>
+					
 				</div>
 			</div>
 		</section>
@@ -348,7 +354,15 @@ and
 		type="text/javascript"></script>
 	<script type="text/javascript" th:inline="javascript">
 	var showId = [[${movieId}]];
-	
+	var imdbId = [[${imdbId}]];
+	function newVideo(type) {
+		var seasonNumber = $("#seasonNumber").val();
+		var episodeNumber = $("#episodeNumber").val();
+		var movieLink = type == '1' ? "https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + episodeNumber : 
+			"https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
+		alert(movieLink);
+		$("#newvideo").attr('src', movieLink);
+	}
 	
 	function iframeVideo(type) {
 		var seasonNumber = $("#seasonNumber").val();

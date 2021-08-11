@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.lokesh.movies.domain.Movie;
+import com.lokesh.movies.domain.MovieImages;
 import com.lokesh.movies.domain.Trailer;
 import com.lokesh.movies.domain.TvShows;
 
@@ -40,6 +41,15 @@ public class MovieUtil {
 		movieGenrics.put(53L, "Thriller");
 		movieGenrics.put(10752L, "War");
 		movieGenrics.put(37L, "Western");
+		movieGenrics.put(10759L, "Action & Adventure");
+		movieGenrics.put(10762L, "Kids");
+		movieGenrics.put(10763L, "News");
+		movieGenrics.put(10764L, "Reality");
+		movieGenrics.put(10765L, "Sci-Fi & Fantasy");
+		movieGenrics.put(10766L, "Soap");
+		movieGenrics.put(10767L, "Talk");
+		movieGenrics.put(10768L, "War & Politics");
+		
 		
 		movieLanguages.put(1, "TELUGU");
 		movieLanguages.put(2, "HINDI");
@@ -71,11 +81,22 @@ public class MovieUtil {
 		return movieLanguages;
 	}
 
-	public static List<Trailer> getMovieTrailers(List<Trailer> movieTrailers, Movie movie) {
+	public static List<Trailer> getMovieTrailers(List<Trailer> movieTrailers, List<MovieImages> movieImages, Movie movie) {
 		if(movieTrailers != null && movieTrailers.size() > 0) {
 			for(int i = 0; i<movieTrailers.size() ; i++) {
-				String imagePath = i % 2 == 0 ? movie.getBackdrop_path() : movie.getPoster_path();
-				movieTrailers.get(i).setImage_path(imagePath);
+				if(movieImages.size() >= movieTrailers.size()) {
+					movieTrailers.get(i).setImage_path(movieImages.get(i).getFile_path());
+				} else {
+					if(movieImages.get(i) == null) {
+						if(movieImages.size() >=2) {
+							String imagePath = i % 2 == 0 ? movieImages.get(0).getFile_path() : movieImages.get(1).getFile_path();
+							movieTrailers.get(i).setImage_path(imagePath);
+						} else {
+							String imagePath = i % 2 == 0 ? movie.getBackdrop_path() : movie.getPoster_path();
+							movieTrailers.get(i).setImage_path(imagePath);
+						}
+					}
+				}
 			}
 		}
 		return movieTrailers;

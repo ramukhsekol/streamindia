@@ -22,7 +22,7 @@ public class MovieGenriesRestController {
 	
 	@GetMapping(value = "/genres")
 	public ResponseEntity<List<MovieGenres>> genres(Model model) throws UnirestException {
-		List<MovieGenres> movieGenres = movieService.getMovieGenries();
+		List<MovieGenres> movieGenres = movieService.getMovieGenries("movie");
 		return new ResponseEntity<List<MovieGenres>>(movieGenres, HttpStatus.OK);
 	}
 }

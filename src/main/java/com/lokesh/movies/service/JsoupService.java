@@ -12,7 +12,7 @@ public interface JsoupService {
 	List<Movie> getAllJsoupMoviesByIndex(String movieUrl, String pageIndex);
 	Movie getParticularMovieDetailsByMovieId(String movieId);
 	List<Movie> getAllJsoupPornMoviesByIndex(String movieLink);
-	Movie getParticularPornMovieDetailsByMovieLink(String movieLink);
+	Movie getParticularPornMovieDetailsByMovieLink(String movieLink, String type);
 	List<Movie> getAllJsoupPornFullMoviesByIndex();
 	boolean generateJsonFile(List<Movie> movies);
 	List<Movie> getAllJsoupPornJsonMoviesByIndex();
@@ -20,5 +20,6 @@ public interface JsoupService {
 	List<Movie> getAllJsoupSearchMoviesByIndex(String search, String pageIndex);
 	List<Person> getPornCategoriesByIndex(String pageIndex);
 	List<Movie> getPornCategoryMoviesByIndex(String categoryType, String pageIndex);
+	List<Movie> getAllRomanceJsoupPornMoviesByIndex(String movieLink);
 
 }

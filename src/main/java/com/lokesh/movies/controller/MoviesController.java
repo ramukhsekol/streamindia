@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.domain.Person;
+import com.lokesh.movies.domain.ShowImdb;
 import com.lokesh.movies.domain.TvEpisodes;
 import com.lokesh.movies.domain.TvSeasons;
 import com.lokesh.movies.dto.MovieTrailers;
@@ -72,16 +74,22 @@ public class MoviesController {
 	}
 	
 	@GetMapping(value = "/movies/genre")
-	public String moviesByGeneric(@RequestParam String genericId, Model model) throws UnirestException {
+	public String moviesByGeneric(@RequestParam String genericId, @RequestParam String searchType, Model model) throws UnirestException {
 		List<Long> genricIds = new ArrayList<>();
 		genricIds.add(Long.parseLong(genericId));
 		String genericName = MovieUtil.getMovieGenries(genricIds);
+		if(StringUtils.hasText(genericName) && genericName.equalsIgnoreCase("TV Movie")) {
+			genericName = "Series";
+		}
+		
+		
+		
 		
 		model.addAttribute("type", "generic"); // generic
 		model.addAttribute("queryId", genericId); // genericId
 		model.addAttribute("query", ""); // nothing
 		model.addAttribute("queryKey", "Generic Name"); // text display Generic Name
-		model.addAttribute("searchType", "movie"); // searchType is movie
+		model.addAttribute("searchType", searchType); // searchType is movie
 		model.addAttribute("genericName", genericName); // Display Name generic name what user choose
 		model.addAttribute("title", "genres");
 		return "movies/movies";
@@ -126,7 +134,7 @@ public class MoviesController {
 	@GetMapping(value = "/movies/all")
 	public String moviesByIndex(@RequestParam String pageIndex, @RequestParam String type, @RequestParam String query, @RequestParam String queryId, @RequestParam String searchType, Model model) throws UnirestException, UnsupportedEncodingException {
 		if(searchType.equalsIgnoreCase("movie") && type.equalsIgnoreCase("personMovies") && pageIndex.equalsIgnoreCase("1")) {
-			List<Movie> movies = movieService.getMoviesByPersonId(queryId);
+			List<Movie> movies = movieService.getMoviesByPersonId(queryId).stream().map(m -> {m.setMedia_id(m.getMedia_type().equalsIgnoreCase("movie")?1:0); return m;}).collect(Collectors.toList());;
 			model.addAttribute("movies", movies);
 		} else if(!type.equalsIgnoreCase("personMovies")) {
 			JSONArray jsonArray = movieService.getMoviesByIndexOrSearchOrGeneric(pageIndex, type, query, queryId,  searchType);
@@ -146,6 +154,7 @@ public class MoviesController {
 			}
 		}
 		model.addAttribute("searchType", searchType);
+		model.addAttribute("type", type);
 		return "movies/appendmovies";
 	}
 	
@@ -153,6 +162,8 @@ public class MoviesController {
 	public String showMovie(@RequestParam String movieId, @RequestParam String searchType, Model model) throws UnirestException, UnsupportedEncodingException {
 		if(searchType.equalsIgnoreCase("tv")) {
 			MovieTrailers movie = movieService.getTvShowDetailsByShowId(movieId, "show");
+			ShowImdb showImdb = movieService.getImdbByShowId(movieId);
+			
 			if(movie !=null && movie.getTvShows() != null && !movie.getTvShows().getEpisode_run_time().isEmpty()) {
 				movie.getTvShows().setConvertRunTime(MovieUtil.convertMovieTiming(movie.getTvShows().getEpisode_run_time().get(0)));
 			}
@@ -163,7 +174,10 @@ public class MoviesController {
 				if(tvSeasons != null && !tvSeasons.isEmpty()) {
 					List<TvEpisodes> tvEpisodes = movieService.getTvEpisodesByShowIdAndSeasonId(movieId, tvSeasons.get(0).getSeason_number()).stream().sorted(Comparator.comparingInt(TvEpisodes::getEpisode_number)).collect(Collectors.toList());;
 					movie.getTvShows().setMovieLink("https://www.2embed.ru/embed/tmdb/tv?id=" + movie.getTvShows().getId() + "&s=" + tvSeasons.get(0).getSeason_number() + "&e=" + tvEpisodes.get(0).getEpisode_number()); 
-					
+					if(showImdb != null && StringUtils.hasText(showImdb.getImdb_id())) {
+						movie.getTvShows().setMovieLink2("https://gomostream.com/show/"+showImdb.getImdb_id()+"/" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number()); 
+						model.addAttribute("imdbId",  showImdb.getImdb_id());
+					}
 					model.addAttribute("seasons", tvSeasons);
 					model.addAttribute("episodes", tvEpisodes);
 					model.addAttribute("search", new SeasonEpisode(tvSeasons.get(0).getSeason_number(), tvEpisodes.get(0).getEpisode_number()));

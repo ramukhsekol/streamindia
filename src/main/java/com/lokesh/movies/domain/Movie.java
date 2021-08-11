@@ -40,6 +40,9 @@ public class Movie implements Serializable {
 	private String writer;
 	private String voteAverage;
 	private String timming;
+	private String media_type;
+	private String name;
+	private Integer media_id;
 
 	public Movie() {
 		super();
@@ -284,6 +287,30 @@ public class Movie implements Serializable {
 
 	public void setTimming(String timming) {
 		this.timming = timming;
+	}
+
+	public String getMedia_type() {
+		return media_type;
+	}
+
+	public void setMedia_type(String media_type) {
+		this.media_type = media_type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getMedia_id() {
+		return media_id;
+	}
+
+	public void setMedia_id(Integer media_id) {
+		this.media_id = media_id;
 	}
 
 }

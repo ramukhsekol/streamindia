@@ -121,9 +121,9 @@
 
 
 .col-xl-2 {
-    -ms-flex: 0 0 20%;
-    flex: 0 0 20%;
-    max-width: 20%;
+    -ms-flex: 0 0 15%;
+    flex: 0 0 15%;
+    max-width: 15%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -147,8 +147,8 @@
 	<header>
 		<section id="parallex" class="parallax-window"
 			style="background: url(../moviedetails/images/texure.jpg);">
-			<div class="container-fluid h-100" style="margin-top: 50px;">
-				<div class="row h-100 parallaxt-details">
+			<div class="container-fluid h-60" style="margin-top: 20px;">
+				<div class="row h-60 parallaxt-details">
 					<!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div class="form-group">
 			    <input type="text" class="form-control search-input" placeholder="Search" style="width: 100%;">
@@ -183,6 +183,12 @@
 						<h3 class="name"
 							style="text-align: center; font-size: 19px; font-weight: bolder; margin-bottom: 30px; margin-top: 30px;">ADULT</h3>
 					</div>
+					
+					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main">
+						<div class="parallax-img card">
+							<a th:href="${'/others/movies/adult?type=' + 'romance'}" th:inline="text" class="card-body">Romance</a>
+						</div>
+					</div>
 
 					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main"
 						th:each="movieCountry : ${movieCountries}" data-filter-item
@@ -210,14 +216,14 @@
 					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main">
 						<div class="parallax-img card">
 							<a th:href="${'/others/porn/stars'}" th:inline="text"
-								class="card-body">Porn Stars</a>
+								class="card-body">Stars</a>
 						</div>
 					</div>
 					
 					<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 main">
 						<div class="parallax-img card">
 							<a th:href="${'/others/porn/categories'}" th:inline="text"
-								class="card-body">Porn Categories</a>
+								class="card-body">Categories</a>
 						</div>
 					</div>
 

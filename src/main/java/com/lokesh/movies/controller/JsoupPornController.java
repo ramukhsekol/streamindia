@@ -43,16 +43,21 @@ public class JsoupPornController {
 		} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("full")) {
 			model.addAttribute("isFive", true);
 			movies = jsoupService.getAllJsoupPornJsonMoviesByIndex();
+		} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("romance")) {
+			model.addAttribute("isFive", true);
+			String movieLink = "https://yespornpleasexxx.com/brazzers-2/page/" + pageIndex + "/";
+			movies = jsoupService.getAllRomanceJsoupPornMoviesByIndex(movieLink);
 		}
 		
 		model.addAttribute("movies", movies);
+		model.addAttribute("type", type);
 		return "movies/otherappendpornmovies";
 	}
 	
 	@GetMapping(value = "/porn/movie")
 	@ResponseBody
-	public Movie pornMovie(@RequestParam String movieLink) throws UnirestException, UnsupportedEncodingException {
-		Movie movie = jsoupService.getParticularPornMovieDetailsByMovieLink(movieLink);
+	public Movie pornMovie(@RequestParam String movieLink, @RequestParam String type) throws UnirestException, UnsupportedEncodingException {
+		Movie movie = jsoupService.getParticularPornMovieDetailsByMovieLink(movieLink, type);
 		return movie;
 	}
 	
