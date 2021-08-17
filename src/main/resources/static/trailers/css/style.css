@@ -352,22 +352,7 @@ button {
 	overflow-y: hidden;
 	position: relative;
 }
-/* input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]), select, textarea {
-	display: block;
-	width: 100%;
-	background: none;
-	border: none;
-	border-bottom: 1px solid #d4d5da;
-	line-height: 72px;
-	height: 72px;
-	font-size: 14px;
-	letter-spacing: .56px;
-	color: #fff;
-	font-weight: 400;
-	padding: 0 30px;
-	outline: none !important;
-	font-family: 'Montserrat', sans-serif;
-} */
+
 ::-webkit-input-placeholder {
 	color: #949fab;
 }
@@ -381,118 +366,11 @@ button {
 	color: #949fab;
 }
 label {
-	line-height: 24px;
-	font-size: 14px;
-	letter-spacing: .56px;
-	color: #949fab;
-	font-weight: 400;
-	position: absolute;
-	top: 24px;
-	left: 30px;
-	transition: .25s;
-	cursor: text;
-}
-input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]):focus + label, textarea:focus + label {
-	-webkit-transform: translateY(-100%);
-	transform: translateY(-100%);
-}
-.form-group.has-content label {
-	-webkit-transform: translateY(-100%);
-	transform: translateY(-100%);
-}
-textarea {
-	height: auto;
-	line-height: 24px;
-	padding: 24px 30px;
-}
-.form-group {
-	margin-bottom: 72px;
-	position: relative;
-}
-.form-group.textarea {
-	margin-bottom: 28px;
-}
-.contact-form {
-	margin-top: 96px;
-	text-align: left;
-}
-.alert {
-	font-size: 14px;
-	line-height: 47px;
-	border-radius: 3px;
-	padding: 0 16px; 
-	margin-bottom: 9px;
-	font-weight: 400;
-	text-transform: none;
-}
-.alert i {
-	font-size: 18px;
-	margin-right: 12px;
-	vertical-align: middle;
-}
-.alert a {
-	font-weight: 400;
-}
-.alert-success {
-	background: #d9efd8;
-	border: 1px solid #d8d8d8;
-	color: #6dc068;
-}
-.alert-info {
-	background: #f5f7f8;
-	color: #a1b1bc;
-	border: 1px solid #d8d8d8;
-}
-.alert-warning {
-	background: #fcf8e3;
-	color: #8a6d3b;
-}
-.alert-danger {
-	background: #f2dede;
-	color: #b84442;
-}
-.form-alert {
-	display: none;
-	margin-top: 24px;
-	margin-bottom: 0;
-}
-.nivo-lightbox-close {
-	top: 45px;
-	right: 35px;
-}
-.nivo-lightbox-theme-default .nivo-lightbox-close {
-	background: url(../images/close.png) no-repeat 5px 5px;
-	width: 18px;
-	height: 18px;
-}
-@media all and (max-width: 768px) {
-	h1 {
-		font-size: 50px;
-		line-height: 50px;
-		letter-spacing: 5px;
-	}
-	.button-row .button {
-		margin-bottom: 12px;
-	}
-	.button-row {
-		margin-bottom: 0;
-	}
-	.nivo-lightbox-close {
-		top: 50%;
-	}
-}
-@media all and (max-width: 415px) {
-	.nivo-lightbox-close {
-		right: 25px;
-	}
-	.nivo-lightbox-wrap {
-		top: 50%;
-		bottom: auto;
-		left: 5%;
-		right: 5%;
-		-webkit-transform: translateY(-50%);
-		transform: translateY(-50%);
-	}
+    line-height: 24px;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    cursor: text;
 }
 
 /* ==========================================================================

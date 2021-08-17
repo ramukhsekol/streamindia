@@ -81,10 +81,6 @@ public class MoviesController {
 		if(StringUtils.hasText(genericName) && genericName.equalsIgnoreCase("TV Movie")) {
 			genericName = "Series";
 		}
-		
-		
-		
-		
 		model.addAttribute("type", "generic"); // generic
 		model.addAttribute("queryId", genericId); // genericId
 		model.addAttribute("query", ""); // nothing
@@ -192,6 +188,12 @@ public class MoviesController {
 			if(movie !=null && movie.getMovie() != null && movie.getMovie().getRuntime() != null) {
 				movie.getMovie().setConvertRunTime(MovieUtil.convertMovieTiming(movie.getMovie().getRuntime()));
 			}
+			if(movie.getCrews() != null && !movie.getCrews().isEmpty()) {
+				String director = movie.getCrews().stream().filter(m -> m.getJob().equalsIgnoreCase("Director")).map(d -> d.getName()).collect(Collectors.joining(", "));
+				String producer = movie.getCrews().stream().filter(m -> m.getJob().equalsIgnoreCase("Producer")).map(d -> d.getName()).collect(Collectors.joining(", "));
+				model.addAttribute("director", director);
+				model.addAttribute("producer", producer);
+			}
 			movie.getMovie().setMovieLink("https://www.2embed.ru/embed/imdb/movie?id=" + movie.getMovie().getImdb_id());
 			movie.getMovie().setMovieLink2("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
 			
@@ -220,3 +222,7 @@ public class MoviesController {
 		 * MovieUtil.userKey + "&video_id=" + movie.getMovie().getImdb_id()); }
 		 */
 }
+
+/*
+ * https://www.omdbapi.com/?i=tt9140554&apikey=6c3a2d45
+ */

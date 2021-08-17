@@ -3,9 +3,15 @@
     <div class="video-thumb light">
       <figure class="video-image" style="border-radius: 8px;">
       <div class="circle-rate">
-      	<div class="play-btn"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" 
+      	<div class="bwa-content">
+            <div class="loader"></div>
+            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" 
       	th:onclick="'javascript:playmovie(\'' + ${movie.id} +'\',\''+ ${movie.media_id} + '\');'"
-      	th:attr="title=${type == 'personMovies' ? (movie.media_type == 'tv' ? movie.name : movie.title) : movie.title}">+</a></div> 
+      	th:attr="title=${type == 'personMovies' ? (movie.media_type == 'tv' ? movie.name : movie.title) : movie.title}" class="bwac-btn" title="Click to play">
+              <i class="fa fa-play"></i>
+            </a>
+        </div>
+      	
       </div>
       <img th:src="${movie.poster_path != null?'https://image.tmdb.org/t/p/w220_and_h330_face' + movie.poster_path:'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}" alt="Image"
       th:style="${movie.poster_path != null ? 'height: 300px;border-radius:8px;' : 'height: 300px;border-radius:8px;'}" >
@@ -26,7 +32,12 @@
     <div class="video-thumb light">
       <figure class="video-image" style="border-radius: 8px;">
       <div class="circle-rate">
-      	<div class="play-btn"><a th:href="${'/person/movies?personId=' + person.id}" data-toggle="tooltip" data-placement="top" th:attr="title=${person.name}">+</a></div> 
+      <div class="bwa-content">
+            <div class="loader"></div>
+            <a class="bwac-btn" th:href="${'/person/movies?personId=' + person.id}" data-toggle="tooltip" data-placement="top" th:attr="title=${person.name}">
+              <i class="fa fa-eye" style="left: 10px;"></i>
+            </a>
+        </div>
       </div>
       <img th:src="${person.profile_path != null?'https://image.tmdb.org/t/p/w220_and_h330_face' + person.profile_path:'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg'}" alt="Image" th:style="${person.profile_path != null ? 'height: 300px;border-radius:8px;' : 'height: 300px;border-radius:8px;'}" >
         <div class="circle-rate">
@@ -94,6 +105,139 @@ height: 333px!important;
 
 
 </style>
+<style>
+ .bwa-content {
+    text-align: center;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    position: absolute;
+}
+.loader {
+    width: 110px;
+    height: 110px;
+    line-height: 110px;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 0;
+    position: absolute;
+    top: 62%;
+    margin-top: -186px;
+    left: 24%;
+    margin-left: -154px;
+}
+.loader:before, .loader:after {
+    opacity: 0;
+    box-sizing: border-box;
+    content: "\0020";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    border: 5px solid #fff;
+    box-shadow: 0 0 50px #fff, inset 0 0 50px #fff;
+}
+
+.loader:before {
+    z-index: 2;
+    -webkit-animation: gogoloader 2s infinite;
+    -moz-animation: gogoloader 2s infinite;
+    -o-animation: gogoloader 2s infinite;
+    animation: gogoloader 2s infinite;
+}
+.loader:after {
+    z-index: 1;
+    -webkit-animation: gogoloader 2s infinite 1s;
+    -moz-animation: gogoloader 2s infinite 1s;
+    -o-animation: gogoloader 2s infinite 1s;
+    animation: gogoloader 2s infinite 1s;
+}
+
+.bwa-content .bwac-btn {
+    width: 50px;
+    height: 50px;
+    color: #fff;
+    border-radius: 50%;
+    background: #F48625;
+    position: absolute;
+    top: 63%;
+    margin-top: -158px;
+    left: 50%;
+    margin-left: -124px;
+    border: 5px solid #fff;
+    display: inline-block;
+    box-shadow: 0 0 40px 5px #f8aa0c;
+}
+
+ .bwa-content .bwac-btn:before {
+    content: "";
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%) inset;
+}
+
+ .bwa-content .bwac-btn i {
+    font-size: 22px;
+    position: absolute;
+    top: 9px;
+    left: 15px;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+.fa-play:before {
+    content: "\f04b";
+}
+
+ .bwa-content .bwac-btn:after {
+    content: "";
+    position: absolute;
+    bottom: -40px;
+    width: 120px;
+    text-align: center;
+    left: 50%;
+    margin-left: -60px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+@-webkit-keyframes gogoloader{ 0%{ -webkit-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -webkit-transform: scale(1); opacity: 0; }
+}
+@-moz-keyframes gogoloader{ 0%{ -moz-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -moz-transform: scale(1); opacity: 0; }
+}
+@-o-keyframes gogoloader{
+	0%{ -o-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -o-transform: scale(1); opacity: 0; }
+}
+@keyframes gogoloader{
+	0%{ transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ transform: scale(1); opacity: 0; }
+}
+
+</style>
+
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>

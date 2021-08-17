@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<style>
-</style>
 <div th:fragment="menuheader">
 	<nav class="mobile-menu">
 	<div class="logo">
@@ -78,18 +76,19 @@
 	
 	<section class="search-box">
 	  <div class="container">
+	  <a href="javascript:void(0)" onClick="closePopup()" title="Close" class="search-pop-up-close">X</a>
 	    <form th:action="@{'/movies/search'}" method="get">
 	    	<div class="custom-control custom-radio custom-control-inline">
-			  <input type="radio" class="custom-control-input" id="defaultInline1" name="searchType" value="movie" checked="checked">
-			  <label class="custom-control-label" for="defaultInline1">MOVIE</label>
+			  <input type="radio" class="radio-inline" id="defaultInline1" name="searchType" value="movie" checked="checked" s>
+			  <label class="radio-inline" for="defaultInline1">MOVIE</label>
 			</div>
 			<div class="custom-control custom-radio custom-control-inline">
-			  <input type="radio" class="custom-control-input" id="defaultInline3" name="searchType" value="tv">
-			  <label class="custom-control-label" for="defaultInline3">WEB SERIES</label>
+			  <input type="radio" class="radio-inline" id="defaultInline3" name="searchType" value="tv">
+			  <label class="radio-inline" for="defaultInline3">WEB SERIES</label>
 			</div>
 			<div class="custom-control custom-radio custom-control-inline">
-			  <input type="radio" class="custom-control-input" id="defaultInline2" name="searchType" value="person">
-			  <label class="custom-control-label" for="defaultInline2">PERSON</label>
+			  <input type="radio" class="radio-inline" id="defaultInline2" name="searchType" value="person">
+			  <label class="radio-inline" for="defaultInline2">PERSON</label>
 			</div>
 	      <input type="search" placeholder="Search here" name="query"/>
 	      <input type="submit" value="FIND"/>

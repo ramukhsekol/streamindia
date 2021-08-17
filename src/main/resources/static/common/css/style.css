@@ -181,12 +181,12 @@ input[type="radio"] {
   margin-right: 4px;
   transform: translateY(3px);
   appearance: none;
-  background: #ededed;
   border-radius: 50%;
+  border: 2px solid #fd7e14;
 }
 
 input[type="radio"]:checked {
-  border: 6px solid #111111;
+  border: 6px solid #2662a2;
 }
 
 input[type="checkbox"] {
@@ -197,6 +197,7 @@ input[type="checkbox"] {
   transform: translateY(3px);
   appearance: none;
   background: #ededed;
+  border: 6px solid #2662a2;
 }
 
 input[type="checkbox"]:checked {

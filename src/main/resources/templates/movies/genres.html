@@ -92,6 +92,14 @@
 	max-width: 20%;
 }
 
+label {
+    line-height: 24px;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    cursor: text;
+}
+
 @media only screen and (max-width: 600px) {
 	.col-xl-2 {
 		-ms-flex: 0 0 100%;
@@ -117,8 +125,8 @@
 						</div>
 					</div>
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-					<a th:href="@{'/genres?movieType=movie'}" class="btn btn-primary">Movie</a>
-					<a th:href="@{'/genres?movieType=tv'}" class="btn btn-primary">Web Series</a>
+					<a th:href="@{'/genres?movieType=movie'}" class="btn" th:classappend="${searchType == 'movie'} ? 'btn-success' : 'btn-primary'" style="width: 50%">Movie</a>
+					<a th:href="@{'/genres?movieType=tv'}" class="btn" th:classappend="${searchType == 'tv'} ? 'btn-success' : 'btn-primary'" style="width: 49.6%">Web Series</a>
 					</div>
 					
 					

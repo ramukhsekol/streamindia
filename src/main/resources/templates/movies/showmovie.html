@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org" >
 <head th:replace="fragments/header :: header"></head>
 <link rel="stylesheet" th:href="@{/moviedetails/css/typography.css}">
 <link rel="stylesheet" th:href="@{/moviedetails/css/responsive.css}" />
@@ -10,6 +10,138 @@
 <link
 	href="https://www.videoplayerhtml5.com/youtubeandvimeo/youtubeVimeoWithPlaylist.css"
 	rel="stylesheet" type="text/css">
+<style>
+ .bwa-content {
+    text-align: center;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    position: absolute;
+}
+.loader {
+    width: 180px;
+    height: 180px;
+    line-height: 180px;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 0;
+    position: absolute;
+    top: 62%;
+    margin-top: -150px;
+    left: 24%;
+    margin-left: -295px;
+}
+.loader:before, .loader:after {
+    opacity: 0;
+    box-sizing: border-box;
+    content: "\0020";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    border: 5px solid #fff;
+    box-shadow: 0 0 50px #fff, inset 0 0 50px #fff;
+}
+
+.loader:before {
+    z-index: 2;
+    -webkit-animation: gogoloader 2s infinite;
+    -moz-animation: gogoloader 2s infinite;
+    -o-animation: gogoloader 2s infinite;
+    animation: gogoloader 2s infinite;
+}
+.loader:after {
+    z-index: 1;
+    -webkit-animation: gogoloader 2s infinite 1s;
+    -moz-animation: gogoloader 2s infinite 1s;
+    -o-animation: gogoloader 2s infinite 1s;
+    animation: gogoloader 2s infinite 1s;
+}
+
+.bwa-content .bwac-btn {
+    width: 120px;
+    height: 120px;
+    color: #fff;
+    border-radius: 50%;
+    background: #F48625;
+    position: absolute;
+    top: 63%;
+    margin-top: -122px;
+    left: 50%;
+    margin-left: -266px;
+    border: 5px solid #fff;
+    display: inline-block;
+    box-shadow: 0 0 40px 5px #f8aa0c;
+}
+
+ .bwa-content .bwac-btn:before {
+    content: "";
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%) inset;
+}
+
+ .bwa-content .bwac-btn i {
+    font-size: 60px;
+    position: absolute;
+    top: 24px;
+    left: 35px;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+.fa-play:before {
+    content: "\f04b";
+}
+
+ .bwa-content .bwac-btn:after {
+    content: "Click to play";
+    position: absolute;
+    bottom: -40px;
+    width: 120px;
+    text-align: center;
+    left: 50%;
+    margin-left: -60px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+@-webkit-keyframes gogoloader{ 0%{ -webkit-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -webkit-transform: scale(1); opacity: 0; }
+}
+@-moz-keyframes gogoloader{ 0%{ -moz-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -moz-transform: scale(1); opacity: 0; }
+}
+@-o-keyframes gogoloader{
+	0%{ -o-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -o-transform: scale(1); opacity: 0; }
+}
+@keyframes gogoloader{
+	0%{ transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ transform: scale(1); opacity: 0; }
+}
+
+</style>	
+	
+	
 <style>
 .slider .main-slider .swiper-slide .container .name {
 	font-size: 50px !important;
@@ -118,6 +250,14 @@
 	text-shadow: 0px 0px 30px #007bff;
 }
 
+label {
+    line-height: 24px;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    cursor: text;
+}
+
 @media
 only
 screen
@@ -150,11 +290,9 @@ and
 					class="row align-items-center justify-content-center h-100 parallaxt-details">
 					<div class="col-lg-7 r-mb-23">
 						<div class="text-left">
-							<a href="javascript:void(0);">
 								<h1 class="slider-text big-title title text-uppercase"
 									data-animation-in="fadeInLeft" data-delay-in="0.6"
 									th:text="${movie.movie.title}" style="font-size: 35px;"></h1>
-							</a>
 							<div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
 								<div class="rate">
 									<svg class="circle-chart" viewBox="0 0 30 30" width="40"
@@ -186,6 +324,20 @@ and
 									30m</h6>
 
 							</div>
+							<div class="movie-time d-flex align-items-center mb-3"
+								style="margin-top: 10px;">
+								Director : &nbsp;&nbsp;
+								<h6 class="text-white" th:text="${director}">2h
+									30m</h6>
+
+							</div>
+							<div class="movie-time d-flex align-items-center mb-3"
+								style="margin-top: 10px;">
+								Producer : &nbsp;&nbsp;
+								<h6 class="text-white" th:text="${producer}">2h
+									30m</h6>
+
+							</div>
 							<p th:text="${movie.movie.overview}"></p>
 							<div class="parallax-buttons">
 								<a href="#movietrailers" class="btn btn-success">Trailers</a> <a
@@ -196,10 +348,13 @@ and
 					</div>
 					<div class="col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6">
 						<div class="parallax-img">
-							<a href="javascript:void(0)"> <img
-								th:src="${'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.movie.poster_path}"
-								class="img-fluid w-100" alt="bailey" style="height: 510px;border-radius:20px;">
-							</a>
+							<img th:src="${'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 510px;border-radius:20px;">
+							<div class="bwa-content">
+			                    <div class="loader"></div>
+			                    <a href="#playmovie" class="bwac-btn" title="Click to play">
+			                      <i class="fa fa-play"></i>
+			                    </a>
+	                       	</div>
 						</div>
 					</div>
 				</div>
