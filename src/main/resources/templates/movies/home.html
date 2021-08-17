@@ -6,6 +6,136 @@
     font-size: 50px!important;
 }
 </style>
+<style>
+ .bwa-content {
+    text-align: center;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    position: absolute;
+}
+.loader {
+    width: 180px;
+    height: 180px;
+    line-height: 180px;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 0;
+    position: absolute;
+    top: 62%;
+    margin-top: -150px;
+    left: 24%;
+    margin-left: -295px;
+}
+.loader:before, .loader:after {
+    opacity: 0;
+    box-sizing: border-box;
+    content: "\0020";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    border: 5px solid #fff;
+    box-shadow: 0 0 50px #fff, inset 0 0 50px #fff;
+}
+
+.loader:before {
+    z-index: 2;
+    -webkit-animation: gogoloader 2s infinite;
+    -moz-animation: gogoloader 2s infinite;
+    -o-animation: gogoloader 2s infinite;
+    animation: gogoloader 2s infinite;
+}
+.loader:after {
+    z-index: 1;
+    -webkit-animation: gogoloader 2s infinite 1s;
+    -moz-animation: gogoloader 2s infinite 1s;
+    -o-animation: gogoloader 2s infinite 1s;
+    animation: gogoloader 2s infinite 1s;
+}
+
+.bwa-content .bwac-btn {
+    width: 120px;
+    height: 120px;
+    color: #fff;
+    border-radius: 50%;
+    background: #F48625;
+    position: absolute;
+    top: 63%;
+    margin-top: -122px;
+    left: 50%;
+    margin-left: -266px;
+    border: 5px solid #fff;
+    display: inline-block;
+    box-shadow: 0 0 40px 5px #f8aa0c;
+}
+
+ .bwa-content .bwac-btn:before {
+    content: "";
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%) inset;
+}
+
+ .bwa-content .bwac-btn i {
+    font-size: 60px;
+    position: absolute;
+    top: 24px;
+    left: 35px;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+.fa-play:before {
+    content: "\f04b";
+}
+
+ .bwa-content .bwac-btn:after {
+    content: "Click to play";
+    position: absolute;
+    bottom: -40px;
+    width: 120px;
+    text-align: center;
+    left: 50%;
+    margin-left: -60px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+@-webkit-keyframes gogoloader{ 0%{ -webkit-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -webkit-transform: scale(1); opacity: 0; }
+}
+@-moz-keyframes gogoloader{ 0%{ -moz-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -moz-transform: scale(1); opacity: 0; }
+}
+@-o-keyframes gogoloader{
+	0%{ -o-transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ -o-transform: scale(1); opacity: 0; }
+}
+@keyframes gogoloader{
+	0%{ transform: scale(0); opacity: 0; }
+	50%{ opacity: 1; }
+	100%{ transform: scale(1); opacity: 0; }
+}
+
+</style>
 <body>
 <nav th:replace="fragments/menuheader :: menuheader"> </nav>
 
@@ -17,6 +147,8 @@
           <div class="container" data-swiper-parallax="200">
             <h6 class="tagline">NEW RELEASES</h6>
             <h2 class="name" th:text="${movie.title}">Movie Name</h2>
+            <div class="row">
+            <div class="col-md-6">
             <ul class="features">
               <li>
                 <div class="rate">
@@ -36,14 +168,28 @@
             </ul>
             <p class="tags" th:text="${movie.genrics}" style="color:#ff0018;font-weight: 600;">Romance, Action</p>
             <p class="description" th:text="${movie.overview}"></p>
+            </div>
+            <div class="col-md-6">
+            <div style="float: right;">
+            	<div class="bwa-content">
+                    <div class="loader"></div>
+                    <a href="javascript:void(0)" th:onclick="'javascript:playmovie(' + ${movie.id} + ')'" class="bwac-btn" title="Click to play">
+                      <i class="fa fa-play"></i>
+                    </a>
+                 </div>
+            </div>
+            </div>
+            </div>
+            
             <a th:href="${'/trailers?movieId='+movie.id}" class="play-btn" style="margin-right: 4px;">TRAILER</a> 
-            <a href="javascript:void(0)" class="details-btn" th:onclick="'javascript:playmovie(' + ${movie.id} + ')'" style="margin-right: 4px;">MOVIE</a> 
+            <!-- <a href="javascript:void(0)" class="details-btn"  style="margin-right: 4px;">MOVIE</a>  -->
           <!-- end container --> 
         </div>
       </div>
 
     </div>
     <!-- <div class="swiper-pagination"></div> -->
+  </div>
   </div>
 </header>
 
