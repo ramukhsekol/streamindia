@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lokesh.movies.domain.MovieGenres;
+import com.lokesh.movies.dto.Genries;
 import com.lokesh.movies.service.MovieService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -21,8 +22,12 @@ public class MovieGenriesRestController {
 @Autowired private MovieService movieService;
 	
 	@GetMapping(value = "/genres")
-	public ResponseEntity<List<MovieGenres>> genres(Model model) throws UnirestException {
+	public ResponseEntity<Genries> genres(Model model) throws UnirestException {
 		List<MovieGenres> movieGenres = movieService.getMovieGenries("movie");
-		return new ResponseEntity<List<MovieGenres>>(movieGenres, HttpStatus.OK);
+		List<MovieGenres> tvGenres = movieService.getMovieGenries("tv");
+		Genries genries = new Genries();
+		genries.setMovieGenres(movieGenres);
+		genries.setTvGenres(tvGenres);
+		return new ResponseEntity<Genries>(genries, HttpStatus.OK);
 	}
 }

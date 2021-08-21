@@ -50,18 +50,19 @@ public class MovieUtil {
 		movieGenrics.put(10767L, "Talk");
 		movieGenrics.put(10768L, "War & Politics");
 		
-		
 		movieLanguages.put(1, "TELUGU");
 		movieLanguages.put(2, "HINDI");
 		movieLanguages.put(3, "TAMIL");
 		movieLanguages.put(4, "KANNADA");
 		movieLanguages.put(5, "MALAYALAM");
-		movieLanguages.put(6, "BENGALI");
-		movieLanguages.put(7, "PUNJABI");
+		/*
+		 * movieLanguages.put(6, "BENGALI"); movieLanguages.put(7, "PUNJABI");
+		 */
 		movieLanguages.put(8, "ADULT");	
 		movieLanguages.put(9, "TELUGU");
 		movieLanguages.put(10, "TAMIL");
 		movieLanguages.put(11, "HINDI");
+		movieLanguages.put(12, "ALL");
 		
 	}
 
@@ -87,7 +88,6 @@ public class MovieUtil {
 				if(movieImages.size() >= movieTrailers.size()) {
 					movieTrailers.get(i).setImage_path(movieImages.get(i).getFile_path());
 				} else {
-					if(movieImages.get(i) == null) {
 						if(movieImages.size() >=2) {
 							String imagePath = i % 2 == 0 ? movieImages.get(0).getFile_path() : movieImages.get(1).getFile_path();
 							movieTrailers.get(i).setImage_path(imagePath);
@@ -95,7 +95,6 @@ public class MovieUtil {
 							String imagePath = i % 2 == 0 ? movie.getBackdrop_path() : movie.getPoster_path();
 							movieTrailers.get(i).setImage_path(imagePath);
 						}
-					}
 				}
 			}
 		}

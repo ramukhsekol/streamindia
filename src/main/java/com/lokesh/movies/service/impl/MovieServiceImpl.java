@@ -130,7 +130,7 @@ public class MovieServiceImpl implements MovieService {
 			} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("personMovies")) {
 				url = "https://api.themoviedb.org/3/person/" + queryId + "/movie_credits?api_key=" + MovieUtil.apiKey;
 			}  else if(StringUtils.hasText(type) && type.equalsIgnoreCase("languageMovies")) {
-				url = "https://api.themoviedb.org/3/discover/movie?api_key=" + MovieUtil.apiKey + "&page=" + pageIndex + "&with_original_language=" + queryId;
+				url = "https://api.themoviedb.org/3/discover/"+SearchType+"?api_key=" + MovieUtil.apiKey + "&page=" + pageIndex + "&with_original_language=" + queryId;
 			}
 		} else {
 			url = "https://api.themoviedb.org/3/"+SearchType+"/popular?api_key=" + MovieUtil.apiKey + "&page=" + pageIndex;

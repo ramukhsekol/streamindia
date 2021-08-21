@@ -31,8 +31,8 @@ public class JsoupServiceImpl implements JsoupService {
 	@Autowired
 	ServletContext context;
 
-	private final String CINEVEZLINK = "https://cinevez.wtf/";
-	private final String MOVIERULZLINK = "https://ww3.moviesrulz.net/";
+	private final String CINEVEZLINK = "https://cinevez.fun/";
+	private final String MOVIERULZLINK = "https://4movierulz.mg/";
 
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {
@@ -42,26 +42,30 @@ public class JsoupServiceImpl implements JsoupService {
 					.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("boxed");
+			int index = 1;
 			for (Element element : elements) {
-					Element link = element.select("a").first();
-					String linkHref = link.attr("href");
-					String movieLink = linkHref.split(MOVIERULZLINK)[1].trim();
-					String finalMovieLink = movieLink.substring(0, movieLink.length());
-					Element movieimage = element.select("img").first();
-					String image = movieimage.absUrl("src");
-					String movieName = element.select("b").first().text();
-					if (StringUtils.hasText(movieName)) {
-						String name = movieName.split("\\(")[0].trim();
-						URLConnection urlConnection = new URL(image).openConnection();
-						urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-						urlConnection.setReadTimeout(5000);
-						urlConnection.setConnectTimeout(5000);
+				    if(index > 2) {
+				    	Element link = element.select("a").first();
+						String linkHref = link.attr("href");
+						String movieLink = linkHref.split(MOVIERULZLINK)[1].trim();
+						String finalMovieLink = movieLink.substring(0, movieLink.length());
+						Element movieimage = element.select("img").first();
+						String image = movieimage.absUrl("src");
+						String movieName = element.select("b").first().text();
+						if (StringUtils.hasText(movieName)) {
+							String name = movieName.split("\\(")[0].trim();
+							URLConnection urlConnection = new URL(image).openConnection();
+							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+							urlConnection.setReadTimeout(5000);
+							urlConnection.setConnectTimeout(5000);
 
-						byte[] imageBytes = IOUtils.toByteArray(urlConnection);
-						String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-						Integer popularity = getPersonRandomNumber(10000, 200000);
-						movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, popularity.toString()));
-					}
+							byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+							String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+							Integer popularity = getPersonRandomNumber(10000, 200000);
+							movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, popularity.toString()));
+						}
+				    }
+				    index++;
 			}
 			return movies;
 		} catch (Exception e) {
@@ -165,11 +169,11 @@ public class JsoupServiceImpl implements JsoupService {
 		try {
 			Movie movie = new Movie();
 			movie.setVote_average((double) getRandomNumber(6,9));
-			Document document = Jsoup.connect(MOVIERULZLINK + movieId + "/").userAgent("Mozilla/5.0").timeout(10000)
+			Document document = Jsoup.connect(MOVIERULZLINK + movieId).userAgent("Mozilla/5.0").timeout(10000)
 					.validateTLSCertificates(false).get();
 			Element documentbody = document.body();
 			Elements elements2 = documentbody.getElementsByClass("entry-content");
-			Element movieimage = documentbody.getElementsByClass("wp-post-image").select("img").first();
+			Element movieimage = documentbody.getElementsByClass("attachment-post-thumbnail").select("img").first();
 			String image = movieimage.absUrl("src");
 			URLConnection urlConnection = new URL(image).openConnection();
 			urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");

@@ -37,7 +37,7 @@ public class JsoupRestController {
 	@GetMapping(value = "/dubbed")
 	public ResponseEntity<Map<Integer, String>> dubbed(Model model) throws UnirestException {
 		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();
-		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() > 8).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() > 8).sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		return new ResponseEntity<Map<Integer, String>>(movieCountries, HttpStatus.OK);
 	}
 	
@@ -45,10 +45,10 @@ public class JsoupRestController {
 	public ResponseEntity<OtherMovie> teluguMoviesByIndex(@PathVariable Integer movieType, @RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
 		String language = MovieUtil.getMovieLanguage(movieType);
 		OtherMovie  otherMovies = new OtherMovie();
-		if(movieType <= 5 || (movieType >= 8 && movieType <= 11)) {
+		if(movieType <= 5 || movieType >= 12) {
 			String movieUrl =  "language/" + language.toLowerCase() ;
-			if(movieType >= 9 && movieType <= 11) {
-				movieUrl =  movieUrl + "/dubbed"; 
+			if(movieType >= 12) {
+				movieUrl =  "language/dubbed"; 
 			} else if(movieType == 8) {
 				movieUrl =  "rating/18"; 
 			}
@@ -56,6 +56,10 @@ public class JsoupRestController {
 			otherMovies = new OtherMovie(movies, true);
 		}  else if(movieType >= 6 && movieType <= 7) {
 			String movieUrl = "language/" + language.toLowerCase();
+			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
+			otherMovies = new OtherMovie(movies, false);
+		} else if(movieType >= 8 && movieType <= 11) {
+			String movieUrl = "category/" + language.toLowerCase() + (movieType == 11 ? "-dubbed-movie" : "-dubbed-movie-2");
 			List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
 			otherMovies = new OtherMovie(movies, false);
 		}

@@ -116,12 +116,12 @@ public class MoviesController {
 	}
 	
 	@GetMapping(value = "/language/movies")
-	public String moviesByLanguageId(@RequestParam String languageId, @RequestParam String languageName, Model model) throws UnirestException {
+	public String moviesByLanguageId(@RequestParam String languageId, @RequestParam String languageName, @RequestParam String searchType, Model model) throws UnirestException {
 		model.addAttribute("type", "languageMovies");
 		model.addAttribute("queryId", languageId);
 		model.addAttribute("query", "");
 		model.addAttribute("queryKey", "Language Name");
-		model.addAttribute("searchType", "movie");
+		model.addAttribute("searchType", searchType);
 		model.addAttribute("languageName", languageName);
 		model.addAttribute("title", "languages");
 		return "movies/movies";
@@ -130,7 +130,7 @@ public class MoviesController {
 	@GetMapping(value = "/movies/all")
 	public String moviesByIndex(@RequestParam String pageIndex, @RequestParam String type, @RequestParam String query, @RequestParam String queryId, @RequestParam String searchType, Model model) throws UnirestException, UnsupportedEncodingException {
 		if(searchType.equalsIgnoreCase("movie") && type.equalsIgnoreCase("personMovies") && pageIndex.equalsIgnoreCase("1")) {
-			List<Movie> movies = movieService.getMoviesByPersonId(queryId).stream().map(m -> {m.setMedia_id(m.getMedia_type().equalsIgnoreCase("movie")?1:0); return m;}).collect(Collectors.toList());;
+			List<Movie> movies = movieService.getMoviesByPersonId(queryId).stream().map(m -> {m.setMedia_id(m.getMedia_type().equalsIgnoreCase("movie")?1:0); return m;}).collect(Collectors.toList());
 			model.addAttribute("movies", movies);
 		} else if(!type.equalsIgnoreCase("personMovies")) {
 			JSONArray jsonArray = movieService.getMoviesByIndexOrSearchOrGeneric(pageIndex, type, query, queryId,  searchType);

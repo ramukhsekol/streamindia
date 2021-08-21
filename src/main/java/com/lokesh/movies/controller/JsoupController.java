@@ -84,7 +84,7 @@ public class JsoupController {
 				model.addAttribute("isFive", true);
 			} else {
 				if(movieType >= 6 && movieType <= 7) {
-					String movieUrl = "language/" + language.toLowerCase();
+					String movieUrl = "category/" + language.toLowerCase() + "-movie";
 					List<Movie> movies = jsoupService.getJsoupMoviesByIndex(movieUrl, pageIndex);
 					model.addAttribute("movies", movies);
 					model.addAttribute("isFive", false);

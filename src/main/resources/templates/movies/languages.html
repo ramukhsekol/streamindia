@@ -139,12 +139,16 @@
 								placeholder="Search Language" style="width: 100%;">
 						</div>
 					</div>
-
+					
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom: 12px;">
+					<a th:href="@{'/languages?searchType=movie'}" class="btn" th:classappend="${searchType == 'movie'} ? 'btn-success' : 'btn-primary'" style="width: 50%">Movie</a>
+					<a th:href="@{'/languages?searchType=tv'}" class="btn" th:classappend="${searchType == 'tv'} ? 'btn-success' : 'btn-primary'" style="width: 49.6%">Web Series</a>
+					</div>
 					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6 main"
 						th:each="language : ${movieLanguages}" data-filter-item>
 						<div class="parallax-img card">
 							<a
-								th:href="${'/language/movies?languageId=' + language.iso_639_1 + '&languageName=' + language.english_name}"
+								th:href="${'/language/movies?languageId=' + language.iso_639_1 + '&languageName=' + language.english_name + '&searchType=' + searchType}"
 								th:inline="text" class="card-body">
 								[[${language.english_name}]]</a>
 						</div>

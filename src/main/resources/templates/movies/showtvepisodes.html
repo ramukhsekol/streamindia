@@ -504,7 +504,6 @@ and
 		var episodeNumber = $("#episodeNumber").val();
 		var movieLink = type == '1' ? "https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + episodeNumber : 
 			"https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
-		alert(movieLink);
 		$("#newvideo").attr('src', movieLink);
 	}
 	

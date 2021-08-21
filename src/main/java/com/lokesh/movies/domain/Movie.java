@@ -37,6 +37,7 @@ public class Movie implements Serializable {
 	private String country;
 	private String language;
 	private String director;
+	private String producer;
 	private String writer;
 	private String voteAverage;
 	private String timming;
@@ -311,6 +312,14 @@ public class Movie implements Serializable {
 
 	public void setMedia_id(Integer media_id) {
 		this.media_id = media_id;
+	}
+
+	public String getProducer() {
+		return producer;
+	}
+
+	public void setProducer(String producer) {
+		this.producer = producer;
 	}
 
 }

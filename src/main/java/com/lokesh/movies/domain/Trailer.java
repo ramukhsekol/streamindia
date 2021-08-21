@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Trailer {
 	private String key;
 	private String image_path;
+	private String type;
 
 	public String getKey() {
 		return key;
@@ -21,6 +22,14 @@ public class Trailer {
 
 	public void setImage_path(String image_path) {
 		this.image_path = image_path;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

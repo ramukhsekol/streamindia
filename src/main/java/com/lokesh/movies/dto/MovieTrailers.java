@@ -5,6 +5,8 @@ import java.util.List;
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.domain.MovieCastCrew;
 import com.lokesh.movies.domain.Trailer;
+import com.lokesh.movies.domain.TvEpisodes;
+import com.lokesh.movies.domain.TvSeasons;
 import com.lokesh.movies.domain.TvShows;
 
 public class MovieTrailers {
@@ -14,6 +16,9 @@ public class MovieTrailers {
 	private List<MovieCastCrew> casts;
 	private List<MovieCastCrew> crews;
 	private TvShows tvShows;
+	private String imdbId;
+	private List<TvSeasons> tvSeasons;
+	private List<TvEpisodes> tvEpisodes;
 
 	public Movie getMovie() {
 		return movie;
@@ -53,6 +58,30 @@ public class MovieTrailers {
 
 	public void setTvShows(TvShows tvShows) {
 		this.tvShows = tvShows;
+	}
+
+	public String getImdbId() {
+		return imdbId;
+	}
+
+	public void setImdbId(String imdbId) {
+		this.imdbId = imdbId;
+	}
+
+	public List<TvSeasons> getTvSeasons() {
+		return tvSeasons;
+	}
+
+	public void setTvSeasons(List<TvSeasons> tvSeasons) {
+		this.tvSeasons = tvSeasons;
+	}
+
+	public List<TvEpisodes> getTvEpisodes() {
+		return tvEpisodes;
+	}
+
+	public void setTvEpisodes(List<TvEpisodes> tvEpisodes) {
+		this.tvEpisodes = tvEpisodes;
 	}
 
 }
