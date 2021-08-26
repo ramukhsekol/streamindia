@@ -429,12 +429,6 @@ public class JsoupServiceImpl implements JsoupService {
 	}
 	
 	
-	
-	
-	
-	
-	
-
 	@Override
 	public Movie getParticularPornMovieDetailsByMovieLink(String movieLink, String type) {
 		try {
