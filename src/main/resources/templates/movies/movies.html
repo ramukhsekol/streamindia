@@ -138,7 +138,7 @@ function progress(timeleft, timetotal, $element) {
 		$(window).on('scroll', onScroll);
 
 		function onScroll() {
-			if ($(window).scrollTop() + window.innerHeight >= document.body.scrollHeight) {
+			if (Math.round($(window).scrollTop() + window.innerHeight) >= document.body.scrollHeight) {
 				pageIndex = pageIndex + 1;
 				$("#myModal").modal("show");
 				progress(30, 30, $('#progressBar'));

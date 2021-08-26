@@ -31,7 +31,7 @@ public class JsoupServiceImpl implements JsoupService {
 	@Autowired
 	ServletContext context;
 
-	final String CINEVEZLINK = "https://cinevez.wtf/";
+	final String CINEVEZLINK = "https://cinevez.fun/";
 	private final String MOVIERULZLINK = "https://ww3.moviesrulz.net/";
 
 	@Override
