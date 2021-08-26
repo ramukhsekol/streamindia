@@ -24,6 +24,13 @@ public class JsoupPornRestController {
 	
 	@Autowired private JsoupService jsoupService;
 	
+	@GetMapping(value = "/romance/porn/all")
+	public ResponseEntity<List<Movie>> romancePornByIndex(@RequestParam String pageIndex) throws UnirestException, UnsupportedEncodingException {
+		String movieLink = "https://yespornpleasexxx.com/brazzers-2/page/" + pageIndex + "/";
+		List<Movie> movies = jsoupService.getAllRomanceJsoupPornMoviesByIndex(movieLink);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/porn/all")
 	public ResponseEntity<List<Movie>> pornByIndex(@RequestParam String pageIndex) throws UnirestException, UnsupportedEncodingException {
 		String movieLink = "https://pornmate.com/video/page/" + pageIndex;
