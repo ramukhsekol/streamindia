@@ -2,7 +2,9 @@ package com.lokesh.movies.util;
 
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
@@ -11,51 +13,31 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.util.StringUtils;
 
+import com.lokesh.movies.domain.Movie;
+
 public class MovieLinkTest {
 
 	public static void main(String[] args) {
 		try {
-			Document doc = Jsoup.connect("https://yespornpleasexxx.com/luna-star-and-kissa-sins-butts-in-sync/").userAgent("Mozilla/5.0").timeout(10000)
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect("https://yespornpleasexxx.com/pornstars/").userAgent("Mozilla/5.0").timeout(10000)
 					.validateTLSCertificates(false).get();
 			Element body = doc.body();
-			// System.out.println(body);
-			
-			Element iframeElement1 = body.getElementById("post").select("iframe").first();
-			String moviePlayLink1 = iframeElement1.absUrl("src");
-			System.out.println(moviePlayLink1);
-			
-			Element iframeElement = body.getElementsByClass("iframe-container").select("iframe").first();
-			String moviePlayLink = iframeElement.absUrl("src");
-			System.out.println(moviePlayLink);
-			Integer movieLength = moviePlayLink.length();
-			String spiltData = moviePlayLink.substring(34, movieLength);
-			System.out.println(spiltData);
-			
-			
-			
-
-			Elements elements = body.getElementsByClass("iframe-container");
+			Elements elements = body.getElementsByClass("gallery-item");
 			for (Element element : elements) {
-				System.out.println(element);
 				Element elements2 = element.select("a").first();
-				String aHref = elements2.attr("href");
 				Element movieimage = element.select("img").first();
 				String image = movieimage.absUrl("data-src");
 				if (!StringUtils.hasText(image)) {
 					image = movieimage.absUrl("src");
 				}
-				String count = element.select("p").text();
-				String name = element.getElementsByClass("preview-title").text();
-
-				System.out.println(name + " " + count + " " + image + " " + aHref);
-
-				URLConnection urlConnection = new URL(image).openConnection();
-				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-				urlConnection.setReadTimeout(50000);
-				urlConnection.setConnectTimeout(50000);
-				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
-				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-				 System.out.println(encodedString);
+				String name = element.select("a").first().text();
+				String finalMovieLink = elements2.attr("href").trim();
+				System.out.println(name);
+				System.out.println(image);
+				System.out.println(finalMovieLink);
+				System.out.println("--------------------------");
+				movies.add(new Movie(image, name, 5.7, finalMovieLink, null));
 
 			}
 		} catch (Exception e) {

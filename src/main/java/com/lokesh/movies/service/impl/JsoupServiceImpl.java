@@ -33,6 +33,104 @@ public class JsoupServiceImpl implements JsoupService {
 
 	final String CINEVEZLINK = "https://cinevez.fun/";
 	private final String MOVIERULZLINK = "https://ww3.moviesrulz.net/";
+	
+	@Override
+	public List<Movie> getAllRomanceJsoupPornMoviesByIndex(String movieLink) {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
+					.validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementsByClass("post-preview");
+			for (Element element : elements) {
+				Element elements2 = element.select("a").first();
+				Element movieimage = element.select("img").first();
+				String image = movieimage.absUrl("data-src");
+				if (!StringUtils.hasText(image)) {
+					image = movieimage.absUrl("src");
+				}
+				String timming = element.select("p").text();
+				String name = element.getElementsByClass("preview-title").text();
+				String[] spiltName = name.split("-");
+				if(spiltName.length > 1) {
+					name = spiltName[1];
+				}
+				String finalMovieLink = elements2.attr("href").trim();
+				movies.add(new Movie(image, name, (double) getRandomNumber(6,9), finalMovieLink, timming));
+			}
+			return movies;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	@Override
+	public List<Movie> getFamousStars() {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect("https://yespornpleasexxx.com/pornstars/").userAgent("Mozilla/5.0").timeout(10000)
+					.validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementsByClass("gallery-item");
+			for (Element element : elements) {
+				Element elements2 = element.select("a").first();
+				Element movieimage = element.select("img").first();
+				String image = movieimage.absUrl("data-src");
+				if (!StringUtils.hasText(image)) {
+					image = movieimage.absUrl("src");
+				}
+				String name = element.select("a").first().text();
+				String finalMovieLink = elements2.attr("href").trim();
+				movies.add(new Movie(image, name, (double) getRandomNumber(6,9), finalMovieLink, null));
+			}
+			return movies;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	@Override
+	public Movie getParticularPornMovieDetailsByMovieLink(String movieLink, String type) {
+		try {
+			Movie movie = new Movie();
+			movie.setVote_average(6.7);
+			Document document = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
+					.validateTLSCertificates(false).get();
+			Element bodydoc = document.body();
+			Element iframeElement = null;
+			if(type.equalsIgnoreCase("romance")) {
+				iframeElement = bodydoc.getElementById("post").select("iframe").first();
+			} else {
+				iframeElement = bodydoc.getElementsByClass("video-container").select("iframe").first();
+			}
+			
+			String moviePlayLink = iframeElement.absUrl("src");
+			if(type.equalsIgnoreCase("romance")) {
+				movie.setMovieLink(moviePlayLink);
+			} else {
+				Integer movieLength = moviePlayLink.length();
+				String spiltData = moviePlayLink.substring(34, movieLength);
+				movie.setMovieLink(spiltData);
+			}
+			return movie;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {
@@ -389,73 +487,6 @@ public class JsoupServiceImpl implements JsoupService {
 			}
 			return movies;
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	@Override
-	public List<Movie> getAllRomanceJsoupPornMoviesByIndex(String movieLink) {
-		try {
-			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
-					.validateTLSCertificates(false).get();
-			Element body = doc.body();
-			Elements elements = body.getElementsByClass("post-preview");
-			for (Element element : elements) {
-				Element elements2 = element.select("a").first();
-				Element movieimage = element.select("img").first();
-				String image = movieimage.absUrl("data-src");
-				if (!StringUtils.hasText(image)) {
-					image = movieimage.absUrl("src");
-				}
-				URLConnection urlConnection = new URL(image).openConnection();
-				urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-				urlConnection.setReadTimeout(5000);
-				urlConnection.setConnectTimeout(5000);
-
-				byte[] imageBytes = IOUtils.toByteArray(urlConnection);
-				String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-				String timming = element.select("p").text();
-				String name = element.getElementsByClass("preview-title").text();
-				String finalMovieLink = elements2.attr("href").trim();
-				movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, timming));
-			}
-			return movies;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	
-	@Override
-	public Movie getParticularPornMovieDetailsByMovieLink(String movieLink, String type) {
-		try {
-			Movie movie = new Movie();
-			movie.setVote_average(6.7);
-			Document document = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
-					.validateTLSCertificates(false).get();
-			Element bodydoc = document.body();
-			Element iframeElement = null;
-			if(type.equalsIgnoreCase("romance")) {
-				iframeElement = bodydoc.getElementById("post").select("iframe").first();
-			} else {
-				iframeElement = bodydoc.getElementsByClass("video-container").select("iframe").first();
-			}
-			
-			String moviePlayLink = iframeElement.absUrl("src");
-			if(type.equalsIgnoreCase("romance")) {
-				movie.setMovieLink(moviePlayLink);
-			} else {
-				Integer movieLength = moviePlayLink.length();
-				String spiltData = moviePlayLink.substring(34, movieLength);
-				movie.setMovieLink(spiltData);
-			}
-			
-			
-			return movie;
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
