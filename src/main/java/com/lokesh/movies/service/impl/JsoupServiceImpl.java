@@ -33,7 +33,7 @@ public class JsoupServiceImpl implements JsoupService {
 
 	final String CINEVEZLINK = "https://cinevez.fun/";
 	private final String MOVIERULZLINK = "https://ww3.moviesrulz.net/";
-	
+
 	@Override
 	public List<Movie> getAllRomanceJsoupPornMoviesByIndex(String movieLink) {
 		try {
@@ -52,24 +52,24 @@ public class JsoupServiceImpl implements JsoupService {
 				String timming = element.select("p").text();
 				String name = element.getElementsByClass("preview-title").text();
 				String[] spiltName = name.split("-");
-				if(spiltName.length > 1) {
+				if (spiltName.length > 1) {
 					name = spiltName[1];
 				}
 				String finalMovieLink = elements2.attr("href").trim();
-				movies.add(new Movie(image, name, (double) getRandomNumber(6,9), finalMovieLink, timming));
+				movies.add(new Movie(image, name, (double) getRandomNumber(6, 9), finalMovieLink, timming));
 			}
 			return movies;
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<Movie> getFamousStars() {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect("https://yespornpleasexxx.com/pornstars/").userAgent("Mozilla/5.0").timeout(10000)
-					.validateTLSCertificates(false).get();
+			Document doc = Jsoup.connect("https://yespornpleasexxx.com/pornstars/").userAgent("Mozilla/5.0")
+					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("gallery-item");
 			for (Element element : elements) {
@@ -81,14 +81,14 @@ public class JsoupServiceImpl implements JsoupService {
 				}
 				String name = element.select("a").first().text();
 				String finalMovieLink = elements2.attr("href").trim();
-				movies.add(new Movie(image, name, (double) getRandomNumber(6,9), finalMovieLink, null));
+				movies.add(new Movie(image, name, (double) getRandomNumber(6, 9), finalMovieLink, null));
 			}
 			return movies;
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public Movie getParticularPornMovieDetailsByMovieLink(String movieLink, String type) {
 		try {
@@ -98,14 +98,14 @@ public class JsoupServiceImpl implements JsoupService {
 					.validateTLSCertificates(false).get();
 			Element bodydoc = document.body();
 			Element iframeElement = null;
-			if(type.equalsIgnoreCase("romance")) {
+			if (type.equalsIgnoreCase("romance")) {
 				iframeElement = bodydoc.getElementById("post").select("iframe").first();
 			} else {
 				iframeElement = bodydoc.getElementsByClass("video-container").select("iframe").first();
 			}
-			
+
 			String moviePlayLink = iframeElement.absUrl("src");
-			if(type.equalsIgnoreCase("romance")) {
+			if (type.equalsIgnoreCase("romance")) {
 				movie.setMovieLink(moviePlayLink);
 			} else {
 				Integer movieLength = moviePlayLink.length();
@@ -117,20 +117,94 @@ public class JsoupServiceImpl implements JsoupService {
 			return null;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public List<Movie> pornModelsByPageIndex(String movieLink, Integer startIndex, Integer endIndex) {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect(movieLink).userAgent(
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementById("list_models_models_list_items").select("a");
+			int i = 1;
+			for (Element element : elements) {
+				if (i >= startIndex && i <= endIndex) {
+					Element elements2 = element.select("a").first();
+					Element movieimage = element.select("img").first();
+					String image = movieimage.absUrl("data-src");
+					if (!StringUtils.hasText(image)) {
+						image = movieimage.absUrl("src");
+					}
+					String name = elements2.attr("title");
+					String finalMovieLink = elements2.attr("href").trim();
+					try {
+						URLConnection urlConnection = new URL(image).openConnection();
+						urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+						urlConnection.setReadTimeout(5000);
+						urlConnection.setConnectTimeout(5000);
+
+						byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+						String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+						Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink,
+								null);
+						movie.setTotalMoviesPerPageIndex(elements.size());
+						movies.add(movie);
+					} catch (Exception e) {
+					}
+				}
+				i++;
+			}
+			return movies;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Movie> pornModelMoviesByMovieLink(String movieLink, Integer startIndex, Integer endIndex) {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect(movieLink).userAgent(
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementById("list_videos_common_videos_list_items").select("a");
+			int i = 1;
+			for (Element element : elements) {
+				if (i >= startIndex && i <= endIndex) {
+					Element elements2 = element.select("a").first();
+					Element movieimage = element.select("img").first();
+					String image = movieimage.absUrl("data-src");
+					if (!StringUtils.hasText(image)) {
+						image = movieimage.attr("thumb");
+					}
+					String name = elements2.getElementsByClass("title").text();
+					String finalMovieLink = elements2.attr("href").trim();
+					try {
+						URLConnection urlConnection = new URL(image).openConnection();
+						urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+						urlConnection.setReadTimeout(5000);
+						urlConnection.setConnectTimeout(5000);
+
+						byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+						String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+						String playMovieLink = "https://www.xozilla.com/embed/" + finalMovieLink.split("/")[4];
+						Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), playMovieLink,
+								null);
+						movie.setTotalMoviesPerPageIndex(elements.size());
+						movies.add(movie);
+					} catch (Exception e) {
+					}
+				}
+				i++;
+
+			}
+			return movies;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {
@@ -142,28 +216,29 @@ public class JsoupServiceImpl implements JsoupService {
 			Elements elements = body.getElementsByClass("boxed");
 			int index = 1;
 			for (Element element : elements) {
-				    if(index > 2) {
-				    	Element link = element.select("a").first();
-						String linkHref = link.attr("href");
-						String movieLink = linkHref.split(MOVIERULZLINK)[1].trim();
-						String finalMovieLink = movieLink.substring(0, movieLink.length());
-						Element movieimage = element.select("img").first();
-						String image = movieimage.absUrl("src");
-						String movieName = element.select("b").first().text();
-						if (StringUtils.hasText(movieName)) {
-							String name = movieName.split("\\(")[0].trim();
-							URLConnection urlConnection = new URL(image).openConnection();
-							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-							urlConnection.setReadTimeout(5000);
-							urlConnection.setConnectTimeout(5000);
+				if (index > 2) {
+					Element link = element.select("a").first();
+					String linkHref = link.attr("href");
+					String movieLink = linkHref.split(MOVIERULZLINK)[1].trim();
+					String finalMovieLink = movieLink.substring(0, movieLink.length());
+					Element movieimage = element.select("img").first();
+					String image = movieimage.absUrl("src");
+					String movieName = element.select("b").first().text();
+					if (StringUtils.hasText(movieName)) {
+						String name = movieName.split("\\(")[0].trim();
+						URLConnection urlConnection = new URL(image).openConnection();
+						urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+						urlConnection.setReadTimeout(5000);
+						urlConnection.setConnectTimeout(5000);
 
-							byte[] imageBytes = IOUtils.toByteArray(urlConnection);
-							String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-							Integer popularity = getPersonRandomNumber(10000, 200000);
-							movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, popularity.toString()));
-						}
-				    }
-				    index++;
+						byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+						String encodedString = Base64.getEncoder().encodeToString(imageBytes);
+						Integer popularity = getPersonRandomNumber(10000, 200000);
+						movies.add(new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink,
+								popularity.toString()));
+					}
+				}
+				index++;
 			}
 			return movies;
 		} catch (Exception e) {
@@ -205,7 +280,8 @@ public class JsoupServiceImpl implements JsoupService {
 					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
 					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
 					Integer popularity = getPersonRandomNumber(10000, 200000);
-					movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, popularity.toString()));
+					movies.add(new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink,
+							popularity.toString()));
 				}
 			}
 
@@ -251,7 +327,8 @@ public class JsoupServiceImpl implements JsoupService {
 					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
 					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
 					Integer popularity = getPersonRandomNumber(10000, 200000);
-					movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, popularity.toString()));
+					movies.add(new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink,
+							popularity.toString()));
 				}
 			}
 
@@ -266,7 +343,7 @@ public class JsoupServiceImpl implements JsoupService {
 	public Movie getMovieDetailsByMovieId(String movieId) {
 		try {
 			Movie movie = new Movie();
-			movie.setVote_average((double) getRandomNumber(6,9));
+			movie.setVote_average((double) getRandomNumber(6, 9));
 			Document document = Jsoup.connect(MOVIERULZLINK + movieId).userAgent("Mozilla/5.0").timeout(10000)
 					.validateTLSCertificates(false).get();
 			Element documentbody = document.body();
@@ -361,7 +438,7 @@ public class JsoupServiceImpl implements JsoupService {
 	public Movie getParticularMovieDetailsByMovieId(String movieId) {
 		try {
 			Movie movie = new Movie();
-			movie.setVote_average((double) getRandomNumber(6,9));
+			movie.setVote_average((double) getRandomNumber(6, 9));
 			Document document = Jsoup.connect(CINEVEZLINK + movieId + "/").userAgent("Mozilla/5.0").timeout(10000)
 					.validateTLSCertificates(false).get();
 			Element documentbody = document.body();
@@ -483,7 +560,7 @@ public class JsoupServiceImpl implements JsoupService {
 				String finalMovieLink = elements2.attr("href").trim();
 				String name = element.getElementsByClass("title").select("a").first().text();
 				String timming = element.getElementsByClass("duration").text();
-				movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), finalMovieLink, timming));
+				movies.add(new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink, timming));
 			}
 			return movies;
 		} catch (Exception e) {
@@ -591,7 +668,8 @@ public class JsoupServiceImpl implements JsoupService {
 					finalMovieLink = finalMovieLink.replace("https://pornmate.com/star/", "");
 				}
 				Integer popularity = getPersonRandomNumber(10000, 200000);
-				persons.add(new Person((double) getRandomNumber(6,9), encodedString, name, finalMovieLink,popularity.toString()));
+				persons.add(new Person((double) getRandomNumber(6, 9), encodedString, name, finalMovieLink,
+						popularity.toString()));
 			}
 			return persons;
 		} catch (Exception e) {
@@ -628,7 +706,8 @@ public class JsoupServiceImpl implements JsoupService {
 					urlConnection.setConnectTimeout(50000);
 					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
 					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-					persons.add(new Person((double) getRandomNumber(6,9), encodedString, name, aHref.replaceAll("/", ""), videoCount));
+					persons.add(new Person((double) getRandomNumber(6, 9), encodedString, name,
+							aHref.replaceAll("/", ""), videoCount));
 				}
 				i++;
 			}
@@ -644,13 +723,13 @@ public class JsoupServiceImpl implements JsoupService {
 	public List<Movie> getPornCategoryMoviesByIndex(String categoryType, String pageIndex) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect("https://pornone.com/"+categoryType+"/" + pageIndex + "/").userAgent("Mozilla/5.0")
-					.timeout(10000).validateTLSCertificates(false).get();
+			Document doc = Jsoup.connect("https://pornone.com/" + categoryType + "/" + pageIndex + "/")
+					.userAgent("Mozilla/5.0").timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("video");
 			for (Element element : elements) {
 				String timming = element.getElementsByClass("time").text();
-				if(StringUtils.hasText(timming)) {
+				if (StringUtils.hasText(timming)) {
 					Element elements2 = element.select("a").first();
 					String aHref = elements2.attr("href");
 					Element movieimage = element.select("img").first();
@@ -658,7 +737,7 @@ public class JsoupServiceImpl implements JsoupService {
 					if (!StringUtils.hasText(image)) {
 						image = movieimage.absUrl("src");
 					}
-					
+
 					String name = element.getElementsByClass("cwrap").text();
 
 					URLConnection urlConnection = new URL(image).openConnection();
@@ -668,8 +747,8 @@ public class JsoupServiceImpl implements JsoupService {
 					byte[] imageBytes = IOUtils.toByteArray(urlConnection);
 					String encodedString = Base64.getEncoder().encodeToString(imageBytes);
 					String[] linkSplit = aHref.split("/");
-					String movieLink = "https://pornone.com/embed/" + linkSplit[linkSplit.length -1] + "/";
-					movies.add(new Movie(encodedString, name, (double) getRandomNumber(6,9), movieLink, timming));
+					String movieLink = "https://pornone.com/embed/" + linkSplit[linkSplit.length - 1] + "/";
+					movies.add(new Movie(encodedString, name, (double) getRandomNumber(6, 9), movieLink, timming));
 				}
 			}
 
@@ -679,15 +758,13 @@ public class JsoupServiceImpl implements JsoupService {
 		}
 		return null;
 	}
-	
-	private  int getRandomNumber(int min, int max) {
-	    return (int) ((Math.random() * (max - min)) + min);
-	}
-	
-	private  int getPersonRandomNumber(int min, int max) {
-	    return (int) ((Math.random() * (max - min)) + min);
+
+	private int getRandomNumber(int min, int max) {
+		return (int) ((Math.random() * (max - min)) + min);
 	}
 
-	
+	private int getPersonRandomNumber(int min, int max) {
+		return (int) ((Math.random() * (max - min)) + min);
+	}
 
 }

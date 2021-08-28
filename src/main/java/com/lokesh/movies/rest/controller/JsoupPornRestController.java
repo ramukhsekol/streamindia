@@ -71,6 +71,23 @@ public class JsoupPornRestController {
 		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/pornModelsByPageIndex")
+	public ResponseEntity<List<Movie>> pornModelsByPageIndex(@RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) throws UnirestException, UnsupportedEncodingException {
+		String movieLink = "https://www.xozilla.com/models/" + pageIndex + "/";
+		List<Movie> movies = jsoupService.pornModelsByPageIndex(movieLink, startIndex, endIndex);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/pornModelMovies")
+	public ResponseEntity<List<Movie>> pornModelMovies(@RequestParam String movieLink, @RequestParam Integer startIndex, @RequestParam Integer endIndex) throws UnirestException {
+		List<Movie> movies = jsoupService.pornModelMoviesByMovieLink(movieLink, startIndex, endIndex);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
 	
 	
 	

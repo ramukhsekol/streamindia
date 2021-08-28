@@ -44,6 +44,7 @@ public class Movie implements Serializable {
 	private String media_type;
 	private String name;
 	private Integer media_id;
+	private Integer totalMoviesPerPageIndex;
 
 	public Movie() {
 		super();
@@ -320,6 +321,14 @@ public class Movie implements Serializable {
 
 	public void setProducer(String producer) {
 		this.producer = producer;
+	}
+
+	public Integer getTotalMoviesPerPageIndex() {
+		return totalMoviesPerPageIndex;
+	}
+
+	public void setTotalMoviesPerPageIndex(Integer totalMoviesPerPageIndex) {
+		this.totalMoviesPerPageIndex = totalMoviesPerPageIndex;
 	}
 
 }
