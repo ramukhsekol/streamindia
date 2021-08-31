@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lokesh.movies.domain.Movie;
 import com.lokesh.movies.domain.Person;
+import com.lokesh.movies.service.JsoupPornService;
 import com.lokesh.movies.service.JsoupService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -22,6 +23,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 public class JsoupPornController {
 	
 	@Autowired private JsoupService jsoupService;
+	@Autowired private JsoupPornService jsoupPornService;
 	
 	@GetMapping(value = "/others/movies/adult")
 	public String others(@RequestParam String type, Model model) throws UnirestException {
@@ -46,7 +48,7 @@ public class JsoupPornController {
 		} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("romance")) {
 			model.addAttribute("isFive", true);
 			String movieLink = "https://yespornpleasexxx.com/brazzers-2/page/" + pageIndex + "/";
-			movies = jsoupService.getAllRomanceJsoupPornMoviesByIndex(movieLink);
+			movies = jsoupPornService.getAllTypeJsoupPornMoviesByIndex(movieLink, 1, 200, true);
 		}
 		
 		model.addAttribute("movies", movies);
@@ -57,7 +59,7 @@ public class JsoupPornController {
 	@GetMapping(value = "/porn/movie")
 	@ResponseBody
 	public Movie pornMovie(@RequestParam String movieLink, @RequestParam String type) throws UnirestException, UnsupportedEncodingException {
-		Movie movie = jsoupService.getParticularPornMovieDetailsByMovieLink(movieLink, type);
+		Movie movie = jsoupPornService.getParticularPornMovieDetailsByMovieLink(movieLink, type);
 		return movie;
 	}
 	
