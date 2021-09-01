@@ -130,6 +130,20 @@ public class JsoupPornRestController {
 		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/trendingStarsByPageIndex")
+	public ResponseEntity<List<Movie>> trendingStarsByPageIndex(@RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
+		String movieLink = "https://porndoe.com/pornstars?sort=trending&page=" + pageIndex;
+		List<Movie> movies = jsoupPornService.trendingStarsByPageIndex(movieLink, startIndex, endIndex, true);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/trendingStarMoviesByPageIndex")
+	public ResponseEntity<List<Movie>> trendingStarMoviesByPageIndex(@RequestParam String movieLink, @RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
+		movieLink = "https://porndoe.com" + movieLink + "?page=" + pageIndex;
+		List<Movie> movies = jsoupPornService.trendingStarMoviesByPageIndex(movieLink, startIndex, endIndex, true);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
 	
 	
 	
