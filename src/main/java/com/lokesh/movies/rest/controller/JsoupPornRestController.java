@@ -132,14 +132,35 @@ public class JsoupPornRestController {
 	
 	@GetMapping(value = "/trendingStarsByPageIndex")
 	public ResponseEntity<List<Movie>> trendingStarsByPageIndex(@RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
-		String movieLink = "https://porndoe.com/pornstars?sort=trending&page=" + pageIndex;
-		List<Movie> movies = jsoupPornService.trendingStarsByPageIndex(movieLink, startIndex, endIndex, true);
+		String movieLink = "https://xhamster15.desi/pornstars/" + pageIndex;
+		List<Movie> movies = jsoupPornService.trendingStarsByPageIndex(movieLink, startIndex, endIndex, true, "pornstar-thumb-container");
 		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/trendingStarMoviesByPageIndex")
 	public ResponseEntity<List<Movie>> trendingStarMoviesByPageIndex(@RequestParam String movieLink, @RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
-		movieLink = "https://porndoe.com" + movieLink + "?page=" + pageIndex;
+		movieLink = movieLink + "/" + pageIndex;
+		List<Movie> movies = jsoupPornService.trendingStarMoviesByPageIndex(movieLink, startIndex, endIndex, true);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/indianMoviesByPageIndex")
+	public ResponseEntity<List<Movie>> indianMoviesByPageIndex(@RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
+		String movieLink = "https://xhamster15.desi/categories/indian/" + pageIndex;
+		List<Movie> movies = jsoupPornService.trendingStarMoviesByPageIndex(movieLink, startIndex, endIndex, true);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/channelsByPageIndex")
+	public ResponseEntity<List<Movie>> channelsByPageIndex(@RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
+		String movieLink = "https://xhamster15.desi/channels/" + pageIndex;
+		List<Movie> movies = jsoupPornService.trendingStarsByPageIndex(movieLink, startIndex, endIndex, true, "channel-thumb-container");
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/channelMoviesByPageIndex")
+	public ResponseEntity<List<Movie>> channelMoviesByPageIndex(@RequestParam String movieLink, @RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
+		movieLink = movieLink + "/" + pageIndex;
 		List<Movie> movies = jsoupPornService.trendingStarMoviesByPageIndex(movieLink, startIndex, endIndex, true);
 		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
 	}

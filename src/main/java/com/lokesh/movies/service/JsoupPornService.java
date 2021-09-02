@@ -13,7 +13,7 @@ public interface JsoupPornService {
 	List<Movie> pornModelMoviesByMovieLink(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag);
 	List<Movie> pornStarsByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag);
 	List<Movie> pornStarMoviesByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag);
-	List<Movie> trendingStarsByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag);
+	List<Movie> trendingStarsByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag, String className);
 	List<Movie> trendingStarMoviesByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag);
 
 }

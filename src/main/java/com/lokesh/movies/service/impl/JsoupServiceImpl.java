@@ -31,22 +31,8 @@ public class JsoupServiceImpl implements JsoupService {
 	@Autowired
 	ServletContext context;
 
-	final String CINEVEZLINK = "https://cinevez.fun/";
-	private final String MOVIERULZLINK = "https://ww3.moviesrulz.net/";
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
+	final String CINEVEZLINK = "https://cinevez.life/";
+	private final String MOVIERULZLINK = "https://ww7.4movierulz.nl/";
 
 	@Override
 	public List<Movie> getJsoupMoviesByIndex(String movieType, String pageIndex) {

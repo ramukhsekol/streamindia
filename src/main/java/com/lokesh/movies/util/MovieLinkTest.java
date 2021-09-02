@@ -20,20 +20,21 @@ public class MovieLinkTest {
 	public static void main(String[] args) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect("https://porndoe.com/video/1507894/fit18-eva-elfie-skinny-big-tits-blonde-russian-teen-fucks-in-yoga-pants").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36").timeout(10000)
+			Document doc = Jsoup.connect("https://xhamster15.desi/pornstars/lauren-phillips").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36").timeout(10000)
 					.validateTLSCertificates(false).get();
 			Element body = doc.body();
 			// System.out.println(body);
-			Elements elements = body.getElementsByClass("player-video");
+			Elements elements = body.getElementsByClass("thumb-list__item");
 			// System.out.println(elements);
 			for (Element element : elements) {
-				System.out.println(element);
+				// System.out.println(element);
 				Element elements2 = element.select("a").first();
-				Element movieimage = element.select("svg").first();
-				String image = movieimage.attr("data-src");
-				String name = elements2.attr("title");
+				Element movieimage = element.select("img").first();
+				String image = movieimage.attr("src");
+				String name = movieimage.attr("alt");
 				String finalMovieLink = elements2.attr("href").trim();
-				String playMovieLink = "https://porndoe.com" + finalMovieLink.replace("/video/", "/video/embed/");
+				String[] playMovieLinkData = finalMovieLink.split("-");
+				String playMovieLink = playMovieLinkData[playMovieLinkData.length -1];
 				System.out.println(playMovieLink);
 				System.out.println(name);
 				System.out.println(image);
