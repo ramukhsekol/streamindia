@@ -22,7 +22,8 @@ import com.lokesh.movies.service.JsoupPornService;
 public class JsoupPornServiceImpl implements JsoupPornService {
 
 	@Override
-	public List<Movie> getAllTypeJsoupPornMoviesByIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag) {
+	public List<Movie> getAllTypeJsoupPornMoviesByIndex(String movieLink, Integer startIndex, Integer endIndex,
+			boolean isFlag) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
 			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0").timeout(10000)
@@ -46,7 +47,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					}
 					String finalMovieLink = elements2.attr("href").trim();
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -60,7 +61,8 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					} else {
 						encodedString = image;
 					}
-					Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink, timming);
+					Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink,
+							timming);
 					movie.setTotalMoviesPerPageIndex(elements.size());
 					movies.add(movie);
 				}
@@ -121,7 +123,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					String name = element.select("a").first().text();
 					String finalMovieLink = elements2.attr("href").trim();
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -146,7 +148,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<Movie> pornModelsByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag) {
 		try {
@@ -168,7 +170,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					String name = elements2.attr("title");
 					String finalMovieLink = elements2.attr("href").trim();
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -193,9 +195,10 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public List<Movie> pornModelMoviesByMovieLink(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag) {
+	public List<Movie> pornModelMoviesByMovieLink(String movieLink, Integer startIndex, Integer endIndex,
+			boolean isFlag) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
 			Document doc = Jsoup.connect(movieLink).userAgent(
@@ -216,7 +219,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					String finalMovieLink = elements2.attr("href").trim();
 					String playMovieLink = "https://www.xozilla.com/embed/" + finalMovieLink.split("/")[4];
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -242,7 +245,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<Movie> pornStarsByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag) {
 		try {
@@ -264,7 +267,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					String name = elements2.attr("title");
 					String finalMovieLink = elements2.attr("href").trim();
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -289,9 +292,10 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public List<Movie> pornStarMoviesByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag) {
+	public List<Movie> pornStarMoviesByPageIndex(String movieLink, Integer startIndex, Integer endIndex,
+			boolean isFlag) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
 			Document doc = Jsoup.connect(movieLink).userAgent(
@@ -311,7 +315,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					String playMovieLink = "https://www.uiporn.com/embed/"
 							+ movieLinkData[movieLinkData.length - 1].replace("/", "");
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -336,13 +340,15 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public List<Movie> trendingStarsByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag, String className) {
+	public List<Movie> trendingStarsByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag,
+			String className) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36").timeout(10000)
-					.validateTLSCertificates(false).get();
+			Document doc = Jsoup.connect(movieLink).userAgent(
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36")
+					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass(className);
 			int i = 1;
@@ -354,7 +360,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					String name = movieimage.attr("alt");
 					String finalMovieLink = elements2.attr("href").trim();
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -379,13 +385,15 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public List<Movie> trendingStarMoviesByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag) {
+	public List<Movie> trendingStarMoviesByPageIndex(String movieLink, Integer startIndex, Integer endIndex,
+			boolean isFlag) {
 		try {
 			List<Movie> movies = new ArrayList<Movie>();
-			Document doc = Jsoup.connect(movieLink).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36").timeout(10000)
-					.validateTLSCertificates(false).get();
+			Document doc = Jsoup.connect(movieLink).userAgent(
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36")
+					.timeout(10000).validateTLSCertificates(false).get();
 			Element body = doc.body();
 			Elements elements = body.getElementsByClass("thumb-list__item");
 			int i = 1;
@@ -397,7 +405,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 					String name = movieimage.attr("alt");
 					String finalMovieLink = elements2.attr("href").trim();
 					String encodedString = null;
-					if(isFlag) {
+					if (isFlag) {
 						try {
 							URLConnection urlConnection = new URL(image).openConnection();
 							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -412,7 +420,8 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 						encodedString = image;
 					}
 					String[] playMovieLinkData = finalMovieLink.split("-");
-					String playMovieLink = "https://xhamster15.desi/embed/" + playMovieLinkData[playMovieLinkData.length -1];
+					String playMovieLink = "https://xhamster15.desi/embed/"
+							+ playMovieLinkData[playMovieLinkData.length - 1];
 					Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), playMovieLink, null);
 					movie.setTotalMoviesPerPageIndex(elements.size());
 					movies.add(movie);
@@ -424,17 +433,98 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 			return null;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public List<Movie> categoriesByPageIndex(String movieLink, Integer startIndex, Integer endIndex, boolean isFlag) {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect(movieLink).userAgent(
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementById("list_categories_categories_list_items").select("a");
+			int i = 1;
+			for (Element element : elements) {
+				if (i >= startIndex && i <= endIndex) {
+					Element elements2 = element.select("a").first();
+					Element movieimage = element.select("img").first();
+					String image = movieimage.attr("src");
+					String name = movieimage.attr("alt");
+					String finalMovieLink = elements2.attr("href").trim();
+					String encodedString = null;
+					if (isFlag) {
+						try {
+							URLConnection urlConnection = new URL(image).openConnection();
+							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+							urlConnection.setReadTimeout(5000);
+							urlConnection.setConnectTimeout(5000);
+
+							byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+							encodedString = Base64.getEncoder().encodeToString(imageBytes);
+						} catch (Exception e) {
+						}
+					} else {
+						encodedString = image;
+					}
+					Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), finalMovieLink, null);
+					movie.setTotalMoviesPerPageIndex(elements.size());
+					movies.add(movie);
+				}
+				i++;
+			}
+			return movies;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Movie> categoryMoviesByPageIndex(String movieLink, Integer startIndex, Integer endIndex,
+			boolean isFlag) {
+		try {
+			List<Movie> movies = new ArrayList<Movie>();
+			Document doc = Jsoup.connect(movieLink).userAgent(
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36")
+					.timeout(10000).validateTLSCertificates(false).get();
+			Element body = doc.body();
+			Elements elements = body.getElementById("list_videos_common_videos_list_items").select("a");
+			int i = 1;
+			for (Element element : elements) {
+				if (i >= startIndex && i <= endIndex) {
+					Element elements2 = element.select("a").first();
+					Element movieimage = element.select("img").first();
+					String image = movieimage.attr("data-original");
+					String name = movieimage.attr("alt");
+					String finalMovieLink = elements2.attr("href").trim();
+					String encodedString = null;
+					if (isFlag) {
+						try {
+							URLConnection urlConnection = new URL(image).openConnection();
+							urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
+							urlConnection.setReadTimeout(5000);
+							urlConnection.setConnectTimeout(5000);
+
+							byte[] imageBytes = IOUtils.toByteArray(urlConnection);
+							encodedString = Base64.getEncoder().encodeToString(imageBytes);
+						} catch (Exception e) {
+						}
+					} else {
+						encodedString = image;
+					}
+					String[] playMovieLinkData = image.split("/");
+					String playMovieLink = "https://gettubetv.com/embed/"
+							+ playMovieLinkData[playMovieLinkData.length - 3];
+					Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), playMovieLink, null);
+					movie.setTotalMoviesPerPageIndex(elements.size());
+					movies.add(movie);
+				}
+				i++;
+			}
+			return movies;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	private int getRandomNumber(int min, int max) {
 		return (int) ((Math.random() * (max - min)) + min);

@@ -33,9 +33,7 @@ public class JsoupPornRestController {
 		String vixenMovieLink = "https://yespornpleasexxx.com/vixen/page/1/";
 		String pornModelsLink = "https://www.xozilla.com/models/1/";
 		String pornStarsLink = "https://www.uiporn.com/pornstars/1/";
-		
-		
-		
+
 		List<Movie> romances = jsoupPornService.getAllTypeJsoupPornMoviesByIndex(romanceMovieLink, 1, 10, false);
 		List<Movie> famouses = jsoupPornService.getFamousStars(1, 10, false);
 		List<Movie> bangs = jsoupPornService.getAllTypeJsoupPornMoviesByIndex(bangMovieLink, 1, 10, false);
@@ -43,7 +41,6 @@ public class JsoupPornRestController {
 		List<Movie> vixens = jsoupPornService.getAllTypeJsoupPornMoviesByIndex(vixenMovieLink, 1, 10, false);
 		List<Movie> pornModels = jsoupPornService.pornModelsByPageIndex(pornModelsLink, 1, 10, true);
 		List<Movie> pornStars = jsoupPornService.pornStarsByPageIndex(pornStarsLink, 1, 10, false);
-		
 		
 		MovieList movieList = new MovieList();
 		movieList.setRomances(romances);
@@ -162,6 +159,20 @@ public class JsoupPornRestController {
 	public ResponseEntity<List<Movie>> channelMoviesByPageIndex(@RequestParam String movieLink, @RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
 		movieLink = movieLink + "/" + pageIndex;
 		List<Movie> movies = jsoupPornService.trendingStarMoviesByPageIndex(movieLink, startIndex, endIndex, true);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/categoriesByPageIndex")
+	public ResponseEntity<List<Movie>> categoriesByPageIndex(@RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
+		String movieLink = "https://gettubetv.com/categories/" + pageIndex + "/";
+		List<Movie> movies = jsoupPornService.categoriesByPageIndex(movieLink, startIndex, endIndex, true);
+		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/categoryMoviesByPageIndex")
+	public ResponseEntity<List<Movie>> categoryMoviesByPageIndex(@RequestParam String movieLink, @RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
+		movieLink = movieLink + "/" + pageIndex + "/";
+		List<Movie> movies = jsoupPornService.categoryMoviesByPageIndex(movieLink, startIndex, endIndex, true);
 		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
 	}
 	
