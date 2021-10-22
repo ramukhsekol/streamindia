@@ -24,22 +24,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @RestController
 @RequestMapping("/api")
 public class JsoupRestController {
-	
-@Autowired private JsoupService jsoupService;
-	
-	@GetMapping(value = "/others")
-	public ResponseEntity<Map<Integer, String>> others(Model model) throws UnirestException {
-		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();
-		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() < 8).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		return new ResponseEntity<Map<Integer, String>>(movieCountries, HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/dubbed")
-	public ResponseEntity<Map<Integer, String>> dubbed(Model model) throws UnirestException {
-		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();
-		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() > 8).sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		return new ResponseEntity<Map<Integer, String>>(movieCountries, HttpStatus.OK);
-	}
+
+	@Autowired
+	private JsoupService jsoupService;
 	
 	@GetMapping(value = "/{movieType}/movies/all")
 	public ResponseEntity<OtherMovie> teluguMoviesByIndex(@PathVariable Integer movieType, @RequestParam String pageIndex, Model model) throws UnirestException, UnsupportedEncodingException {
@@ -65,11 +52,28 @@ public class JsoupRestController {
 		}
 		return new ResponseEntity<OtherMovie>(otherMovies, HttpStatus.OK);
 	}
-	
+
+	@GetMapping(value = "/others")
+	public ResponseEntity<Map<Integer, String>> others(Model model) throws UnirestException {
+		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();
+		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() < 8)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		return new ResponseEntity<Map<Integer, String>>(movieCountries, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/dubbed")
+	public ResponseEntity<Map<Integer, String>> dubbed(Model model) throws UnirestException {
+		Map<Integer, String> movieCountries = MovieUtil.getmovieLanguages();
+		movieCountries = movieCountries.entrySet().stream().filter(data -> data.getKey() > 8)
+				.sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		return new ResponseEntity<Map<Integer, String>>(movieCountries, HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/other/movie")
-	public ResponseEntity<Movie> showMovie(@RequestParam String movieId, @RequestParam boolean status, Model model) throws UnirestException, UnsupportedEncodingException {
+	public ResponseEntity<Movie> showMovie(@RequestParam String movieId, @RequestParam boolean status, Model model)
+			throws UnirestException, UnsupportedEncodingException {
 		Movie movie = new Movie();
-		if(status) {
+		if (status) {
 			movie = jsoupService.getParticularMovieDetailsByMovieId(movieId);
 		} else {
 			movie = jsoupService.getMovieDetailsByMovieId(movieId);

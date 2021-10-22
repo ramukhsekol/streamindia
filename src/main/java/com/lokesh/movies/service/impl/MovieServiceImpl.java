@@ -53,27 +53,6 @@ public class MovieServiceImpl implements MovieService {
 	}
 	
 	@Override
-	public List<MovieGenres> getMovieGenries(String movieType) throws UnirestException {
-		String url = "https://api.themoviedb.org/3/genre/"+movieType+"/list?api_key=" + MovieUtil.apiKey;
-		HttpResponse<JsonNode> jsonResponse = Unirest.get(url).asJson();
-		JSONArray jsonArray = jsonResponse.getBody().getObject().getJSONArray("genres");
-		Gson gson = new Gson();
-		Type type = new TypeToken<List<MovieGenres>>() {}.getType();
-		List<MovieGenres> movieGenres = gson.fromJson(jsonArray.toString(), type);
-		return movieGenres;
-	}
-	
-	@Override
-	public Person getPersonByPersonId(String personId) throws UnirestException {
-		String url = "https://api.themoviedb.org/3/person/" + personId + "?api_key=" + MovieUtil.apiKey;
-		HttpResponse<String> response = Unirest.get(url).asString();
-		Gson gson = new Gson();
-		Type movieType = new TypeToken<Person>() {}.getType();
-		Person person = gson.fromJson(response.getBody(), movieType);
-		return person;
-	}
-	
-	@Override
 	public MovieTrailers getMovieDetailsByMovieId(String movieId, String pageType) throws UnirestException {
 		HttpResponse<JsonNode> response = Unirest.get("https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + MovieUtil.apiKey + "&append_to_response=videos,images,credits").asJson();
 		Gson gson = new Gson();
@@ -111,6 +90,29 @@ public class MovieServiceImpl implements MovieService {
 		movieTrailer.setCrews(movieCrews);
 		return movieTrailer;
 	}
+	
+	@Override
+	public List<MovieGenres> getMovieGenries(String movieType) throws UnirestException {
+		String url = "https://api.themoviedb.org/3/genre/"+movieType+"/list?api_key=" + MovieUtil.apiKey;
+		HttpResponse<JsonNode> jsonResponse = Unirest.get(url).asJson();
+		JSONArray jsonArray = jsonResponse.getBody().getObject().getJSONArray("genres");
+		Gson gson = new Gson();
+		Type type = new TypeToken<List<MovieGenres>>() {}.getType();
+		List<MovieGenres> movieGenres = gson.fromJson(jsonArray.toString(), type);
+		return movieGenres;
+	}
+	
+	@Override
+	public Person getPersonByPersonId(String personId) throws UnirestException {
+		String url = "https://api.themoviedb.org/3/person/" + personId + "?api_key=" + MovieUtil.apiKey;
+		HttpResponse<String> response = Unirest.get(url).asString();
+		Gson gson = new Gson();
+		Type movieType = new TypeToken<Person>() {}.getType();
+		Person person = gson.fromJson(response.getBody(), movieType);
+		return person;
+	}
+	
+	
 
 	@Override
 	public JSONArray getMoviesByIndexOrSearchOrGeneric(String pageIndex, String type, String query, String queryId, String SearchType) throws UnirestException, UnsupportedEncodingException {

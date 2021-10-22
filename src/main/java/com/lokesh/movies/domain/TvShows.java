@@ -27,6 +27,8 @@ public class TvShows {
 
 	private String movieLink;
 	private String movieLink2;
+	private String movieLink3;
+	private String movieLink4;
 
 	public String getBackdrop_path() {
 		return backdrop_path;
@@ -178,6 +180,22 @@ public class TvShows {
 
 	public void setMovieLink2(String movieLink2) {
 		this.movieLink2 = movieLink2;
+	}
+
+	public String getMovieLink3() {
+		return movieLink3;
+	}
+
+	public void setMovieLink3(String movieLink3) {
+		this.movieLink3 = movieLink3;
+	}
+
+	public String getMovieLink4() {
+		return movieLink4;
+	}
+
+	public void setMovieLink4(String movieLink4) {
+		this.movieLink4 = movieLink4;
 	}
 
 }

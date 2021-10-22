@@ -167,7 +167,7 @@
               </li>
             </ul>
             <p class="tags" th:text="${movie.genrics}" style="color:#ff0018;font-weight: 600;">Romance, Action</p>
-            <p class="description" th:text="${movie.overview}"></p>
+            <p class="description" th:text="${#strings.abbreviate(movie.overview,400)}"></p>
             </div>
             <div class="col-md-6">
             <div style="float: right;">

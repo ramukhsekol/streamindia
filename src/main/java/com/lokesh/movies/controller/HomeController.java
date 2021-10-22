@@ -13,8 +13,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 @Controller
 public class HomeController {
-	
-	@Autowired private MovieService movieService;
+
+	@Autowired
+	private MovieService movieService;
 
 	@GetMapping(value = "/")
 	public String home() {
@@ -22,12 +23,11 @@ public class HomeController {
 	}
 
 	@GetMapping(value = "/home")
-	public String homeMovies(Model model)  throws UnirestException {
+	public String homeMovies(Model model) throws UnirestException {
 		List<Movie> movies = movieService.getAllMovies();
 		model.addAttribute("movies", movies);
 		model.addAttribute("title", "home");
 		return "movies/home";
-
 	}
 
 }

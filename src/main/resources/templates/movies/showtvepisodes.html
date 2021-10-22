@@ -352,7 +352,7 @@ and
 	<main>
 
 		<section class="parallax-window youtube-video"
-			style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);"
+			style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);width: 100%;"
 			id="movietrailers" th:if="${movie.trailers.size() > 0}">
 			<div class="container-fluid h-100">
 				<div class="row">
@@ -413,13 +413,15 @@ and
 					<div class="parallax-buttons" style="text-align: center;">
 						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('1')">Server 1</a> 
 						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('2')">Server 2</a>
+						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('3')">Server 3</a>
+						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('4')">Server 4</a>
 					</div>
 					
 				</div>
 			</div>
 		</section>
 		<section class="parallax-window"
-			style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);"
+			style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);width: 100%;"
 			id="moviecastcrew">
 			<div class="container-fluid h-100">
 				<div class="row">
@@ -502,9 +504,22 @@ and
 	function newVideo(type) {
 		var seasonNumber = $("#seasonNumber").val();
 		var episodeNumber = $("#episodeNumber").val();
-		var movieLink = type == '1' ? "https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + episodeNumber : 
-			"https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
-		$("#newvideo").attr('src', movieLink);
+		if (type == '1') {
+			movieLink = "https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + episodeNumber;
+			$("#newvideo").attr('src', movieLink);
+		} else if (type == '2') {
+			movieLink = "https://autoembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + episodeNumber;
+			$("#newvideo").attr('src', movieLink);
+		} else if (type == '3') {
+			$.get("/play/episodes/all?imdbId=" + imdbId + "&seasonNumber=" + seasonNumber + "&episodeNumber=" + episodeNumber, function(response) {
+				movieLink = response;
+				$("#newvideo").attr('src', movieLink);
+			});
+		} else if (type == '4') {
+			movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
+			$("#newvideo").attr('src', movieLink);
+		} 
+		
 	}
 	
 	function iframeVideo(type) {

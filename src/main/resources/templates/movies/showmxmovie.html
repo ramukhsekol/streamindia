@@ -153,7 +153,7 @@
 }
 
 .big-title {
-	background: url(../moviedetails/images/texure.jpg);
+	background: url(../../moviedetails/images/texure.jpg);
 	background-repeat: repeat-x;
 	background-position: 100% 100%;
 	color: transparent;
@@ -284,7 +284,7 @@ and
 
 	<header>
 		<section id="parallex" class="parallax-window"
-			th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.movie.backdrop_path} + ') center center;width: 100%;'">
+			th:style="'background:url(https://qqcdnpictest.mxplay.com/' + ${backgroundImage} + ') center center;width: 100%;'">
 			<div class="container-fluid h-100">
 				<div
 					class="row align-items-center justify-content-center h-100 parallaxt-details">
@@ -292,7 +292,7 @@ and
 						<div class="text-left">
 								<h1 class="slider-text big-title title text-uppercase"
 									data-animation-in="fadeInLeft" data-delay-in="0.6"
-									th:text="${movie.movie.title}" style="font-size: 35px;"></h1>
+									th:text="${movie.title}" style="font-size: 35px;"></h1>
 							<div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
 								<div class="rate">
 									<svg class="circle-chart" viewBox="0 0 30 30" width="40"
@@ -302,28 +302,29 @@ and
 											r="14"></circle>
                     <circle class="circle-chart__circle"
 											stroke="#4eb04b" stroke-width="2"
-											th:attr="stroke-dasharray=${(movie.movie.vote_average * 10) + ',100'}"
+											th:attr="stroke-dasharray=${(movie.rating * 10) + ',100'}"
 											cx="15" cy="15" r="14"></circle>
                   </svg>
-									<b th:text="${movie.movie.vote_average}">5.4</b> <span
+									<b th:text="${movie.rating}">5.4</b> <span
 										style="margin-left: 10px; vertical-align: text-top;">IMDB
 										SCORE</span>
 								</div>
 							</div>
-							<div class="tags" th:text="${movie.movie.genrics}"></div>
+							<div class="tags" th:text="${genres}"></div>
 							<div class="movie-time d-flex align-items-center mb-3"
 								style="margin-top: 10px;">
 								Release Date : &nbsp;&nbsp;
-								<h6 class="text-white" th:text="${movie.movie.release_date}">2h
+								<h6 class="text-white" th:text="${#dates.format(movie.releaseDate, 'yyyy-mm-dd')}">2h
 									30m</h6>
 							</div>
 							<div class="movie-time d-flex align-items-center mb-3"
 								style="margin-top: 10px;">
 								Run Time : &nbsp;&nbsp;
-								<h6 class="text-white" th:text="${movie.movie.convertRunTime}">2h
+								<h6 class="text-white" th:text="${runTime}">2h
 									30m</h6>
 
 							</div>
+							
 							<div class="movie-time d-flex align-items-center mb-3"
 								style="margin-top: 10px;">
 								Director : &nbsp;&nbsp;
@@ -331,27 +332,21 @@ and
 									30m</h6>
 
 							</div>
-							<div class="movie-time d-flex align-items-center mb-3"
-								style="margin-top: 10px;">
-								Producer : &nbsp;&nbsp;
-								<h6 class="text-white" th:text="${producer}">2h
-									30m</h6>
-
-							</div>
-							<p th:text="${movie.movie.overview}"></p>
+						
+							<p th:text="${#strings.abbreviate(movie.description,1000)}"></p>
 							<div class="parallax-buttons">
-								<a href="#movietrailers" class="btn btn-success">Trailers</a> <a
-									href="#playmovie" class="btn btn-hover">Play Now</a> <a
+								<a
+									th:href="${'https://www.mxplayer.in' + movie.webUrl + '?watch=true'}" class="btn btn-hover">Play Now</a> <a
 									href="#moviecastcrew" class="btn btn-primary">Cast & Crew</a>
 							</div>
 						</div>
 					</div>
 					<div class="col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6">
 						<div class="parallax-img">
-							<img th:src="${'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.movie.poster_path}" class="img-fluid w-100" alt="bailey" style="height: 510px;border-radius:20px;">
+							<img th:src="${'https://qqcdnpictest.mxplay.com/' + movie.imageInfo.get(0).url}" class="img-fluid w-100" alt="bailey" style="height: 510px;border-radius:20px;">
 							<div class="bwa-content">
 			                    <div class="loader"></div>
-			                    <a href="#playmovie" class="bwac-btn" title="Click to play">
+			                    <a th:href="${'https://www.mxplayer.in' + movie.webUrl + '?watch=true'}" class="bwac-btn" title="Click to play">
 			                      <i class="fa fa-play"></i>
 			                    </a>
 	                       	</div>
@@ -362,113 +357,34 @@ and
 		</section>
 	</header>
 	<main>
-
-		<section class="parallax-window youtube-video"
-			style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg); width: 100%;" 
-			id="movietrailers" th:if="${movie.trailers.size() > 0}">
-			<div class="container-fluid h-100">
-				<div class="row">
-					<div class="col-12">
-						<div class="section-title text-center light"
-							style="margin-bottom: 9px;">
-							<h2 style="z-index: 100000;">Trailers</h2>
-						</div>
-					</div>
-					<div class="video-thumb light" style="margin-left: 123px;">
-						<div id="youtubeVimeoWithPlaylist_default" style="display: none;">
-							<ul class="youtubeVimeoWithPlaylist_list">
-								<li
-									th:attr="data-bottom-thumb=${'https://image.tmdb.org/t/p/w250_and_h141_face' + movieTrailer.image_path}, data-youtube=${movieTrailer.key}"
-									th:each="movieTrailer : ${movie.trailers}"></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section id="playmovie" class="parallax-window"
-			th:style="'background:url(http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + ${movie.movie.backdrop_path} + ') center center;width: 100%;'">
-			<div class="container-fluid h-100">
-				<div
-					class="row align-items-center justify-content-center h-100 parallaxt-details">
-					<div class="col-12"
-						style="margin-top: -67px; margin-bottom: -38px;">
-						<div class="section-title text-center light">
-							<h2>Movie</h2>
-						</div>
-					</div>
-					<div class="col-lg-12">
-						<div class="text-center video-play">
-							<iframe th:src="${movie.movie.movieLink}"
-								style="height: 520px; width: 100%" sandboxscrolling="no"
-								frameborder="0" allowfullscreen="true" id="newvideo"
-								webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
-						</div>
-						
-						<div class="parallax-buttons" style="text-align: center;">
-								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('1')">Server 1</a> 
-								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('2')">Server 2</a>
-								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('3')">Server 3</a>
-								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('4')">Server 4</a>
-							</div>
-						
-						
-						<!-- <div class="text-center video-thumbnail">
-							<img
-								th:src="${'http://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + movie.movie.backdrop_path}">
-						</div> -->
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="parallax-window"
-			style="padding: 34px 0; background: url(../moviedetails/images/texure.jpg);width: 100%;"
+	
+	<section class="parallax-window"
+			style="padding: 34px 0; background: url(../../moviedetails/images/texure.jpg);width: 100%;"
 			id="moviecastcrew">
 			<div class="container-fluid h-100">
 				<div class="row">
 					<div class="col-12" style="z-index: 10000;">
 						<div class="section-title text-center light"
-							style="margin-bottom: 59px;">
-							<h2>Cast</h2>
+							style="margin-bottom: 9px;">
+							<h2>Actors</h2>
 						</div>
 					</div>
 					<div class="col-12 col-sm-8 col-md-3 col-lg-3"
-						th:each="cast : ${movie.casts}"
-						style="margin-bottom: 68px; z-index: 10000;">
+						th:each="cast : ${movie.contributors}"
+						style="margin-bottom: 10px; z-index: 10000;">
 						<a th:href="${'/person/movies?personId=' + cast.id}"><div
 								class="card">
-								<div class="card-body text-center" style="padding-bottom: 8px;">
+								<img class="card-img-top"
+									src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/oslo.jpg"
+									alt="Bologna">
+								<div class="card-body text-center">
 									<img class="avatar rounded-circle"
-										th:src="${cast.profile_path == null ? 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png':'https://image.tmdb.org/t/p/w138_and_h175_face' + cast.profile_path}"
+										th:src="${cast.imageInfo != null && cast.imageInfo.size() > 0 ? 'https://qqcdnpictest.mxplay.com/' + cast.imageInfo.get(0).url : 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png'}"
 										alt="Bologna" style="width: 98px; height: 91px;">
 									<h5 class="card-title" th:text="${cast.name}">Robert
 										Downey Jr.</h5>
-									<h6 class="card-subtitle mb-2 text-muted" th:text="${#strings.abbreviate(cast.character,25)}"
-										>Famous Actor</h6>
-								</div>
-							</div></a>
-					</div>
-					<hr />
-					<div class="col-12" style="z-index: 10000; margin-top: 20px;">
-						<div class="section-title text-center light"
-							style="margin-bottom: 69px;">
-							<h2>Crew</h2>
-						</div>
-					</div>
-					<div class="col-12 col-sm-8 col-md-3 col-lg-3"
-						th:each="crew : ${movie.crews}"
-						style="margin-bottom: 68px; z-index: 10000;">
-						<a th:href="${'/person/movies?personId=' + crew.id}"><div
-								class="card">
-								<div class="card-body text-center" style="padding-bottom: 8px;">
-									<img class="avatar rounded-circle"
-										th:src="${crew.profile_path == null ? 'https://s3.amazonaws.com/37assets/svn/765-default-avatar.png':'https://image.tmdb.org/t/p/w138_and_h175_face' + crew.profile_path}"
-										alt="Bologna" style="width: 98px; height: 91px;">
-									<h5 class="card-title" th:text="${crew.name}">Robert
-										Downey Jr.</h5>
-									<h6 class="card-subtitle mb-2 text-muted" th:text="${#strings.abbreviate(crew.job,25)}">Famous
-										Actor</h6>
+									<h6 class="card-subtitle mb-2 text-muted"
+										th:text="${cast.type}">Famous Actor</h6>
 								</div>
 							</div></a>
 					</div>
@@ -495,110 +411,16 @@ and
 		src="https://www.videoplayerhtml5.com/youtubeandvimeo/js/youtubeVimeoWithPlaylist.js"
 		type="text/javascript"></script>
 	<script type="text/javascript" th:inline="javascript">
-	var movie = [[${movie.movie}]];
-	function newVideo(type) {
-		var movieLink = '';
-		if(type == '1') {
-			movieLink = movie.movieLink;
-		} else if(type == '2') {
-			movieLink = movie.movieLink2;
-		} else if(type == '3') {
-			movieLink = movie.movieLink3;
-		} else if(type == '4') {
-			movieLink = movie.movieLink4;
-		}
-		$("#newvideo").attr('src', movieLink);
-	}
-	
-	
-	
 	$(function () {
 		  $(document).scroll(function () {
 		    var $nav = $(".navbar");
 		    $nav.toggleClass('scrolled', $(this).scrollTop() >= $nav.height());
 		  });
 		});
-	
-	
-	
-	
-		jQuery(function() {
-			jQuery('#youtubeVimeoWithPlaylist_default')
-					.youtubeVimeoWithPlaylist({
-						width : 964,
-						height : 416,
-						playlistWidth : 234,
-						autoPlayFirstVideo : false,
-						origThumbImgW : 234,
-						origThumbImgH : 128,
-						showNavArrows : true,
-						playlistRecordHeight : 128,
-						borderWidth : 8,
-						borderColor : '#FFFFFF',
-
-						playlistRecordPadding : 0,
-						playlistBgColor : '#FFFFFF',
-						playlistRecordBgOffColor : '#000000',
-						playlistRecordBgOnColor : '',
-						playlistRecordBgOffImgOpacity : 45,
-
-						playlistRecordShowTitle : false,
-						playlistRecordShowDesc : false
-
-					});
-		});
-
-		$(function() {
-			$(".video-thumbnail").on('click', function() {
-				$(".video-play").show();
-				$(".video-thumbnail").hide();
-			})
-		})
 	</script>
-	<script type="text/javascript" th:inline="javascript">
-		//<![CDATA[
-		window.onload = function() {
-			document.addEventListener("contextmenu", function(e) {
-				e.preventDefault();
-			}, false);
-			document.addEventListener("keydown", function(e) {
-				if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-					disabledEvent(e);
-				}
-				if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-					disabledEvent(e);
-				}
-				if (e.keyCode == 83
-						&& (navigator.platform.match("Mac") ? e.metaKey
-								: e.ctrlKey)) {
-					disabledEvent(e);
-				}
-				if (e.ctrlKey && e.keyCode == 85) {
-					disabledEvent(e);
-				}
-				if (event.keyCode == 123) {
-					disabledEvent(e);
-				}
-			}, false);
-			function disabledEvent(e) {
-				if (e.stopPropagation) {
-					e.stopPropagation();
-				} else if (window.event) {
-					window.event.cancelBubble = true;
-				}
-				e.preventDefault();
-				return false;
-			}
-		}
-		function scrolltop() {
-			window.scrollTo(0, 0);
-		}
-
-		// ]]>
-	</script>
-	
-	
-	
-	
+	<script type="text/javascript">
+   var ExternalURL = "movie/watch-businessman-movie-online-cf53f05357818ee3b6646fef24a8505d?watch=true";
+   $('#mydiv').load(ExternalURL);
+</script>
 </body>
 </html>

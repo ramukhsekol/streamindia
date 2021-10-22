@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,6 +27,8 @@ import com.lokesh.movies.dto.MovieTrailers;
 import com.lokesh.movies.dto.SeasonEpisode;
 import com.lokesh.movies.service.MovieService;
 import com.lokesh.movies.util.MovieUtil;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @Controller
@@ -171,9 +174,11 @@ public class MoviesController {
 					List<TvEpisodes> tvEpisodes = movieService.getTvEpisodesByShowIdAndSeasonId(movieId, tvSeasons.get(0).getSeason_number()).stream().sorted(Comparator.comparingInt(TvEpisodes::getEpisode_number)).collect(Collectors.toList());;
 					movie.getTvShows().setMovieLink("https://www.2embed.ru/embed/tmdb/tv?id=" + movie.getTvShows().getId() + "&s=" + tvSeasons.get(0).getSeason_number() + "&e=" + tvEpisodes.get(0).getEpisode_number()); 
 					if(showImdb != null && StringUtils.hasText(showImdb.getImdb_id())) {
-						movie.getTvShows().setMovieLink2("https://gomostream.com/show/"+showImdb.getImdb_id()+"/" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number()); 
+						movie.getTvShows().setMovieLink2("https://autoembed.xyz/tv/imdb/"+showImdb.getImdb_id()+"-" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number()); 
+						movie.getTvShows().setMovieLink3("https://gomostream.com/show/"+showImdb.getImdb_id()+"/" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number()); 
 						model.addAttribute("imdbId",  showImdb.getImdb_id());
 					}
+					
 					model.addAttribute("seasons", tvSeasons);
 					model.addAttribute("episodes", tvEpisodes);
 					model.addAttribute("search", new SeasonEpisode(tvSeasons.get(0).getSeason_number(), tvEpisodes.get(0).getEpisode_number()));
@@ -194,8 +199,13 @@ public class MoviesController {
 				model.addAttribute("director", director);
 				model.addAttribute("producer", producer);
 			}
+			
+			HttpResponse<String> response = Unirest.get("https://getsuperembed.link/?video_id=" + movie.getMovie().getImdb_id()).asString();
 			movie.getMovie().setMovieLink("https://www.2embed.ru/embed/imdb/movie?id=" + movie.getMovie().getImdb_id());
-			movie.getMovie().setMovieLink2("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink2("https://autoembed.xyz/movie/imdb/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink3(response.getBody());
+			movie.getMovie().setMovieLink4("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
+			
 			
 			model.addAttribute("movie", movie);
 			model.addAttribute("title", movie.getMovie().getTitle());
@@ -208,6 +218,12 @@ public class MoviesController {
 		List<TvEpisodes> tvEpisodes = movieService.getTvEpisodesByShowIdAndSeasonId(showId, seasonNumber);
 		model.addAttribute("episodes", tvEpisodes);
 		return "movies/appendepisodes";
+	}
+	
+	@GetMapping(value = "/play/episodes/all")
+	public @ResponseBody String playEposide(@RequestParam String imdbId, @RequestParam Integer seasonNumber, @RequestParam Integer episodeNumber, Model model) throws UnirestException, UnsupportedEncodingException {
+		HttpResponse<String> response = Unirest.get("https://getsuperembed.link/?video_id=" + imdbId + "&s=" + seasonNumber + "&e=" + episodeNumber).asString();
+		return response.getBody();
 	}
 				
 

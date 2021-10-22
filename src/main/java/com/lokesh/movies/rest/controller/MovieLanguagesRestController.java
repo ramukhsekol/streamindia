@@ -17,7 +17,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @RestController
 @RequestMapping("/api")
 public class MovieLanguagesRestController {
-	
+
 	@Autowired
 	private MovieService movieService;
 

@@ -32,6 +32,8 @@ public class Movie implements Serializable {
 	private String convertRunTime;
 	private String movieLink;
 	private String movieLink2;
+	private String movieLink3;
+	private String movieLink4;
 
 	private String staring;
 	private String country;
@@ -329,6 +331,22 @@ public class Movie implements Serializable {
 
 	public void setTotalMoviesPerPageIndex(Integer totalMoviesPerPageIndex) {
 		this.totalMoviesPerPageIndex = totalMoviesPerPageIndex;
+	}
+
+	public String getMovieLink3() {
+		return movieLink3;
+	}
+
+	public void setMovieLink3(String movieLink3) {
+		this.movieLink3 = movieLink3;
+	}
+
+	public String getMovieLink4() {
+		return movieLink4;
+	}
+
+	public void setMovieLink4(String movieLink4) {
+		this.movieLink4 = movieLink4;
 	}
 
 }
