@@ -13,6 +13,7 @@
 	<artifactId>movies</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>movies</name>
+	<packaging>jar</packaging>
 	<description>online movies Streaming </description>
 
 	<properties>

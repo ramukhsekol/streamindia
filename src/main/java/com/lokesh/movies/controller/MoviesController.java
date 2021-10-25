@@ -204,7 +204,8 @@ public class MoviesController {
 			movie.getMovie().setMovieLink("https://www.2embed.ru/embed/imdb/movie?id=" + movie.getMovie().getImdb_id());
 			movie.getMovie().setMovieLink2("https://autoembed.xyz/movie/imdb/" + movie.getMovie().getImdb_id());
 			movie.getMovie().setMovieLink3(response.getBody());
-			movie.getMovie().setMovieLink4("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink4("https://v2.vidsrc.me/embed/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink5("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
 			
 			
 			model.addAttribute("movie", movie);

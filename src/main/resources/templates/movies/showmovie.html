@@ -411,6 +411,7 @@ and
 								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('2')">Server 2</a>
 								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('3')">Server 3</a>
 								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('4')">Server 4</a>
+								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('5')">Server 5</a>
 							</div>
 						
 						
@@ -506,10 +507,11 @@ and
 			movieLink = movie.movieLink3;
 		} else if(type == '4') {
 			movieLink = movie.movieLink4;
+		} else if(type == '5') {
+			movieLink = movie.movieLink5;
 		}
 		$("#newvideo").attr('src', movieLink);
 	}
-	
 	
 	
 	$(function () {
@@ -518,8 +520,6 @@ and
 		    $nav.toggleClass('scrolled', $(this).scrollTop() >= $nav.height());
 		  });
 		});
-	
-	
 	
 	
 		jQuery(function() {

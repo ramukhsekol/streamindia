@@ -34,6 +34,7 @@ public class Movie implements Serializable {
 	private String movieLink2;
 	private String movieLink3;
 	private String movieLink4;
+	private String movieLink5;
 
 	private String staring;
 	private String country;
@@ -347,6 +348,14 @@ public class Movie implements Serializable {
 
 	public void setMovieLink4(String movieLink4) {
 		this.movieLink4 = movieLink4;
+	}
+
+	public String getMovieLink5() {
+		return movieLink5;
+	}
+
+	public void setMovieLink5(String movieLink5) {
+		this.movieLink5 = movieLink5;
 	}
 
 }
