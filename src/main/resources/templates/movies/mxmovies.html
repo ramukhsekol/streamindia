@@ -85,11 +85,12 @@
 <header>
   <section class="content-section" data-background="#111111">
     <div class="container">
-    <div class="col-12">
-        <div class="section-title text-center light">
-          <h5 th:inline="text"> Movies</h5>
-        </div>
-      </div>
+		<a th:href="@{'/mx/movies?type=te'}" class="btn" th:classappend="${type == 'te'} ? 'btn-success' : 'btn-primary'" style="width:20%;">TELUGU</a>
+		<a th:href="@{'/mx/movies?type=ta'}" class="btn" th:classappend="${type == 'ta'} ? 'btn-success' : 'btn-primary'" style="width:20%;">TAMIL</a>
+		<a th:href="@{'/mx/movies?type=hi'}" class="btn" th:classappend="${type == 'hi'} ? 'btn-success' : 'btn-primary'" style="width:20%;">HINDI</a>
+		<a th:href="@{'/mx/movies?type=bho'}" class="btn" th:classappend="${type == 'bho'} ? 'btn-success' : 'btn-primary'" style="width:19.6%;">BHOJPURI</a>
+		<a th:href="@{'/mx/movies?type=ml'}" class="btn" th:classappend="${type == 'ml'} ? 'btn-success' : 'btn-primary'" style="width:19%;">MALAYALAM</a>
+    <br/><br/>
     <span id="appenddata"></span>
   </div>
   </section>

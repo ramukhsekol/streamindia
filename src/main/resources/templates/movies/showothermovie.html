@@ -15,6 +15,10 @@
   transition: background-color 200ms linear;
 }
 
+.search-pop-up-close {
+        margin: 8px -41px 6px 9px!important;
+}
+
 .big-title {
     background: url(../moviedetails/images/texure.jpg);
     background-repeat: repeat-x;
@@ -100,7 +104,7 @@
 	<nav th:replace="fragments/menuheader :: menuheader"></nav>
 
 	<header>
-		<section id="parallex" class="parallax-window" th:style="'background:url(https://wallpaperaccess.com/full/1512223.jpg) center center;width: 100%;'">
+		<section id="parallex" class="parallax-window" th:style="'background:url(https://wallpaperaccess.com/full/1512223.jpg) center center;width: 100%;position: relative; opacity: 0.65; background-position: center; background-repeat: no-repeat; background-size: cover;'">
            <div class="container-fluid h-100">
               <div class="row align-items-center justify-content-center h-100 parallaxt-details">
                  <div class="col-lg-7 r-mb-23">

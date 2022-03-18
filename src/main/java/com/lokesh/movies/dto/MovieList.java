@@ -3,6 +3,7 @@ package com.lokesh.movies.dto;
 import java.util.List;
 
 import com.lokesh.movies.domain.Movie;
+import com.lokesh.movies.domain.MovieGenres;
 
 public class MovieList {
 
@@ -13,6 +14,43 @@ public class MovieList {
 	private List<Movie> vixens;
 	private List<Movie> pornModels;
 	private List<Movie> pornStars;
+
+	private List<Movie> nowPlayings;
+	private List<Movie> popularMovies;
+	private List<Movie> popularShows;
+	private List<MovieGenres> movieGenres;
+
+	public List<MovieGenres> getMovieGenres() {
+		return movieGenres;
+	}
+
+	public void setMovieGenres(List<MovieGenres> movieGenres) {
+		this.movieGenres = movieGenres;
+	}
+
+	public List<Movie> getPopularShows() {
+		return popularShows;
+	}
+
+	public void setPopularShows(List<Movie> popularShows) {
+		this.popularShows = popularShows;
+	}
+
+	public List<Movie> getNowPlayings() {
+		return nowPlayings;
+	}
+
+	public void setNowPlayings(List<Movie> nowPlayings) {
+		this.nowPlayings = nowPlayings;
+	}
+
+	public List<Movie> getPopularMovies() {
+		return popularMovies;
+	}
+
+	public void setPopularMovies(List<Movie> popularMovies) {
+		this.popularMovies = popularMovies;
+	}
 
 	public List<Movie> getRomances() {
 		return romances;

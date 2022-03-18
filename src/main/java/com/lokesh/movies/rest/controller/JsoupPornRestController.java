@@ -27,7 +27,7 @@ public class JsoupPornRestController {
 	
 	@GetMapping(value = "/homePornMovies")
 	public ResponseEntity<MovieList> homePornMovies() {
-		String romanceMovieLink = "https://yespornpleasexxx.com/brazzersx/page/1/";
+		String romanceMovieLink = "https://yespornpleasexxx.com/brazzersz-2/page/1/";
 		String bangMovieLink = "https://yespornpleasexxx.com/bangbros-3/page/1/";
 		String kingMovieLink = "https://yespornpleasexxx.com/reality-kings-2/page/1/";
 		String vixenMovieLink = "https://yespornpleasexxx.com/vixen/page/1/";
@@ -55,7 +55,7 @@ public class JsoupPornRestController {
 	
 	@GetMapping(value = "/romanceMoviesByPageIndex")
 	public ResponseEntity<List<Movie>> romancePornByIndex(@RequestParam String pageIndex, @RequestParam Integer startIndex, @RequestParam Integer endIndex) {
-		String movieLink = "https://yespornpleasexxx.com/brazzersx/page/" + pageIndex + "/";
+		String movieLink = "https://yespornpleasexxx.com/brazzersz-2/page/" + pageIndex + "/";
 		List<Movie> movies = jsoupPornService.getAllTypeJsoupPornMoviesByIndex(movieLink, startIndex, endIndex, true);
 		return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
 	}

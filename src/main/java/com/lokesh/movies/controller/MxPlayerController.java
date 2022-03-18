@@ -28,6 +28,7 @@ public class MxPlayerController {
 	@GetMapping(value = "/mx/movies")
 	public String mxMoviesByIndex(@RequestParam String type, Model model) throws UnirestException, UnsupportedEncodingException {
 		model.addAttribute("type", type); 
+		model.addAttribute("title", "mx");
 		return "movies/mxmovies";
 	}
 
@@ -76,6 +77,7 @@ public class MxPlayerController {
 			model.addAttribute("genres", genres);
 			model.addAttribute("runTime", runTime);
 			model.addAttribute("movie", movie);
+			model.addAttribute("title", "mx");
 		}
 		return "movies/showmxmovie";
 	}

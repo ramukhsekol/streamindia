@@ -45,6 +45,10 @@
     box-shadow: 0 0 50px #fff, inset 0 0 50px #fff;
 }
 
+.search-pop-up-close {
+    margin: 8px -25px 6px 9px!important;
+}
+
 .loader:before {
     z-index: 2;
     -webkit-animation: gogoloader 2s infinite;
@@ -284,7 +288,7 @@ and
 
 	<header>
 		<section id="parallex" class="parallax-window"
-			th:style="'background:url(https://qqcdnpictest.mxplay.com/' + ${backgroundImage} + ') center center;width: 100%;'">
+			th:style="'background:url(https://qqcdnpictest.mxplay.com/' + ${backgroundImage} + ') center center;width: 100%;position: relative; opacity: 0.65; background-position: center; background-repeat: no-repeat; background-size: cover;'">
 			<div class="container-fluid h-100">
 				<div
 					class="row align-items-center justify-content-center h-100 parallaxt-details">
@@ -336,7 +340,7 @@ and
 							<p th:text="${#strings.abbreviate(movie.description,1000)}"></p>
 							<div class="parallax-buttons">
 								<a
-									th:href="${'https://www.mxplayer.in' + movie.webUrl + '?watch=true'}" class="btn btn-hover">Play Now</a> <a
+									th:href="${'https://www.mxplayer.in' + movie.webUrl + '?watch=true'}" class="btn btn-hover" target="_blank">Play Now</a> <a
 									href="#moviecastcrew" class="btn btn-primary">Cast & Crew</a>
 							</div>
 						</div>
@@ -346,7 +350,7 @@ and
 							<img th:src="${'https://qqcdnpictest.mxplay.com/' + movie.imageInfo.get(0).url}" class="img-fluid w-100" alt="bailey" style="height: 510px;border-radius:20px;">
 							<div class="bwa-content">
 			                    <div class="loader"></div>
-			                    <a th:href="${'https://www.mxplayer.in' + movie.webUrl + '?watch=true'}" class="bwac-btn" title="Click to play">
+			                    <a th:href="${'https://www.mxplayer.in' + movie.webUrl + '?watch=true'}" class="bwac-btn" title="Click to play" target="_blank">
 			                      <i class="fa fa-play"></i>
 			                    </a>
 	                       	</div>

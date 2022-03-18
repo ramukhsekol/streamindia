@@ -21,13 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lokesh.movies.domain.Movie;
+import com.lokesh.movies.domain.MovieGenres;
 import com.lokesh.movies.domain.Person;
 import com.lokesh.movies.domain.ShowImdb;
 import com.lokesh.movies.domain.TvEpisodes;
 import com.lokesh.movies.domain.TvSeasons;
+import com.lokesh.movies.dto.MovieList;
 import com.lokesh.movies.dto.MovieTrailers;
 import com.lokesh.movies.service.MovieService;
 import com.lokesh.movies.util.MovieUtil;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @RestController
@@ -36,7 +40,27 @@ public class MovieRestController {
 
 	@Autowired
 	private MovieService movieService;
-
+	
+	
+	@GetMapping(value = "/homeAllMovies")
+	public ResponseEntity<MovieList> homePornMovies() throws UnirestException, UnsupportedEncodingException {
+		Gson gson = new Gson();
+		List<Movie> nowPlayings = movieService.getAllMovies();
+		JSONArray popularMovieJsonArray = movieService.getMoviesByIndexOrSearchOrGeneric("1", "", "", "", "movie");
+		JSONArray popularTvJsonArray = movieService.getMoviesByIndexOrSearchOrGeneric("1", "", "", "", "tv");
+		List<MovieGenres> movieGenres = movieService.getMovieGenries("movie");
+		Type responseType = new TypeToken<List<Movie>>() {}.getType();
+		List<Movie> popularMovies = gson.fromJson(popularMovieJsonArray.toString(), responseType);
+		List<Movie> popularShows = gson.fromJson(popularTvJsonArray.toString(), responseType);
+		
+		MovieList movieList = new MovieList();
+		movieList.setNowPlayings(nowPlayings);
+		movieList.setPopularMovies(popularMovies);
+		movieList.setPopularShows(popularShows);
+		movieList.setMovieGenres(movieGenres);
+		return new ResponseEntity<MovieList>(movieList, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/movies/all")
 	public ResponseEntity<Object> moviesByIndex(@RequestParam String pageIndex, @RequestParam String type,
 			@RequestParam String query, @RequestParam String queryId, @RequestParam String searchType)
@@ -121,9 +145,13 @@ public class MovieRestController {
 				movie.getMovie().setDirector(director);
 				movie.getMovie().setProducer(producer);
 			}
-			movie.getMovie().setMovieLink(
-					"https://www.2embed.ru/embed/imdb/movie?id=" + movie.getMovie().getImdb_id() + "&enablejsapi=1");
-			movie.getMovie().setMovieLink2("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
+			
+			HttpResponse<String> response = Unirest.get("https://getsuperembed.link/?video_id=" + movie.getMovie().getImdb_id()).asString();
+			movie.getMovie().setMovieLink("https://www.2embed.ru/embed/imdb/movie?id=" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink2("https://autoembed.xyz/movie/imdb/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink3(response.getBody());
+			movie.getMovie().setMovieLink4("https://v2.vidsrc.me/embed/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink5("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
 			return new ResponseEntity<Object>(movie, HttpStatus.OK);
 		}
 	}

@@ -47,7 +47,7 @@ public class JsoupPornController {
 			movies = jsoupService.getAllJsoupPornJsonMoviesByIndex();
 		} else if(StringUtils.hasText(type) && type.equalsIgnoreCase("romance")) {
 			model.addAttribute("isFive", true);
-			String movieLink = "https://yespornpleasexxx.com/brazzers-2/page/" + pageIndex + "/";
+			String movieLink = "https://yespornpleasexxx.com/brazzers/page/" + pageIndex + "/";
 			movies = jsoupPornService.getAllTypeJsoupPornMoviesByIndex(movieLink, 1, 200, true);
 		}
 		

@@ -31,7 +31,7 @@ public class JsoupServiceImpl implements JsoupService {
 	@Autowired
 	ServletContext context;
 
-	final String CINEVEZLINK = "https://ww3.cinevez.lol/";
+	final String CINEVEZLINK = "https://cinevez.tv/";
 	private final String MOVIERULZLINK = "https://ww7.4movierulz.nl/";
 
 	@Override
@@ -340,6 +340,13 @@ public class JsoupServiceImpl implements JsoupService {
 				}
 
 			}
+			
+			Elements playMovieLinkTag = documentbody.getElementsByClass("list-server");
+			Elements iframeElement = playMovieLinkTag.select("span");
+			System.out.println(iframeElement);
+			
+			
+			
 			Elements movieLinkTag = documentbody.getElementsByClass("item-link");
 			for (Element link : movieLinkTag) {
 				String movieLinkType = link.select("span").first().text();
