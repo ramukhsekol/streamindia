@@ -416,6 +416,7 @@ and
 								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('3')">Server 3</a>
 								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('4')">Server 4</a>
 								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('5')">Server 5</a>
+								<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('6')">Server 6</a>
 							</div>
 						
 						
@@ -513,6 +514,8 @@ and
 			movieLink = movie.movieLink4;
 		} else if(type == '5') {
 			movieLink = movie.movieLink5;
+		} else if(type == '6') {
+			movieLink = movie.movieLink6;
 		}
 		$("#newvideo").attr('src', movieLink);
 	}

@@ -162,7 +162,6 @@ public class MoviesController {
 		if(searchType.equalsIgnoreCase("tv")) {
 			MovieTrailers movie = movieService.getTvShowDetailsByShowId(movieId, "show");
 			ShowImdb showImdb = movieService.getImdbByShowId(movieId);
-			
 			if(movie !=null && movie.getTvShows() != null && !movie.getTvShows().getEpisode_run_time().isEmpty()) {
 				movie.getTvShows().setConvertRunTime(MovieUtil.convertMovieTiming(movie.getTvShows().getEpisode_run_time().get(0)));
 			}
@@ -172,22 +171,19 @@ public class MoviesController {
 				List<TvSeasons> tvSeasons = movie.getTvShows().getSeasons().stream().sorted(Comparator.comparingInt(TvSeasons::getSeason_number).reversed()).collect(Collectors.toList());
 				if(tvSeasons != null && !tvSeasons.isEmpty()) {
 					List<TvEpisodes> tvEpisodes = movieService.getTvEpisodesByShowIdAndSeasonId(movieId, tvSeasons.get(0).getSeason_number()).stream().sorted(Comparator.comparingInt(TvEpisodes::getEpisode_number)).collect(Collectors.toList());;
-					movie.getTvShows().setMovieLink("https://www.2embed.ru/embed/tmdb/tv?id=" + movie.getTvShows().getId() + "&s=" + tvSeasons.get(0).getSeason_number() + "&e=" + tvEpisodes.get(0).getEpisode_number()); 
 					if(showImdb != null && StringUtils.hasText(showImdb.getImdb_id())) {
-						movie.getTvShows().setMovieLink2("https://autoembed.xyz/tv/imdb/"+showImdb.getImdb_id()+"-" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number()); 
+						movie.getTvShows().setMovieLink("https://2embed.org/embed/series?imdb=" + showImdb.getImdb_id() + "&sea=" + tvSeasons.get(0).getSeason_number() + "&epi=" + tvEpisodes.get(0).getEpisode_number());
+						movie.getTvShows().setMovieLink2("https://imdbembed.xyz/tv/imdb/"+showImdb.getImdb_id()+"-" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number());
 						movie.getTvShows().setMovieLink3("https://gomostream.com/show/"+showImdb.getImdb_id()+"/" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number()); 
 						model.addAttribute("imdbId",  showImdb.getImdb_id());
 					}
-					
 					model.addAttribute("seasons", tvSeasons);
 					model.addAttribute("episodes", tvEpisodes);
 					model.addAttribute("search", new SeasonEpisode(tvSeasons.get(0).getSeason_number(), tvEpisodes.get(0).getEpisode_number()));
 					model.addAttribute("movieId",  movie.getTvShows().getId());
 				}	
 			}
-			
-			return "movies/showtvepisodes";	
-			
+			return "movies/showtvepisodes";
 		} else {
 			MovieTrailers movie = movieService.getMovieDetailsByMovieId(movieId, "show");
 			if(movie !=null && movie.getMovie() != null && movie.getMovie().getRuntime() != null) {
@@ -201,13 +197,12 @@ public class MoviesController {
 			}
 			
 			HttpResponse<String> response = Unirest.get("https://getsuperembed.link/?video_id=" + movie.getMovie().getImdb_id()).asString();
-			movie.getMovie().setMovieLink("https://www.2embed.ru/embed/imdb/movie?id=" + movie.getMovie().getImdb_id());
-			movie.getMovie().setMovieLink2("https://autoembed.xyz/movie/imdb/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink("https://2embed.org/embed/" + movie.getMovie().getImdb_id());
+			movie.getMovie().setMovieLink2("https://imdbembed.xyz/movie/imdb/" + movie.getMovie().getImdb_id());
 			movie.getMovie().setMovieLink3(response.getBody());
 			movie.getMovie().setMovieLink4("https://v2.vidsrc.me/embed/" + movie.getMovie().getImdb_id());
 			movie.getMovie().setMovieLink5("https://gomostream.com/movie/" + movie.getMovie().getImdb_id());
-			
-			
+			movie.getMovie().setMovieLink6("https://w2.yesmovies123.me/se_player.php?video_id=" + movie.getMovie().getImdb_id());
 			model.addAttribute("movie", movie);
 			model.addAttribute("title", movie.getMovie().getTitle());
 			return "movies/showmovie";	

@@ -500,14 +500,16 @@ and
 	<script type="text/javascript" th:inline="javascript">
 	var showId = [[${movieId}]];
 	var imdbId = [[${imdbId}]];
+	var selectedType = '';
 	function newVideo(type) {
 		var seasonNumber = $("#seasonNumber").val();
 		var episodeNumber = $("#episodeNumber").val();
+		selectedType = type;
 		if (type == '1') {
-			movieLink = "https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + episodeNumber;
+			movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + episodeNumber;
 			$("#newvideo").attr('src', movieLink);
 		} else if (type == '2') {
-			movieLink = "https://autoembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + episodeNumber;
+			movieLink = "https://imdbembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + episodeNumber;
 			$("#newvideo").attr('src', movieLink);
 		} else if (type == '3') {
 			$.get("/play/episodes/all?imdbId=" + imdbId + "&seasonNumber=" + seasonNumber + "&episodeNumber=" + episodeNumber, function(response) {
@@ -527,15 +529,45 @@ and
 		if(type == 'season') {
 			$.get("/getepisodes/all?showId=" + showId + "&seasonNumber=" + seasonNumber + "&episodeNumber=" + episodeNumber, function(response) {
 				$(".replaceepisodes").html(response);
-				$("#newvideo").attr('src',"https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + 1);
+				if (selectedType == '1') {
+					movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + 1;
+					$("#newvideo").attr('src', movieLink);
+				} else if (selectedType == '2') {
+					movieLink = "https://imdbembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + 1;
+					$("#newvideo").attr('src', movieLink);
+				} else if (selectedType == '3') {
+					$.get("/play/episodes/all?imdbId=" + imdbId + "&seasonNumber=" + seasonNumber + "&episodeNumber=" + 1, function(response) {
+						movieLink = response;
+						$("#newvideo").attr('src', movieLink);
+					});
+				} else if (selectedType == '4') {
+					movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + 1;
+					$("#newvideo").attr('src', movieLink);
+				} else {
+				$("#newvideo").attr('src',"https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + 1);
+			}
 			});
 		} else {
-			$("#newvideo").attr('src',"https://www.2embed.ru/embed/tmdb/tv?id=" + showId + "&s=" + seasonNumber + "&e=" + episodeNumber);
+			if (selectedType == '1') {
+				movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + episodeNumber;
+				$("#newvideo").attr('src', movieLink);
+			} else if (selectedType == '2') {
+				movieLink = "https://imdbembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + episodeNumber;
+				$("#newvideo").attr('src', movieLink);
+			} else if (selectedType == '3') {
+				$.get("/play/episodes/all?imdbId=" + imdbId + "&seasonNumber=" + seasonNumber + "&episodeNumber=" + episodeNumber, function(response) {
+					movieLink = response;
+					$("#newvideo").attr('src', movieLink);
+				});
+			} else if (selectedType == '4') {
+				movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
+				$("#newvideo").attr('src', movieLink);
+			} else {
+				$("#newvideo").attr('src',"https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + episodeNumber);
+			}
 		}	
 	}
-	
-	
-	
+
 	$(function () {
 		  $(document).scroll(function () {
 		    var $nav = $(".navbar");
