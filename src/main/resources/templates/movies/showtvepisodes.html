@@ -389,7 +389,7 @@ and
 					<div class="col-12"
 						style="margin-top: -67px; margin-bottom: -38px;">
 						<div class="section-title text-center light">
-							<h2>Play Movie</h2>
+							<h2>Play SHows</h2>
 						</div>
 					</div>
 					
@@ -420,6 +420,8 @@ and
 						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('2')">Server 2</a>
 						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('3')">Server 3</a>
 						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('4')">Server 4</a>
+						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('4')">Server 5</a>
+						<a href="javascript:void(0);" class="btn btn-success" onClick="newVideo('4')">Server 6</a>
 					</div>
 					
 				</div>
@@ -500,13 +502,13 @@ and
 	<script type="text/javascript" th:inline="javascript">
 	var showId = [[${movieId}]];
 	var imdbId = [[${imdbId}]];
-	var selectedType = '';
+	var selectedType = '1';
 	function newVideo(type) {
 		var seasonNumber = $("#seasonNumber").val();
 		var episodeNumber = $("#episodeNumber").val();
 		selectedType = type;
 		if (type == '1') {
-			movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + episodeNumber;
+			movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&s=" + seasonNumber + "&e=" + episodeNumber;
 			$("#newvideo").attr('src', movieLink);
 		} else if (type == '2') {
 			movieLink = "https://imdbembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + episodeNumber;
@@ -517,10 +519,15 @@ and
 				$("#newvideo").attr('src', movieLink);
 			});
 		} else if (type == '4') {
-			movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
+			movieLink = "https://v2.vidsrc.me/embed/"+imdbId+"/" + seasonNumber +"-" + episodeNumber;
 			$("#newvideo").attr('src', movieLink);
-		} 
-		
+		} else if (type == '5') {
+			movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
+				$("#newvideo").attr('src', movieLink);
+		} else if (type == '5') {
+			movieLink = "https://w2.yesmovies123.me/se_player.php?video_id="+imdbId+ "&s=" + seasonNumber + "&e=" + episodeNumber;
+				$("#newvideo").attr('src', movieLink);
+		}
 	}
 	
 	function iframeVideo(type) {
@@ -530,7 +537,7 @@ and
 			$.get("/getepisodes/all?showId=" + showId + "&seasonNumber=" + seasonNumber + "&episodeNumber=" + episodeNumber, function(response) {
 				$(".replaceepisodes").html(response);
 				if (selectedType == '1') {
-					movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + 1;
+					movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&s=" + seasonNumber + "&e=" + 1;
 					$("#newvideo").attr('src', movieLink);
 				} else if (selectedType == '2') {
 					movieLink = "https://imdbembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + 1;
@@ -540,16 +547,20 @@ and
 						movieLink = response;
 						$("#newvideo").attr('src', movieLink);
 					});
-				} else if (selectedType == '4') {
-					movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + 1;
+				}  else if (type == '4') {
+					movieLink = "https://v2.vidsrc.me/embed/"+imdbId+"/" + seasonNumber +"-" + 1;
 					$("#newvideo").attr('src', movieLink);
-				} else {
-				$("#newvideo").attr('src',"https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + 1);
-			}
+				} else if (type == '5') {
+					movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + 1;
+						$("#newvideo").attr('src', movieLink);
+				} else if (type == '5') {
+					movieLink = "https://w2.yesmovies123.me/se_player.php?video_id="+imdbId+ "&s=" + seasonNumber + "&e=" + 1;
+						$("#newvideo").attr('src', movieLink);
+				}
 			});
 		} else {
 			if (selectedType == '1') {
-				movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + episodeNumber;
+				movieLink = "https://2embed.org/embed/series?imdb=" + imdbId + "&s=" + seasonNumber + "&e=" + episodeNumber;
 				$("#newvideo").attr('src', movieLink);
 			} else if (selectedType == '2') {
 				movieLink = "https://imdbembed.xyz/tv/imdb/" + imdbId + "-" + seasonNumber + "-" + episodeNumber;
@@ -559,11 +570,15 @@ and
 					movieLink = response;
 					$("#newvideo").attr('src', movieLink);
 				});
-			} else if (selectedType == '4') {
-				movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
+			}  else if (type == '4') {
+				movieLink = "https://v2.vidsrc.me/embed/"+imdbId+"/" + seasonNumber +"-" + episodeNumber;
 				$("#newvideo").attr('src', movieLink);
-			} else {
-				$("#newvideo").attr('src',"https://2embed.org/embed/series?imdb=" + imdbId + "&sea=" + seasonNumber + "&epi=" + episodeNumber);
+			} else if (type == '5') {
+				movieLink = "https://gomostream.com/show/"+imdbId+"/" + (seasonNumber < 10 ? '0' +seasonNumber : seasonNumber) +"-" + (episodeNumber < 10 ? '0' +episodeNumber : episodeNumber);
+					$("#newvideo").attr('src', movieLink);
+			} else if (type == '5') {
+				movieLink = "https://w2.yesmovies123.me/se_player.php?video_id="+imdbId+ "&s=" + seasonNumber + "&e=" + episodeNumber;
+					$("#newvideo").attr('src', movieLink);
 			}
 		}	
 	}
@@ -574,10 +589,7 @@ and
 		    $nav.toggleClass('scrolled', $(this).scrollTop() >= $nav.height());
 		  });
 		});
-	
-	
-	
-	
+
 		jQuery(function() {
 			jQuery('#youtubeVimeoWithPlaylist_default')
 					.youtubeVimeoWithPlaylist({

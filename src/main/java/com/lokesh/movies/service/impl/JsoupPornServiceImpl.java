@@ -420,7 +420,7 @@ public class JsoupPornServiceImpl implements JsoupPornService {
 						encodedString = image;
 					}
 					String[] playMovieLinkData = finalMovieLink.split("-");
-					String playMovieLink = "https://xhamster15.desi/embed/"
+					String playMovieLink = "https://xhamster3.com/embed/"
 							+ playMovieLinkData[playMovieLinkData.length - 1];
 					Movie movie = new Movie(encodedString, name, (double) getRandomNumber(6, 9), playMovieLink, null);
 					movie.setTotalMoviesPerPageIndex(elements.size());

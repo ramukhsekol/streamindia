@@ -116,8 +116,4 @@ public class MovieUtil {
 		int minutes = runTime % 60;
 		return hours+"h : "+minutes+"m";
 	}
-	
-	
-	
-
 }

@@ -132,7 +132,8 @@ public class MoviesController {
 
 	@GetMapping(value = "/movies/all")
 	public String moviesByIndex(@RequestParam String pageIndex, @RequestParam String type, @RequestParam String query, @RequestParam String queryId, @RequestParam String searchType, Model model) throws UnirestException, UnsupportedEncodingException {
-		if(searchType.equalsIgnoreCase("movie") && type.equalsIgnoreCase("personMovies") && pageIndex.equalsIgnoreCase("1")) {
+		if(searchType.equalsIgnoreCase("movie") &&
+				type.equalsIgnoreCase("personMovies") && pageIndex.equalsIgnoreCase("1")) {
 			List<Movie> movies = movieService.getMoviesByPersonId(queryId).stream().map(m -> {m.setMedia_id(m.getMedia_type().equalsIgnoreCase("movie")?1:0); return m;}).collect(Collectors.toList());
 			model.addAttribute("movies", movies);
 		} else if(!type.equalsIgnoreCase("personMovies")) {
@@ -172,9 +173,13 @@ public class MoviesController {
 				if(tvSeasons != null && !tvSeasons.isEmpty()) {
 					List<TvEpisodes> tvEpisodes = movieService.getTvEpisodesByShowIdAndSeasonId(movieId, tvSeasons.get(0).getSeason_number()).stream().sorted(Comparator.comparingInt(TvEpisodes::getEpisode_number)).collect(Collectors.toList());;
 					if(showImdb != null && StringUtils.hasText(showImdb.getImdb_id())) {
-						movie.getTvShows().setMovieLink("https://2embed.org/embed/series?imdb=" + showImdb.getImdb_id() + "&sea=" + tvSeasons.get(0).getSeason_number() + "&epi=" + tvEpisodes.get(0).getEpisode_number());
+						HttpResponse<String> response = Unirest.get("https://getsuperembed.link/?video_id=" + showImdb.getImdb_id() +"&season=" + tvSeasons.get(0).getSeason_number() + "&episode=" + tvEpisodes.get(0).getEpisode_number()).asString();
+						movie.getTvShows().setMovieLink("https://2embed.org/embed/series?imdb=" + showImdb.getImdb_id() + "&s=" + tvSeasons.get(0).getSeason_number() + "&e=" + tvEpisodes.get(0).getEpisode_number());
 						movie.getTvShows().setMovieLink2("https://imdbembed.xyz/tv/imdb/"+showImdb.getImdb_id()+"-" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number());
-						movie.getTvShows().setMovieLink3("https://gomostream.com/show/"+showImdb.getImdb_id()+"/" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number()); 
+						movie.getTvShows().setMovieLink3(response.getBody());
+						movie.getTvShows().setMovieLink4("https://v2.vidsrc.me/embed/" + showImdb.getImdb_id() + "/" + tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number());
+						movie.getTvShows().setMovieLink5("https://gomostream.com/show/"+showImdb.getImdb_id()+"/" +tvSeasons.get(0).getSeason_number()+"-" + tvEpisodes.get(0).getEpisode_number());
+						movie.getTvShows().setMovieLink6("https://w2.yesmovies123.me/se_player.php?video_id=" + showImdb.getImdb_id() + "&s=" + tvSeasons.get(0).getSeason_number() + "&e=" + tvEpisodes.get(0).getEpisode_number());
 						model.addAttribute("imdbId",  showImdb.getImdb_id());
 					}
 					model.addAttribute("seasons", tvSeasons);
